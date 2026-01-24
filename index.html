@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abdul Rasheed | Python Full-Stack Developer</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <!-- Scroll Progress Bar -->
+    <div id="scroll-progress"></div>
+
+    <!-- Cursor Follower -->
+    <div class="cursor-dot"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="#home" class="logo">
+                <span class="logo-text"></span>
+            </a>
+            <div class="menu-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#skills" class="nav-link">Skills</a></li>
+                <li><a href="#services" class="nav-link">Services</a></li>
+                <li><a href="#projects" class="nav-link">Projects</a></li>
+                <li><a href="#contact" class="nav-link btn-primary">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-bg-animation"></div>
+        <div class="floating-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+        </div>
+
+        <div class="container hero-content">
+            <div class="hero-text">
+                <span class="subtitle" data-aos="fade-up">Hello, I'm</span>
+                <h1 class="hero-name reveal" data-aos="fade-up" data-aos-delay="100">
+                    Abdul Rasheed YP </h1>
+
+                <h2 class="reveal delay-1 typing-effect" data-aos="fade-up" data-aos-delay="200">
+                    <span id="typed-text"></span>
+                    <span class="cursor-blink">|</span>
+                </h2>
+                <p data-aos="fade-up" data-aos-delay="300">
+                    I build scalable and user-friendly web applications. Passionate about coding, technology, and
+                    continuous learning.
+                </p>
+                <div class="hero-btns" data-aos="fade-up" data-aos-delay="400">
+                    <a href="#projects" class="btn btn-filled">
+                        <span>View My Work</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="#contact" class="btn btn-outline">
+                        <span>Contact Me</span>
+                    </a>
+                </div>
+                <div class="social-links" data-aos="fade-up" data-aos-delay="500">
+                    <a href="https://github.com/Rashi0099" class="social-icon"><i class="fab fa-github"></i></a>
+                    <a href="https://www.linkedin.com/in/abdul-rasheed5140/" class="social-icon"><i
+                            class="fab fa-linkedin"></i></a>
+                    <a href="https://www.instagram.com/rasheed00._?igsh=enRuam40MG9ydWhi&utm_source=qr"
+                        class="social-icon"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="hero-image" data-aos="zoom-in" data-aos-delay="300">
+                <div class="blob-shape">
+                    <img src="img/profile-pic.png" alt="Abdul Rasheed" class="profile-img">
+                    <div class="glow-effect"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section about">
+        <div class="container">
+            <div class="section-title" data-aos="fade-up">
+                <span class="section-tag">Get to know me</span>
+                <h2>About Me</h2>
+                <p>Who I am & what I do</p>
+            </div>
+
+            <div class="about-wrapper">
+                <div class="about-text" data-aos="fade-right">
+                    <h3>Python Full-Stack Developer </h3>
+                    <p>
+                        I'm a commerce graduate transitioning into software development,
+                        currently focused on building practical web applications using Python.
+                    </p>
+                    <p>
+                        I train at <strong>Brototype</strong>, where my learning is fully
+                        project-driven — writing real code, solving real problems, and
+                        following industry-level development practices.
+                    </p>
+                    <p class="about-focus">
+                        My goal is to become a job-ready full-stack developer with strong
+                        fundamentals in backend development, databases, and clean frontend design.
+                    </p>
+                    <div class="about-buttons">
+                        <a href="#projects" class="btn btn-filled">
+                            <span>View Projects</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                        <a href="img/AbdulrasheedCV.pdf" class="btn btn-outline" target="_blank" download>
+                            <span>Download CV</span>
+                            <i class="fas fa-download"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div class="about-stats" data-aos="fade-left">
+                    <div class="stat-card" data-aos="fade-up" data-aos-delay="100">
+                        <div class="stat-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <span class="stat-title">Background</span>
+                        <span class="stat-value">B.Com Graduate</span>
+                    </div>
+
+                    <div class="stat-card" data-aos="fade-up" data-aos-delay="200">
+                        <div class="stat-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <span class="stat-title">Current Track</span>
+                        <span class="stat-value">Python Full-Stack</span>
+                    </div>
+
+                    <div class="stat-card" data-aos="fade-up" data-aos-delay="300">
+                        <div class="stat-icon">
+                            <i class="fas fa-project-diagram"></i>
+                        </div>
+                        <span class="stat-title">Learning Style</span>
+                        <span class="stat-value">Project Based</span>
+                    </div>
+
+                    <div class="stat-card" data-aos="fade-up" data-aos-delay="400">
+                        <div class="stat-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <span class="stat-title">Location</span>
+                        <span class="stat-value">Kerala, India</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="section skills">
+        <div class="container">
+            <div class="section-title" data-aos="fade-up">
+                <span class="section-tag">What I know</span>
+                <h2>My Skills</h2>
+                <p>Technical proficiency and tools</p>
+            </div>
+
+            <div class="skills-container">
+                <div class="skill-card" data-aos="flip-left" data-aos-delay="100">
+                    <div class="skill-icon">
+                        <i class="fab fa-python"></i>
+                    </div>
+                    <h3>Python</h3>
+                    <div class="circular-progress" data-percentage="90">
+                        <svg class="progress-ring" width="120" height="120">
+                            <circle class="progress-ring-bg" cx="60" cy="60" r="52"></circle>
+                            <circle class="progress-ring-circle" cx="60" cy="60" r="52"></circle>
+                        </svg>
+                        <span class="progress-percentage">0%</span>
+                    </div>
+                    <p class="skill-desc">Backend development, automation, data processing</p>
+                </div>
+
+                <div class="skill-card" data-aos="flip-left" data-aos-delay="200">
+                    <div class="skill-icon">
+                        <i class="fab fa-html5"></i>
+                    </div>
+                    <h3>HTML & CSS</h3>
+                    <div class="circular-progress" data-percentage="80">
+                        <svg class="progress-ring" width="120" height="120">
+                            <circle class="progress-ring-bg" cx="60" cy="60" r="52"></circle>
+                            <circle class="progress-ring-circle" cx="60" cy="60" r="52"></circle>
+                        </svg>
+                        <span class="progress-percentage">0%</span>
+                    </div>
+                    <p class="skill-desc">Responsive design, modern layouts, animations</p>
+                </div>
+
+                <div class="skill-card" data-aos="flip-left" data-aos-delay="400">
+                    <div class="skill-icon">
+                        <i class="fa-solid fa-d"></i>
+                    </div>
+                    <h3>Django</h3>
+                    <div class="circular-progress" data-percentage="95">
+                        <svg class="progress-ring" width="120" height="120">
+                            <circle class="progress-ring-bg" cx="60" cy="60" r="52"></circle>
+                            <circle class="progress-ring-circle" cx="60" cy="60" r="52"></circle>
+                        </svg>
+                        <span class="progress-percentage">0%</span>
+                    </div>
+                    <p class="skill-desc">Models, views, templates, ORM</p>
+                </div>
+
+                <div class="skill-card" data-aos="flip-left" data-aos-delay="400">
+                    <div class="skill-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <h3>SQL</h3>
+                    <div class="circular-progress" data-percentage="80">
+                        <svg class="progress-ring" width="120" height="120">
+                            <circle class="progress-ring-bg" cx="60" cy="60" r="52"></circle>
+                            <circle class="progress-ring-circle" cx="60" cy="60" r="52"></circle>
+                        </svg>
+                        <span class="progress-percentage">0%</span>
+                    </div>
+                    <p class="skill-desc">Database design, queries, optimization</p>
+                </div>
+
+                <div class="skill-card" data-aos="flip-left" data-aos-delay="400">
+                    <div class="skill-icon">
+                        <i class="fa-regular fa-c"></i>
+                    </div>
+                    <h3>C</h3>
+                    <div class="circular-progress" data-percentage="85">
+                        <svg class="progress-ring" width="120" height="120">
+                            <circle class="progress-ring-bg" cx="60" cy="60" r="52"></circle>
+                            <circle class="progress-ring-circle" cx="60" cy="60" r="52"></circle>
+                        </svg>
+                        <span class="progress-percentage">0%</span>
+                    </div>
+                    <p class="skill-desc">Arrays, pointers, structures, functions</p>
+                </div>
+
+
+                <div class="skill-card" data-aos="flip-left" data-aos-delay="300">
+                    <div class="skill-icon">
+                        <i class="fab fa-js"></i>
+                    </div>
+                    <h3>JavaScript</h3>
+                    <div class="circular-progress" data-percentage="40">
+                        <svg class="progress-ring" width="120" height="120">
+                            <circle class="progress-ring-bg" cx="60" cy="60" r="52"></circle>
+                            <circle class="progress-ring-circle" cx="60" cy="60" r="52"></circle>
+                        </svg>
+                        <span class="progress-percentage">0%</span>
+                    </div>
+                    <p class="skill-desc">DOM manipulation, ES6+, async programming</p>
+                </div>
+
+
+
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="section bg-light">
+        <div class="container">
+            <div class="section-title" data-aos="fade-up">
+                <span class="section-tag">What I offer</span>
+                <h2>Services</h2>
+                <p>What I can do for you</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="icon-box">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3>Web Development</h3>
+                    <p>Building responsive and user-friendly web interfaces using HTML, CSS, JavaScript, and React.</p>
+
+                    <div class="service-hover-effect"></div>
+                </div>
+                <div class="service-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="icon-box">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <h3>Backend Development</h3>
+                    <p>Developing server-side logic and REST APIs using Python and Django with database integration.</p>
+
+                    <div class="service-hover-effect"></div>
+                </div>
+                <div class="service-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="icon-box">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <h3>Full-Stack Solutions</h3>
+                    <p>Building end-to-end web applications using React for frontend and Django for backend with
+                        database integration.</p>
+
+                    <div class="service-hover-effect"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="section">
+        <div class="container">
+            <div class="section-title" data-aos="fade-up">
+                <span class="section-tag">My work</span>
+                <h2>Projects</h2>
+                <p>Recent work & experiments</p>
+            </div>
+
+            <!-- Project Filter -->
+            <div class="project-filter" data-aos="fade-up" data-aos-delay="100">
+                <button class="filter-btn active" data-filter="all">All Projects</button>
+                <button class="filter-btn" data-filter="web">Web Apps</button>
+                <button class="filter-btn" data-filter="python">Python</button>
+                <button class="filter-btn" data-filter="frontend">Frontend</button>
+            </div>
+
+            <div class="projects-grid">
+                <div class="project-card" data-category="frontend" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="project-img">
+                        <img src="img/Screenshot 2026-01-23 235442.png" alt="Portfolio Website"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                        <div class="project-placeholder">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <div class="project-overlay">
+
+                            <a href="https://rashi0099.github.io/portfolio.0/" class="overlay-btn"><i
+                                    class="fas fa-eye"></i></a>
+                            <a href="#" class="overlay-btn"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                    <div class="project-info">
+                        <div class="project-tags">
+                            <span class="tag">HTML</span>
+                            <span class="tag">CSS</span>
+                            <span class="tag">JS</span>
+                        </div>
+                        <h3>Portfolio Website</h3>
+                        <p>Personal portfolio website built with modern HTML, CSS, and JavaScript featuring smooth
+                            animations.</p>
+                    </div>
+                </div>
+
+                <div class="project-card" data-category="python" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="project-img">
+                        <img src="img/Screenshot 2026-01-23 234941.png" alt="Python Utilities"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                        <div class="project-placeholder">
+                            <i class="fas fa-file-code"></i>
+                        </div>
+                        <div class="project-overlay">
+
+                            <a href="https://rashi0099.github.io/nikeeee/" class="overlay-btn"><i
+                                    class="fas fa-eye"></i></a>
+                            <a href="#" class="overlay-btn"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                    <div class="project-info">
+                        <div class="project-tags">
+                            <span class="tag">Python</span>
+                            <span class="tag">Automation</span>
+                        </div>
+                        <h3>Frontend Development</h3>
+                        <p>Developed responsive frontend components using HTML, CSS clean structure and interactive
+                            behavior.</p>
+                    </div>
+                </div>
+
+                <div class="project-card" data-category="web" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="project-img">
+                        <img src="img/Screenshot 2026-01-23 234547.png" alt="E-commerce Demo"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                        <div class="project-placeholder">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <div class="project-overlay">
+                            <a href="https://rashi0099.github.io/fashion-wear.0/" class="overlay-btn"><i
+                                    class="fas fa-eye"></i></a>
+                            <a href="#" class="overlay-btn"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                    <div class="project-info">
+                        <div class="project-tags">
+                            <span class="tag">HTML</span>
+                            <span class="tag">CSS</span>
+                            <span class="tag">Grid</span>
+                        </div>
+                        <h3>E-commerce Demo</h3>
+                        <p>Modern e-commerce page layout practicing CSS Grid, Flexbox, and responsive design principles.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section bg-light">
+        <div class="container">
+            <div class="section-title" data-aos="fade-up">
+                <span class="section-tag">Get in touch</span>
+                <h2>Contact Me</h2>
+                <p>Let's work together</p>
+            </div>
+
+            <div class="contact-container">
+                <div class="contact-info" data-aos="fade-right">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <div>
+                            <h4>Phone</h4>
+                            <p>+91 9778106863</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div>
+                            <h4>Email</h4>
+                            <p>abdulrasheed5140@gmail.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div>
+                            <h4>Location</h4>
+                            <p>Malappuram, Kerala, India</p>
+                        </div>
+                    </div>
+                    <div class="availability-status">
+                        <div class="status-indicator"></div>
+                        <span>Available for freelance work</span>
+                    </div>
+                </div>
+
+                <form class="contact-form" action="https://api.web3forms.com/submit" method="POST" data-aos="fade-left">
+                    <input type="hidden" name="access_key" value="6685fd8d-d317-4ea9-b4ca-f84c505d940c">
+                    <input type="hidden" name="redirect" value="https://yourwebsite.com/#contact">
+
+
+
+                    <div class="form-group">
+                        <input type="text" name="name" required>
+                        <label class="floating-label">Your Name</label>
+                        <span class="form-underline"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="email" name="email" required>
+                        <label class="floating-label">Your Email</label>
+                        <span class="form-underline"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <textarea name="message" rows="4" required></textarea>
+                        <label class="floating-label">Your Message</label>
+                        <span class="form-underline"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-filled">
+                        <span>Send Message</span>
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <span class="logo-bracket"></span>
+                    <span class="logo-text"></span>
+                    <span class="logo-bracket"></span>
+                </div>
+                <p>&copy; 2026 Abdul Rasheed YP. All rights reserved.</p>
+                <div class="footer-socials">
+                    <a href="https://github.com/Rashi0099"><i class="fab fa-github"></i></a>
+                    <a href="https://www.linkedin.com/in/abdul-rasheed5140/"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://www.instagram.com/rasheed00._?igsh=enRuam40MG9ydWhi&utm_source=qr"><i
+                            class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Success Modal -->
+    <div class="success-modal" id="successModal">
+        <div class="modal-content">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3>Message Sent!</h3>
+            <p>Thank you for reaching out. I'll get back to you soon.</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
