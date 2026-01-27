@@ -57,7 +57,7 @@ img {
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 30px;
+    padding: 0 16px;
 }
 
 /* Custom Cursor */
@@ -829,7 +829,11 @@ img {
     gap: 15px;
     margin-bottom: 50px;
     flex-wrap: wrap;
+}html, body {
+    width: 100%;
+    overflow-x: hidden;
 }
+
 
 .filter-btn {
     padding: 10px 25px;
@@ -1335,15 +1339,25 @@ footer {
         display: none;
     }
 }
+/* ===== HERO NAME RESPONSIVE FIX ===== */
+
+/* Desktop */
 .hero-text h1 {
     white-space: nowrap;
 }
+
+/* Mobile */
 @media (max-width: 768px) {
-    .hero-text h1 {
-        white-space: normal;   /* allow wrapping */
+    .hero-text h1,
+    .hero-name {
+        white-space: normal !important;
+        word-break: break-word;
+        overflow-wrap: break-word;
         text-align: center;
+        max-width: 100%;
     }
 }
+
 
 /* Animation Classes */
 [data-aos] {
