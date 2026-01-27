@@ -223,19 +223,11 @@ img {
     font-weight: 800;
     line-height: 1.1;
 }
-.hero-text h1 {
-    white-space: nowrap;
-}
-
-
-
 
 .hero-nickname {
     font-size: 2.2rem;
-    font-weight: 600;
-    margin-left: 10px;
-    color: var(--primary-color);
 }
+
 @media (max-width: 768px) {
     .hero-name {
         font-size: 2.4rem;
@@ -1341,6 +1333,15 @@ footer {
     .cursor-dot,
     .cursor-outline {
         display: none;
+    }
+}
+.hero-text h1 {
+    white-space: nowrap;
+}
+@media (max-width: 768px) {
+    .hero-text h1 {
+        white-space: normal;   /* allow wrapping */
+        text-align: center;
     }
 }
 
