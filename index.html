@@ -46,6 +46,12 @@
                 <li><a href="#services" class="nav-link">Services</a></li>
                 <li><a href="#projects" class="nav-link">Projects</a></li>
                 <li><a href="#contact" class="nav-link btn-primary">Contact</a></li>
+                <li>
+                    <button id="theme-toggle" class="theme-toggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </li>
+
             </ul>
         </div>
     </nav>
@@ -183,104 +189,74 @@
                 <p>Technical proficiency and tools</p>
             </div>
 
-            <div class="skills-container">
-                <div class="skill-card" data-aos="flip-left" data-aos-delay="100">
-                    <div class="skill-icon">
-                        <i class="fab fa-python"></i>
-                    </div>
-                    <h3>Python</h3>
-                    <div class="circular-progress" data-percentage="90">
-                        <svg class="progress-ring" width="120" height="120">
-                            <circle class="progress-ring-bg" cx="60" cy="60" r="52"></circle>
-                            <circle class="progress-ring-circle" cx="60" cy="60" r="52"></circle>
-                        </svg>
-                        <span class="progress-percentage">0%</span>
-                    </div>
-                    <p class="skill-desc">Backend development, automation, data processing</p>
+            <div class="skills-grid">
+
+                <div class="skill-tile" data-aos="fade-up">
+                    <i class="fab fa-python"></i>
+                    <span>Python</span>
                 </div>
 
-                <div class="skill-card" data-aos="flip-left" data-aos-delay="200">
-                    <div class="skill-icon">
-                        <i class="fab fa-html5"></i>
-                    </div>
-                    <h3>HTML & CSS</h3>
-                    <div class="circular-progress" data-percentage="80">
-                        <svg class="progress-ring" width="120" height="120">
-                            <circle class="progress-ring-bg" cx="60" cy="60" r="52"></circle>
-                            <circle class="progress-ring-circle" cx="60" cy="60" r="52"></circle>
-                        </svg>
-                        <span class="progress-percentage">0%</span>
-                    </div>
-                    <p class="skill-desc">Responsive design, modern layouts, animations</p>
+                <div class="skill-tile" data-aos="fade-up" data-aos-delay="50">
+                    <i class="fa-solid fa-d"></i>
+                    <span>Django</span>
                 </div>
 
-                <div class="skill-card" data-aos="flip-left" data-aos-delay="400">
-                    <div class="skill-icon">
-                        <i class="fa-solid fa-d"></i>
-                    </div>
-                    <h3>Django</h3>
-                    <div class="circular-progress" data-percentage="95">
-                        <svg class="progress-ring" width="120" height="120">
-                            <circle class="progress-ring-bg" cx="60" cy="60" r="52"></circle>
-                            <circle class="progress-ring-circle" cx="60" cy="60" r="52"></circle>
-                        </svg>
-                        <span class="progress-percentage">0%</span>
-                    </div>
-                    <p class="skill-desc">Models, views, templates, ORM</p>
+                <div class="skill-tile" data-aos="fade-up" data-aos-delay="150">
+                    <i class="fab fa-html5"></i>
+                    <span>HTML5</span>
                 </div>
 
-                <div class="skill-card" data-aos="flip-left" data-aos-delay="400">
-                    <div class="skill-icon">
-                        <i class="fas fa-database"></i>
-                    </div>
-                    <h3>SQL</h3>
-                    <div class="circular-progress" data-percentage="80">
-                        <svg class="progress-ring" width="120" height="120">
-                            <circle class="progress-ring-bg" cx="60" cy="60" r="52"></circle>
-                            <circle class="progress-ring-circle" cx="60" cy="60" r="52"></circle>
-                        </svg>
-                        <span class="progress-percentage">0%</span>
-                    </div>
-                    <p class="skill-desc">Database design, queries, optimization</p>
+                <div class="skill-tile" data-aos="fade-up" data-aos-delay="200">
+                    <i class="fab fa-css3-alt"></i>
+                    <span>CSS3</span>
                 </div>
 
-                <div class="skill-card" data-aos="flip-left" data-aos-delay="400">
-                    <div class="skill-icon">
-                        <i class="fa-regular fa-c"></i>
-                    </div>
-                    <h3>C</h3>
-                    <div class="circular-progress" data-percentage="85">
-                        <svg class="progress-ring" width="120" height="120">
-                            <circle class="progress-ring-bg" cx="60" cy="60" r="52"></circle>
-                            <circle class="progress-ring-circle" cx="60" cy="60" r="52"></circle>
-                        </svg>
-                        <span class="progress-percentage">0%</span>
-                    </div>
-                    <p class="skill-desc">Arrays, pointers, structures, functions</p>
+                <div class="skill-tile" data-aos="fade-up" data-aos-delay="250">
+                    <i class="fab fa-js"></i>
+                    <span>JavaScript</span>
+                </div>
+
+                <div class="skill-tile" data-aos="fade-up" data-aos-delay="300">
+                    <i class="fab fa-git-alt"></i>
+                    <span>Git</span>
                 </div>
 
 
-                <div class="skill-card" data-aos="flip-left" data-aos-delay="300">
-                    <div class="skill-icon">
-                        <i class="fab fa-js"></i>
-                    </div>
-                    <h3>JavaScript</h3>
-                    <div class="circular-progress" data-percentage="40">
-                        <svg class="progress-ring" width="120" height="120">
-                            <circle class="progress-ring-bg" cx="60" cy="60" r="52"></circle>
-                            <circle class="progress-ring-circle" cx="60" cy="60" r="52"></circle>
-                        </svg>
-                        <span class="progress-percentage">0%</span>
-                    </div>
-                    <p class="skill-desc">DOM manipulation, ES6+, async programming</p>
+                <!-- PostgreSQL -->
+                <div class="skill-tile" data-aos="fade-up">
+                    <i class="fas fa-database"></i>
+                    <span>SQL</span>
                 </div>
 
+                <!-- Java -->
+                <div class="skill-tile" data-aos="fade-up" data-aos-delay="50">
+                    <i class="fab fa-java"></i>
+                    <span>Java</span>
+                </div>
+
+                <!-- Bootstrap -->
+                <div class="skill-tile" data-aos="fade-up" data-aos-delay="100">
+                    <i class="fab fa-bootstrap"></i>
+                    <span>Bootstrap</span>
+                </div>
+
+                <!-- Unix -->
+                <div class="skill-tile" data-aos="fade-up" data-aos-delay="150">
+                    <i class="fas fa-terminal"></i>
+                    <span>Unix</span>
+                </div>
 
 
 
             </div>
+
+
+
+
+
         </div>
     </section>
+
 
     <!-- Services Section -->
     <section id="services" class="section bg-light">
@@ -352,7 +328,8 @@
 
                             <a href="https://rashi0099.github.io/portfolio.0/" class="overlay-btn"><i
                                     class="fas fa-eye"></i></a>
-                            <a href="https://github.com/Rashi0099/" class="overlay-btn"><i class="fab fa-github"></i></a>
+                            <a href="https://github.com/Rashi0099/" class="overlay-btn"><i
+                                    class="fab fa-github"></i></a>
                         </div>
                     </div>
                     <div class="project-info">
@@ -378,7 +355,8 @@
 
                             <a href="https://rashi0099.github.io/nikeeee/" class="overlay-btn"><i
                                     class="fas fa-eye"></i></a>
-                            <a href="https://github.com/Rashi0099/" class="overlay-btn"><i class="fab fa-github"></i></a>
+                            <a href="https://github.com/Rashi0099/" class="overlay-btn"><i
+                                    class="fab fa-github"></i></a>
                         </div>
                     </div>
                     <div class="project-info">
@@ -402,7 +380,8 @@
                         <div class="project-overlay">
                             <a href="https://rashi0099.github.io/fashion-wear.0/" class="overlay-btn"><i
                                     class="fas fa-eye"></i></a>
-                            <a href="https://github.com/Rashi0099/" class="overlay-btn"><i class="fab fa-github"></i></a>
+                            <a href="https://github.com/Rashi0099/" class="overlay-btn"><i
+                                    class="fab fa-github"></i></a>
                         </div>
                     </div>
                     <div class="project-info">
@@ -464,7 +443,7 @@
                     </div>
                 </div>
 
-                <form class="contact-form" action="https://api.web3forms.com/submit" method="POST" data-aos="fade-left">
+                <form id="contact-form" class="contact-form" action="https://api.web3forms.com/submit" method="POST" data-aos="fade-left">
                     <input type="hidden" name="access_key" value="6685fd8d-d317-4ea9-b4ca-f84c505d940c">
                     <input type="hidden" name="redirect" value="https://yourwebsite.com/#contact">
 
@@ -474,18 +453,21 @@
                         <input type="text" name="name" required>
                         <label class="floating-label">Your Name</label>
                         <span class="form-underline"></span>
+                        <small class="error-msg"></small>
                     </div>
 
                     <div class="form-group">
                         <input type="email" name="email" required>
                         <label class="floating-label">Your Email</label>
                         <span class="form-underline"></span>
+                        <small class="error-msg"></small>
                     </div>
 
                     <div class="form-group">
                         <textarea name="message" rows="4" required></textarea>
                         <label class="floating-label">Your Message</label>
                         <span class="form-underline"></span>
+                        <small class="error-msg"></small>
                     </div>
 
                     <button type="submit" class="btn btn-filled">

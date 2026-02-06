@@ -193,6 +193,70 @@ img {
     transition: var(--transition);
     border-radius: 3px;
 }
+/* ================= DARK MODE TOGGLE BUTTON ================= */
+
+.theme-toggle {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(15, 23, 42, 0.08);
+    color: var(--secondary-color);
+
+    backdrop-filter: blur(10px);
+    box-shadow: 
+        0 6px 18px rgba(0,0,0,0.15),
+        inset 0 0 0 1px rgba(255,255,255,0.2);
+
+    transition: 
+        transform 0.25s ease,
+        background 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+/* Hover */
+.theme-toggle:hover {
+    transform: translateY(-3px) rotate(20deg);
+    background: rgba(15, 23, 42, 0.12);
+}
+
+
+/* Click */
+.theme-toggle:active {
+    transform: scale(0.9);
+}
+
+/* Icon */
+.theme-toggle i {
+    font-size: 1rem;
+}
+
+
+
+body.dark .skill-tile {
+    background: #020617;
+}body.dark .theme-toggle {
+    background: rgba(255, 255, 255, 0.08);
+    color: #3d4a7a; /* warm sun color */
+    box-shadow:
+        0 6px 20px rgba(0,0,0,0.6),
+        inset 0 0 0 1px rgba(255,255,255,0.15);
+}
+
+body.dark .theme-toggle:hover {
+    background: rgba(255, 255, 255, 0.14);
+}.theme-toggle.spin {
+    transform: rotate(180deg);
+}
+
+
+
 
 /* Hero Section */
 .hero {
@@ -667,22 +731,128 @@ img {
 }
 
 /* Skills Section */
-.skills-container {
+.skills-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 40px;
-    max-width: 1000px;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 24px;
+    max-width: 900px;
     margin: 0 auto;
 }
 
-.skill-card {
+.skill-tile {
+    height: 140px;
     background: var(--white);
-    padding: 40px 30px;
-    border-radius: 25px;
-    text-align: center;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-    transition: var(--transition);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
     border: 2px solid transparent;
+    transition: var(--transition);
+    cursor: pointer;
+}
+.skill-tile i {
+    font-size: 2.2rem;
+
+    background: linear-gradient(
+        135deg,
+        var(--secondary-color),
+        var(--primary-color)
+    );
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    opacity: 0.9;
+}
+
+.skill-tile:hover i {
+    background: none;
+    -webkit-text-fill-color: initial;
+    transform: scale(1.15);
+    opacity: 1;
+}
+
+
+
+.skill-tile span {
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+    color: var(--secondary-color);
+}
+
+/* Hover effect */
+.skill-tile:hover {
+    transform: translateY(-10px) scale(1.05);
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-hover);
+}
+#skills {
+    padding-top: 60px;
+}
+#skills .section-title {
+    margin-bottom: 80px;
+}
+/* Python */
+.skill-tile:hover .fa-python {
+    color: #3776AB;
+}
+
+/* Django */
+.skill-tile:hover .fa-d {
+    color: #092E20;
+}
+
+/* HTML */
+.skill-tile:hover .fa-html5 {
+    color: #E34F26;
+}
+
+/* CSS */
+.skill-tile:hover .fa-css3-alt {
+    color: #1572B6;
+}
+
+/* JavaScript */
+.skill-tile:hover .fa-js {
+    color: #F7DF1E;
+}
+
+/* PostgreSQL / SQL */
+.skill-tile:hover .fa-database {
+    color: #336791;
+}
+
+/* Git */
+.skill-tile:hover .fa-git-alt {
+    color: #F05032;
+}
+
+/* Linux */
+.skill-tile:hover .fa-linux {
+    color: #FCC624;
+}
+.skill-tile:hover i {
+    transform: scale(1.15);
+}
+
+.skill-tile:hover .fa-java {
+    color: #007396;
+}
+
+/* Bootstrap */
+.skill-tile:hover .fa-bootstrap {
+    color: #7952B3;
+}
+
+/* Unix */
+.skill-tile:hover .fa-terminal {
+    color: #4ADE80;
 }
 
 .skill-card:hover {
@@ -711,16 +881,8 @@ img {
     color: var(--secondary-color);
 }
 
-.circular-progress {
-    position: relative;
-    width: 120px;
-    height: 120px;
-    margin: 0 auto 20px;
-}
 
-.progress-ring {
-    transform: rotate(-90deg);
-}
+
 
 .progress-ring-bg {
     fill: none;
@@ -738,21 +900,7 @@ img {
     transition: stroke-dashoffset 1.5s ease-in-out;
 }
 
-.progress-percentage {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--primary-color);
-}
 
-.skill-desc {
-    font-size: 0.9rem;
-    color: #64748B;
-    line-height: 1.6;
-}
 
 /* Services Section */
 .services-grid {
@@ -1407,4 +1555,77 @@ footer {
 
 [data-aos="flip-left"] {
     transform: perspective(1000px) rotateY(-30deg);
+}/* ================= DARK MODE ================= */
+body.dark {
+
+    --bg-color: #0B1220;
+    --bg-light: #0F172A;
+
+    --white: #0F172A;
+    --secondary-color: #E5E7EB;
+    --text-color: #CBD5E1;
+
+    --shadow: 0 4px 6px -1px rgba(0,0,0,0.6);
+    --shadow-hover: 0 20px 40px -15px rgba(12, 166, 233, 0.4);
 }
+/* ================= DARK MODE FIXES ================= */
+
+/* Navbar */
+body.dark .navbar {
+    background: rgba(15, 23, 42, 0.9);
+    box-shadow: 0 2px 20px rgba(0,0,0,0.6);
+}
+
+body.dark .nav-link {
+    color: var(--secondary-color);
+}
+
+/* Hero Section */
+body.dark .hero {
+    background: linear-gradient(
+        135deg,
+        #020617 0%,
+        #0B1220 50%,
+        #020617 100%
+    );
+}
+
+/* Hero background animation */
+body.dark .hero-bg-animation {
+    background:
+        radial-gradient(circle at 20% 50%, rgba(99,102,241,0.12) 0%, transparent 55%),
+        radial-gradient(circle at 80% 80%, rgba(12,166,233,0.12) 0%, transparent 55%);
+}
+
+/* Hero subtitle + paragraph */
+body.dark .hero-text p {
+    color: #CBD5E1;
+}
+
+body.dark .hero-text h2 {
+    color: #94A3B8;
+}
+
+/* Social icons */
+body.dark .social-icon {
+    background: #020617;
+    color: #CBD5E1;
+}
+
+/* Footer */
+body.dark footer {
+    background: #020617;
+    color: #94A3B8;
+}
+
+body.dark .footer-socials a {
+    background: rgba(255,255,255,0.08);
+}
+.error-msg {
+    color: #EF4444;
+    font-size: 0.75rem;
+    margin-top: 6px;
+    display: block;
+}
+
+
