@@ -1,6 +1,6 @@
 /* 
-   ENHANCED PORTFOLIO DESIGN
-   Advanced 3D Effects, Animations & Modern Interactions
+   ULTRA-ADVANCED PORTFOLIO DESIGN
+   Liquid Flow Effects, 3D Transformations & Cutting-Edge Animations
 */
 
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
@@ -37,7 +37,7 @@ body {
     position: relative;
 }
 
-/* Animated Background Grid */
+/* Animated Background Grid with 3D depth */
 body::before {
     content: '';
     position: fixed;
@@ -54,9 +54,31 @@ body::before {
     z-index: 0;
 }
 
+/* Floating orbs in background */
+body::after {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: 
+        radial-gradient(circle at 20% 30%, rgba(0, 217, 255, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(123, 47, 255, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(255, 0, 110, 0.1) 0%, transparent 50%);
+    animation: orbFloat 20s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
 @keyframes gridMove {
     0% { transform: translate(0, 0); }
     100% { transform: translate(50px, 50px); }
+}
+
+@keyframes orbFloat {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(50px, 50px) rotate(180deg); }
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -90,45 +112,72 @@ img {
 }
 
 /* ============================================
-   ENHANCED CUSTOM CURSOR
+   ENHANCED CUSTOM CURSOR WITH LIQUID TRAIL
 ============================================ */
 .cursor-dot {
     pointer-events: none;
     position: fixed;
-    width: 8px;
-    height: 8px;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
     background: var(--primary-color);
     transform: translate(-50%, -50%);
     z-index: 10000;
     mix-blend-mode: difference;
     transition: width 0.3s, height 0.3s;
+    box-shadow: 0 0 20px var(--primary-color);
+}
+
+.cursor-dot::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    border: 2px solid rgba(0, 217, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: cursorPulse 2s ease-in-out infinite;
+}
+
+@keyframes cursorPulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+    50% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
 }
 
 .cursor-dot.active {
-    width: 40px;
-    height: 40px;
-    background: rgba(0, 217, 255, 0.2);
+    width: 50px;
+    height: 50px;
+    background: rgba(0, 217, 255, 0.3);
     border: 2px solid var(--primary-color);
 }
 
 /* ============================================
-   SCROLL PROGRESS WITH GLOW
+   SCROLL PROGRESS WITH LIQUID ANIMATION
 ============================================ */
 #scroll-progress {
     position: fixed;
     top: 0;
     left: 0;
-    height: 3px;
+    height: 4px;
     width: 0;
-    background: linear-gradient(90deg, var(--primary-color), var(--accent-pink));
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-pink), var(--accent-color));
+    background-size: 200% 100%;
     z-index: 9999;
     transition: width 0.1s linear;
-    box-shadow: var(--glow);
+    box-shadow: 0 0 30px rgba(0, 217, 255, 0.8);
+    animation: gradientFlow 3s ease infinite;
+}
+
+@keyframes gradientFlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 /* ============================================
-   GLASSMORPHIC NAVBAR
+   GLASSMORPHIC NAVBAR WITH 3D LIFT
 ============================================ */
 .navbar {
     position: fixed;
@@ -141,11 +190,13 @@ img {
     border-bottom: 1px solid rgba(0, 217, 255, 0.1);
     z-index: 1000;
     transition: var(--transition);
+    transform-style: preserve-3d;
 }
 
 .navbar.scrolled {
     background: rgba(10, 14, 39, 0.95);
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    transform: translateZ(50px);
 }
 
 .navbar .container {
@@ -178,8 +229,8 @@ img {
 }
 
 @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.9); }
 }
 
 .nav-menu {
@@ -208,12 +259,32 @@ img {
     transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: var(--primary-color);
+    border-radius: 50%;
+    transform: translateX(-50%);
+    transition: all 0.3s;
+    box-shadow: 0 0 20px var(--primary-color);
+}
+
 .nav-link:hover {
     color: var(--primary-color);
+    text-shadow: 0 0 20px rgba(0, 217, 255, 0.5);
 }
 
 .nav-link:hover::before {
     width: 100%;
+}
+
+.nav-link:hover::after {
+    width: 6px;
+    height: 6px;
 }
 
 .btn-primary {
@@ -263,7 +334,7 @@ img {
 }
 
 /* ============================================
-   THEME TOGGLE WITH 3D EFFECT
+   THEME TOGGLE WITH LIQUID MORPH
 ============================================ */
 .theme-toggle {
     width: 50px;
@@ -290,6 +361,14 @@ img {
     background: radial-gradient(circle, var(--primary-color) 0%, transparent 70%);
     opacity: 0;
     transition: opacity 0.3s;
+    animation: liquidMorph 3s ease-in-out infinite;
+}
+
+@keyframes liquidMorph {
+    0%, 100% { border-radius: 50%; }
+    25% { border-radius: 40% 60% 60% 40% / 60% 40% 60% 40%; }
+    50% { border-radius: 60% 40% 40% 60% / 40% 60% 40% 60%; }
+    75% { border-radius: 40% 60% 40% 60% / 60% 40% 60% 40%; }
 }
 
 .theme-toggle:hover::before {
@@ -297,7 +376,7 @@ img {
 }
 
 .theme-toggle:hover {
-    transform: translateY(-3px) rotate(180deg);
+    transform: translateY(-3px) rotate(180deg) scale(1.1);
     box-shadow: var(--glow);
 }
 
@@ -308,7 +387,7 @@ img {
 }
 
 /* ============================================
-   HERO SECTION WITH PARTICLES
+   HERO SECTION WITH ADVANCED PARTICLES
 ============================================ */
 .hero {
     min-height: 100vh;
@@ -354,6 +433,7 @@ img {
     letter-spacing: 3px;
     text-transform: uppercase;
     animation: fadeSlideIn 1s ease-out;
+    text-shadow: 0 0 20px rgba(0, 217, 255, 0.5);
 }
 
 @keyframes fadeSlideIn {
@@ -371,11 +451,17 @@ img {
     font-size: 4.5rem;
     line-height: 1.1;
     margin-bottom: 20px;
-    background: linear-gradient(135deg, var(--white), var(--primary-color));
+    background: linear-gradient(135deg, var(--white), var(--primary-color), var(--accent-color));
+    background-size: 200% 200%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    animation: fadeSlideIn 1s ease-out 0.2s both;
+    animation: fadeSlideIn 1s ease-out 0.2s both, gradientShift 5s ease infinite;
+}
+
+@keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
 }
 
 .hero-text h2 {
@@ -390,6 +476,7 @@ img {
 .cursor-blink {
     color: var(--primary-color);
     animation: blink 1s infinite;
+    text-shadow: 0 0 10px var(--primary-color);
 }
 
 @keyframes blink {
@@ -467,7 +554,7 @@ img {
 }
 
 .btn-filled:hover {
-    transform: translateY(-5px);
+    transform: translateY(-5px) scale(1.05);
     box-shadow: var(--shadow-hover);
 }
 
@@ -480,7 +567,7 @@ img {
 .btn-outline:hover {
     background-color: var(--primary-color);
     color: var(--bg-color);
-    transform: translateY(-5px);
+    transform: translateY(-5px) scale(1.05);
     box-shadow: var(--glow);
 }
 
@@ -527,12 +614,12 @@ img {
 
 .social-icon:hover {
     color: var(--white);
-    transform: translateY(-5px) scale(1.1);
+    transform: translateY(-5px) scale(1.2) rotate(360deg);
     box-shadow: var(--glow);
 }
 
 /* ============================================
-   3D HERO IMAGE WITH PERSPECTIVE
+   3D HERO IMAGE WITH LIQUID BLOB
 ============================================ */
 .hero-image {
     flex: 1;
@@ -552,6 +639,30 @@ img {
     justify-content: center;
     transform-style: preserve-3d;
     transition: transform 0.3s ease-out;
+}
+
+.blob-shape::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+    opacity: 0.3;
+    animation: blobMorph 8s ease-in-out infinite, blobRotate 20s linear infinite;
+    filter: blur(40px);
+}
+
+@keyframes blobMorph {
+    0%, 100% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+    25% { border-radius: 58% 42% 75% 25% / 76% 46% 54% 24%; }
+    50% { border-radius: 50% 50% 33% 67% / 55% 27% 73% 45%; }
+    75% { border-radius: 33% 67% 58% 42% / 63% 68% 32% 37%; }
+}
+
+@keyframes blobRotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 .profile-img {
@@ -599,7 +710,7 @@ img {
 }
 
 /* ============================================
-   SECTIONS WITH GLASSMORPHISM
+   SECTIONS
 ============================================ */
 .section {
     padding: 120px 0;
@@ -628,6 +739,12 @@ img {
     border-radius: 50px;
     background: rgba(0, 217, 255, 0.1);
     box-shadow: var(--glow);
+    animation: tagFloat 3s ease-in-out infinite;
+}
+
+@keyframes tagFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
 }
 
 .section-title h2 {
@@ -645,8 +762,9 @@ img {
     font-size: 1.2rem;
 }
 
+/* Continue with remaining styles... */
 /* ============================================
-   3D TILT CARDS
+   ABOUT SECTION
 ============================================ */
 .about-wrapper {
     display: grid;
@@ -721,7 +839,7 @@ img {
 }
 
 .stat-card:hover {
-    transform: translateY(-10px) rotateX(5deg) rotateY(5deg);
+    transform: translateY(-10px) rotateX(5deg) rotateY(5deg) scale(1.05);
     border-color: var(--primary-color);
     box-shadow: var(--shadow-hover);
 }
@@ -742,8 +860,8 @@ img {
 }
 
 @keyframes iconBounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+    0%, 100% { transform: translateY(0) rotateY(0); }
+    50% { transform: translateY(-10px) rotateY(180deg); }
 }
 
 .stat-title {
@@ -762,7 +880,7 @@ img {
 }
 
 /* ============================================
-   SKILL TILES WITH 3D FLIP
+   SKILL TILES WITH 3D DEPTH
 ============================================ */
 .skills-grid {
     display: grid;
@@ -826,7 +944,7 @@ img {
 }
 
 .skill-tile:hover {
-    transform: translateY(-15px) rotateX(10deg) scale(1.05);
+    transform: translateY(-15px) rotateX(10deg) scale(1.05) translateZ(50px);
     border-color: var(--primary-color);
     box-shadow: var(--shadow-hover);
 }
@@ -836,20 +954,8 @@ img {
     transition: transform 0.6s;
 }
 
-/* Skill-specific colors on hover */
-.skill-tile:hover .fa-python { color: #3776AB; -webkit-text-fill-color: #3776AB; }
-.skill-tile:hover .fa-d { color: #092E20; -webkit-text-fill-color: #092E20; }
-.skill-tile:hover .fa-html5 { color: #E34F26; -webkit-text-fill-color: #E34F26; }
-.skill-tile:hover .fa-css3-alt { color: #1572B6; -webkit-text-fill-color: #1572B6; }
-.skill-tile:hover .fa-js { color: #F7DF1E; -webkit-text-fill-color: #F7DF1E; }
-.skill-tile:hover .fa-database { color: #336791; -webkit-text-fill-color: #336791; }
-.skill-tile:hover .fa-git-alt { color: #F05032; -webkit-text-fill-color: #F05032; }
-.skill-tile:hover .fa-java { color: #007396; -webkit-text-fill-color: #007396; }
-.skill-tile:hover .fa-bootstrap { color: #7952B3; -webkit-text-fill-color: #7952B3; }
-.skill-tile:hover .fa-terminal { color: #4ADE80; -webkit-text-fill-color: #4ADE80; }
-
 /* ============================================
-   SERVICE CARDS WITH MAGNETIC EFFECT
+   SERVICE CARDS WITH ADVANCED WATER FLOW
 ============================================ */
 .services-grid {
     display: grid;
@@ -869,6 +975,40 @@ img {
     transform-style: preserve-3d;
 }
 
+/* Water Flow Canvas */
+.service-card .water-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.service-card:hover .water-canvas {
+    opacity: 1;
+}
+
+/* Floating particles around card */
+.service-card .particle-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.service-card:hover .particle-canvas {
+    opacity: 1;
+}
+
 .service-card::before {
     content: '';
     position: absolute;
@@ -880,6 +1020,13 @@ img {
     opacity: 0;
     transition: opacity 0.5s;
     pointer-events: none;
+    z-index: 0;
+    animation: rotateGradient 10s linear infinite;
+}
+
+@keyframes rotateGradient {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 .service-card:hover::before {
@@ -888,8 +1035,8 @@ img {
 
 .service-card:hover {
     border-color: var(--primary-color);
-    transform: translateY(-15px) rotateX(5deg);
-    box-shadow: var(--shadow-hover);
+    transform: translateY(-20px) rotateX(8deg) scale(1.05) translateZ(50px);
+    box-shadow: var(--shadow-hover), 0 0 60px rgba(0, 217, 255, 0.3);
 }
 
 .icon-box {
@@ -907,10 +1054,17 @@ img {
     z-index: 1;
     box-shadow: var(--glow);
     transition: var(--transition);
+    animation: iconFloat 3s ease-in-out infinite;
+}
+
+@keyframes iconFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
 }
 
 .service-card:hover .icon-box {
-    transform: rotateY(360deg) scale(1.1);
+    transform: rotateY(360deg) scale(1.2);
+    box-shadow: 0 0 40px rgba(0, 217, 255, 0.8);
 }
 
 .service-card h3 {
@@ -928,9 +1082,7 @@ img {
     z-index: 1;
 }
 
-/* ============================================
-   PROJECT CARDS WITH 3D FLIP
-============================================ */
+/* PROJECT CARDS - Continuing from services... */
 .project-filter {
     display: flex;
     justify-content: center;
@@ -949,6 +1101,26 @@ img {
     cursor: pointer;
     font-weight: 700;
     transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.filter-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: radial-gradient(circle, rgba(0, 217, 255, 0.3), transparent);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.filter-btn:hover::before,
+.filter-btn.active::before {
+    width: 300px;
+    height: 300px;
 }
 
 .filter-btn:hover,
@@ -956,7 +1128,7 @@ img {
     background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
     color: var(--white);
     border-color: transparent;
-    transform: translateY(-3px);
+    transform: translateY(-3px) scale(1.05);
     box-shadow: var(--glow);
 }
 
@@ -979,7 +1151,7 @@ img {
 }
 
 .project-card:hover {
-    transform: translateY(-15px) rotateX(5deg);
+    transform: translateY(-20px) rotateX(5deg) scale(1.05) translateZ(30px);
     border-color: var(--primary-color);
     box-shadow: var(--shadow-hover);
 }
@@ -1018,7 +1190,7 @@ img {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, rgba(63, 70, 71, 0.9), rgba(84, 42, 156, 0.9));
+    background: linear-gradient(135deg, rgba(0, 217, 255, 0.95), rgba(123, 47, 255, 0.95));
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1069,6 +1241,13 @@ img {
     font-size: 0.85rem;
     font-weight: 700;
     border: 1px solid var(--primary-color);
+    transition: var(--transition);
+}
+
+.tag:hover {
+    background: var(--primary-color);
+    color: var(--white);
+    transform: translateY(-2px);
 }
 
 .project-info h3 {
@@ -1082,9 +1261,7 @@ img {
     line-height: 1.8;
 }
 
-/* ============================================
-   CONTACT SECTION WITH GLOW EFFECTS
-============================================ */
+/* CONTACT SECTION */
 .contact-container {
     display: grid;
     grid-template-columns: 1fr 1.5fr;
@@ -1112,7 +1289,7 @@ img {
 }
 
 .contact-item:hover {
-    transform: translateX(15px);
+    transform: translateX(15px) scale(1.05);
     border-color: var(--primary-color);
     box-shadow: var(--shadow-hover);
 }
@@ -1129,6 +1306,12 @@ img {
     color: white;
     flex-shrink: 0;
     box-shadow: var(--glow);
+    animation: iconPulse 2s ease-in-out infinite;
+}
+
+@keyframes iconPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
 }
 
 .contact-item h4 {
@@ -1241,9 +1424,7 @@ img {
     width: 100%;
 }
 
-/* ============================================
-   SUCCESS MODAL WITH PARTICLES
-============================================ */
+/* SUCCESS MODAL */
 .success-modal {
     position: fixed;
     top: 0;
@@ -1315,9 +1496,7 @@ img {
     font-size: 1.1rem;
 }
 
-/* ============================================
-   FOOTER
-============================================ */
+/* FOOTER */
 footer {
     background: var(--bg-light);
     color: var(--text-color);
@@ -1353,13 +1532,11 @@ footer {
 .footer-socials a:hover {
     background: linear-gradient(135deg, var(--primary-color), var(--accent-pink));
     color: var(--white);
-    transform: translateY(-8px) rotate(360deg);
+    transform: translateY(-8px) rotate(360deg) scale(1.2);
     box-shadow: var(--glow);
 }
 
-/* ============================================
-   SCROLL TO TOP BUTTON
-============================================ */
+/* SCROLL TO TOP */
 .scroll-to-top {
     position: fixed;
     bottom: 40px;
@@ -1385,13 +1562,11 @@ footer {
 }
 
 .scroll-to-top:hover {
-    transform: translateY(-10px) rotate(360deg);
+    transform: translateY(-10px) rotate(360deg) scale(1.2);
     box-shadow: var(--shadow-hover);
 }
 
-/* ============================================
-   ANIMATIONS
-============================================ */
+/* ANIMATIONS */
 [data-aos] {
     opacity: 0;
     transition: opacity 1s, transform 1s;
@@ -1433,9 +1608,7 @@ footer {
     transform: scale(0.8);
 }
 
-/* ============================================
-   RESPONSIVE DESIGN
-============================================ */
+/* RESPONSIVE */
 @media (max-width: 1024px) {
     .hero-text h1 { font-size: 3.5rem; }
     .about-wrapper { grid-template-columns: 1fr; }
@@ -1496,7 +1669,7 @@ footer {
     .cursor-dot { display: none; }
 }
 
-/* Dark Mode Support */
+/* Dark Mode */
 body.dark {
     --bg-color: #000000;
     --bg-light: #0A0E27;

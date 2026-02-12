@@ -1,12 +1,386 @@
 // ============================================
-// ENHANCED PORTFOLIO JAVASCRIPT
-// Advanced 3D Effects, Particles & Interactions
+// ULTRA-ADVANCED PORTFOLIO JAVASCRIPT
+// Water Flow Simulation, Liquid Physics & 3D Effects
 // ============================================
 
 // ============================================
-// PARTICLE SYSTEM
+// ADVANCED WATER FLOW SIMULATION
 // ============================================
-class ParticleSystem {
+class WaterFlowSimulation {
+    constructor(canvas) {
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
+        this.width = 0;
+        this.height = 0;
+        this.waterParticles = [];
+        this.waves = [];
+        this.droplets = [];
+        this.isActive = false;
+        this.animationId = null;
+        
+        this.resize();
+    }
+    
+    resize() {
+        const rect = this.canvas.parentElement.getBoundingClientRect();
+        this.width = this.canvas.width = rect.width;
+        this.height = this.canvas.height = rect.height;
+    }
+    
+    createWaterFlow(x, y) {
+        // Create flowing water particles
+        for (let i = 0; i < 30; i++) {
+            const angle = Math.random() * Math.PI * 2;
+            const speed = Math.random() * 3 + 1;
+            
+            this.waterParticles.push({
+                x: x,
+                y: y,
+                vx: Math.cos(angle) * speed,
+                vy: Math.sin(angle) * speed,
+                life: 1,
+                size: Math.random() * 4 + 2,
+                color: Math.random() > 0.5 ? 
+                    `rgba(0, 217, 255, ${Math.random() * 0.8 + 0.2})` : 
+                    `rgba(123, 47, 255, ${Math.random() * 0.8 + 0.2})`
+            });
+        }
+        
+        // Create ripple waves
+        this.waves.push({
+            x: x,
+            y: y,
+            radius: 0,
+            maxRadius: Math.min(this.width, this.height) * 0.6,
+            alpha: 1,
+            speed: 4,
+            thickness: 4
+        });
+        
+        // Create droplets
+        for (let i = 0; i < 15; i++) {
+            this.droplets.push({
+                x: x + (Math.random() - 0.5) * 50,
+                y: y + (Math.random() - 0.5) * 50,
+                vx: (Math.random() - 0.5) * 6,
+                vy: Math.random() * -8 - 4,
+                gravity: 0.4,
+                life: 1,
+                size: Math.random() * 3 + 1
+            });
+        }
+        
+        if (!this.isActive) {
+            this.isActive = true;
+            this.animate();
+        }
+    }
+    
+    animate() {
+        this.ctx.clearRect(0, 0, this.width, this.height);
+        
+        // Draw and update waves with gradient
+        this.waves = this.waves.filter(wave => {
+            wave.radius += wave.speed;
+            wave.alpha = 1 - (wave.radius / wave.maxRadius);
+            wave.thickness = 4 * wave.alpha;
+            
+            if (wave.alpha > 0) {
+                // Outer wave
+                const gradient = this.ctx.createRadialGradient(
+                    wave.x, wave.y, wave.radius * 0.9,
+                    wave.x, wave.y, wave.radius
+                );
+                gradient.addColorStop(0, `rgba(0, 217, 255, ${wave.alpha * 0.7})`);
+                gradient.addColorStop(0.5, `rgba(123, 47, 255, ${wave.alpha * 0.5})`);
+                gradient.addColorStop(1, `rgba(255, 0, 110, ${wave.alpha * 0.3})`);
+                
+                this.ctx.beginPath();
+                this.ctx.arc(wave.x, wave.y, wave.radius, 0, Math.PI * 2);
+                this.ctx.strokeStyle = gradient;
+                this.ctx.lineWidth = wave.thickness;
+                this.ctx.stroke();
+                
+                // Inner glow
+                this.ctx.beginPath();
+                this.ctx.arc(wave.x, wave.y, wave.radius * 0.5, 0, Math.PI * 2);
+                this.ctx.fillStyle = `rgba(0, 217, 255, ${wave.alpha * 0.15})`;
+                this.ctx.fill();
+                
+                // Shimmer effect
+                for (let i = 0; i < 8; i++) {
+                    const angle = (i / 8) * Math.PI * 2 + wave.radius * 0.1;
+                    const shimmerX = wave.x + Math.cos(angle) * wave.radius;
+                    const shimmerY = wave.y + Math.sin(angle) * wave.radius;
+                    
+                    this.ctx.beginPath();
+                    this.ctx.arc(shimmerX, shimmerY, 2, 0, Math.PI * 2);
+                    this.ctx.fillStyle = `rgba(255, 255, 255, ${wave.alpha * 0.6})`;
+                    this.ctx.fill();
+                }
+                
+                return true;
+            }
+            return false;
+        });
+        
+        // Draw and update water particles
+        this.waterParticles = this.waterParticles.filter(particle => {
+            particle.x += particle.vx;
+            particle.y += particle.vy;
+            particle.vy += 0.15; // Gravity
+            particle.vx *= 0.98; // Friction
+            particle.vy *= 0.98;
+            particle.life -= 0.02;
+            
+            if (particle.life > 0) {
+                // Draw water particle with glow
+                const gradient = this.ctx.createRadialGradient(
+                    particle.x, particle.y, 0,
+                    particle.x, particle.y, particle.size
+                );
+                gradient.addColorStop(0, particle.color);
+                gradient.addColorStop(1, 'transparent');
+                
+                this.ctx.beginPath();
+                this.ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                this.ctx.fillStyle = gradient;
+                this.ctx.fill();
+                
+                // Add trail effect
+                this.ctx.beginPath();
+                this.ctx.moveTo(particle.x, particle.y);
+                this.ctx.lineTo(particle.x - particle.vx * 2, particle.y - particle.vy * 2);
+                this.ctx.strokeStyle = particle.color.replace(/[\d.]+\)$/g, `${particle.life * 0.3})`);
+                this.ctx.lineWidth = particle.size * 0.5;
+                this.ctx.stroke();
+                
+                return true;
+            }
+            return false;
+        });
+        
+        // Draw and update droplets
+        this.droplets = this.droplets.filter(droplet => {
+            droplet.x += droplet.vx;
+            droplet.y += droplet.vy;
+            droplet.vy += droplet.gravity;
+            droplet.life -= 0.015;
+            
+            if (droplet.life > 0 && droplet.y < this.height) {
+                // Droplet shape with motion blur
+                this.ctx.beginPath();
+                this.ctx.ellipse(
+                    droplet.x, droplet.y, 
+                    droplet.size, 
+                    droplet.size * (1 + Math.abs(droplet.vy) * 0.2),
+                    Math.atan2(droplet.vy, droplet.vx),
+                    0, Math.PI * 2
+                );
+                this.ctx.fillStyle = `rgba(0, 217, 255, ${droplet.life * 0.7})`;
+                this.ctx.fill();
+                
+                // Highlight
+                this.ctx.beginPath();
+                this.ctx.arc(droplet.x - droplet.size * 0.3, droplet.y - droplet.size * 0.3, droplet.size * 0.4, 0, Math.PI * 2);
+                this.ctx.fillStyle = `rgba(255, 255, 255, ${droplet.life * 0.4})`;
+                this.ctx.fill();
+                
+                return true;
+            }
+            return false;
+        });
+        
+        if (this.waterParticles.length > 0 || this.waves.length > 0 || this.droplets.length > 0) {
+            this.animationId = requestAnimationFrame(() => this.animate());
+        } else {
+            this.isActive = false;
+        }
+    }
+    
+    clear() {
+        if (this.animationId) {
+            cancelAnimationFrame(this.animationId);
+            this.animationId = null;
+        }
+        this.waterParticles = [];
+        this.waves = [];
+        this.droplets = [];
+        this.isActive = false;
+        this.ctx.clearRect(0, 0, this.width, this.height);
+    }
+}
+
+// ============================================
+// FLOATING PARTICLE SYSTEM FOR CARDS
+// ============================================
+class FloatingParticles {
+    constructor(canvas) {
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
+        this.width = 0;
+        this.height = 0;
+        this.particles = [];
+        this.isActive = false;
+        this.animationId = null;
+        
+        this.resize();
+        this.init();
+    }
+    
+    resize() {
+        const rect = this.canvas.parentElement.getBoundingClientRect();
+        this.width = this.canvas.width = rect.width;
+        this.height = this.canvas.height = rect.height;
+    }
+    
+    init() {
+        this.particles = [];
+        for (let i = 0; i < 50; i++) {
+            this.particles.push({
+                x: Math.random() * this.width,
+                y: Math.random() * this.height,
+                vx: (Math.random() - 0.5) * 1,
+                vy: (Math.random() - 0.5) * 1,
+                size: Math.random() * 3 + 1,
+                color: Math.random() > 0.5 ? 
+                    `rgba(0, 217, 255, ${Math.random() * 0.6 + 0.2})` : 
+                    `rgba(123, 47, 255, ${Math.random() * 0.6 + 0.2})`,
+                life: Math.random()
+            });
+        }
+    }
+    
+    start() {
+        if (!this.isActive) {
+            this.isActive = true;
+            this.animate();
+        }
+    }
+    
+    animate() {
+        this.ctx.clearRect(0, 0, this.width, this.height);
+        
+        this.particles.forEach((particle, i) => {
+            particle.x += particle.vx;
+            particle.y += particle.vy;
+            particle.life += 0.01;
+            
+            // Sine wave motion
+            particle.vx += Math.sin(particle.life) * 0.02;
+            particle.vy += Math.cos(particle.life) * 0.02;
+            
+            // Boundary check
+            if (particle.x < 0 || particle.x > this.width) particle.vx *= -1;
+            if (particle.y < 0 || particle.y > this.height) particle.vy *= -1;
+            
+            // Draw particle with glow
+            const gradient = this.ctx.createRadialGradient(
+                particle.x, particle.y, 0,
+                particle.x, particle.y, particle.size * 2
+            );
+            gradient.addColorStop(0, particle.color);
+            gradient.addColorStop(1, 'transparent');
+            
+            this.ctx.beginPath();
+            this.ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+            this.ctx.fillStyle = gradient;
+            this.ctx.fill();
+            
+            // Connect nearby particles
+            this.particles.slice(i + 1).forEach(other => {
+                const dx = particle.x - other.x;
+                const dy = particle.y - other.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                if (distance < 80) {
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(particle.x, particle.y);
+                    this.ctx.lineTo(other.x, other.y);
+                    this.ctx.strokeStyle = `rgba(0, 217, 255, ${0.3 * (1 - distance / 80)})`;
+                    this.ctx.lineWidth = 1;
+                    this.ctx.stroke();
+                }
+            });
+        });
+        
+        if (this.isActive) {
+            this.animationId = requestAnimationFrame(() => this.animate());
+        }
+    }
+    
+    stop() {
+        this.isActive = false;
+        if (this.animationId) {
+            cancelAnimationFrame(this.animationId);
+            this.animationId = null;
+        }
+        setTimeout(() => {
+            this.ctx.clearRect(0, 0, this.width, this.height);
+        }, 500);
+    }
+}
+
+// Initialize water flow and particles for service cards
+document.addEventListener('DOMContentLoaded', () => {
+    const serviceCards = document.querySelectorAll('.service-card');
+    
+    serviceCards.forEach(card => {
+        // Create water canvas
+        const waterCanvas = document.createElement('canvas');
+        waterCanvas.className = 'water-canvas';
+        card.insertBefore(waterCanvas, card.firstChild);
+        
+        const waterFlow = new WaterFlowSimulation(waterCanvas);
+        
+        // Create particle canvas
+        const particleCanvas = document.createElement('canvas');
+        particleCanvas.className = 'particle-canvas';
+        card.insertBefore(particleCanvas, card.firstChild);
+        
+        const floatingParticles = new FloatingParticles(particleCanvas);
+        
+        let flowInterval;
+        
+        card.addEventListener('mouseenter', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            waterFlow.createWaterFlow(x, y);
+            floatingParticles.start();
+        });
+        
+        card.addEventListener('mousemove', (e) => {
+            clearInterval(flowInterval);
+            flowInterval = setInterval(() => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                waterFlow.createWaterFlow(x, y);
+            }, 200);
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            clearInterval(flowInterval);
+            setTimeout(() => {
+                waterFlow.clear();
+                floatingParticles.stop();
+            }, 1000);
+        });
+        
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            waterFlow.resize();
+            floatingParticles.resize();
+            floatingParticles.init();
+        });
+    });
+});
+
+// ============================================
+// HERO PARTICLE SYSTEM WITH 3D DEPTH
+// ============================================
+class ParticleSystem3D {
     constructor(canvasId) {
         this.canvas = document.createElement('canvas');
         this.canvas.id = canvasId;
@@ -48,16 +422,19 @@ class ParticleSystem {
     
     init() {
         this.particles = [];
-        const particleCount = Math.floor((this.canvas.width * this.canvas.height) / 15000);
+        const particleCount = Math.floor((this.canvas.width * this.canvas.height) / 12000);
         
         for (let i = 0; i < particleCount; i++) {
             this.particles.push({
                 x: Math.random() * this.canvas.width,
                 y: Math.random() * this.canvas.height,
+                z: Math.random() * 100, // Depth
                 vx: (Math.random() - 0.5) * 0.5,
                 vy: (Math.random() - 0.5) * 0.5,
+                vz: (Math.random() - 0.5) * 0.3,
                 radius: Math.random() * 2 + 1,
-                color: Math.random() > 0.5 ? 'rgba(0, 217, 255, 0.6)' : 'rgba(123, 47, 255, 0.6)'
+                color: Math.random() > 0.5 ? 'rgba(0, 217, 255, 0.7)' : 'rgba(123, 47, 255, 0.7)',
+                life: Math.random() * Math.PI * 2
             });
         }
     }
@@ -66,45 +443,74 @@ class ParticleSystem {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         
         this.particles.forEach((particle, i) => {
-            // Move particle
+            // Update position with 3D movement
             particle.x += particle.vx;
             particle.y += particle.vy;
+            particle.z += particle.vz;
+            particle.life += 0.02;
             
-            // Mouse interaction
+            // 3D perspective effect
+            const scale = 100 / (100 + particle.z);
+            const size = particle.radius * scale;
+            const alpha = scale;
+            
+            // Mouse interaction with depth
             const dx = this.mouseX - particle.x;
             const dy = this.mouseY - particle.y;
             const distance = Math.sqrt(dx * dx + dy * dy);
             
-            if (distance < 100) {
-                const force = (100 - distance) / 100;
-                particle.vx -= (dx / distance) * force * 0.2;
-                particle.vy -= (dy / distance) * force * 0.2;
+            if (distance < 150) {
+                const force = (150 - distance) / 150;
+                particle.vx -= (dx / distance) * force * 0.3 * scale;
+                particle.vy -= (dy / distance) * force * 0.3 * scale;
             }
             
-            // Bounce off edges
+            // Boundary check with depth
             if (particle.x < 0 || particle.x > this.canvas.width) particle.vx *= -1;
             if (particle.y < 0 || particle.y > this.canvas.height) particle.vy *= -1;
+            if (particle.z < 0 || particle.z > 100) particle.vz *= -1;
             
             // Damping
             particle.vx *= 0.99;
             particle.vy *= 0.99;
+            particle.vz *= 0.99;
             
-            // Draw particle
+            // Draw particle with depth-based glow
+            const gradient = this.ctx.createRadialGradient(
+                particle.x, particle.y, 0,
+                particle.x, particle.y, size * 3
+            );
+            
+            const colorWithAlpha = particle.color.replace('0.7', alpha * 0.7);
+            gradient.addColorStop(0, colorWithAlpha);
+            gradient.addColorStop(1, 'transparent');
+            
             this.ctx.beginPath();
-            this.ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
-            this.ctx.fillStyle = particle.color;
+            this.ctx.arc(particle.x, particle.y, size, 0, Math.PI * 2);
+            this.ctx.fillStyle = gradient;
             this.ctx.fill();
             
-            // Draw connections
+            // Pulsing effect
+            const pulse = Math.sin(particle.life) * 0.5 + 0.5;
+            this.ctx.beginPath();
+            this.ctx.arc(particle.x, particle.y, size * (1 + pulse * 0.5), 0, Math.PI * 2);
+            this.ctx.strokeStyle = particle.color.replace('0.7', alpha * 0.3 * pulse);
+            this.ctx.lineWidth = 1;
+            this.ctx.stroke();
+            
+            // Draw connections with depth consideration
             this.particles.slice(i + 1).forEach(otherParticle => {
                 const dx = particle.x - otherParticle.x;
                 const dy = particle.y - otherParticle.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
+                const dz = particle.z - otherParticle.z;
+                const distance3D = Math.sqrt(dx * dx + dy * dy + dz * dz);
+                const distance2D = Math.sqrt(dx * dx + dy * dy);
                 
-                if (distance < 120) {
+                if (distance2D < 120 && Math.abs(dz) < 30) {
+                    const avgScale = (scale + (100 / (100 + otherParticle.z))) / 2;
                     this.ctx.beginPath();
-                    this.ctx.strokeStyle = `rgba(0, 217, 255, ${0.2 * (1 - distance / 120)})`;
-                    this.ctx.lineWidth = 1;
+                    this.ctx.strokeStyle = `rgba(0, 217, 255, ${0.25 * (1 - distance2D / 120) * avgScale})`;
+                    this.ctx.lineWidth = 1 * avgScale;
                     this.ctx.moveTo(particle.x, particle.y);
                     this.ctx.lineTo(otherParticle.x, otherParticle.y);
                     this.ctx.stroke();
@@ -116,15 +522,15 @@ class ParticleSystem {
     }
 }
 
-// Initialize particles when DOM is ready
+// Initialize 3D particles
 document.addEventListener('DOMContentLoaded', () => {
-    new ParticleSystem('particles-canvas');
+    new ParticleSystem3D('particles-canvas');
 });
 
 // ============================================
-// 3D TILT EFFECT FOR CARDS
+// ADVANCED 3D TILT EFFECT
 // ============================================
-class TiltEffect {
+class TiltEffect3D {
     constructor(selector, options = {}) {
         this.elements = document.querySelectorAll(selector);
         this.options = {
@@ -133,7 +539,8 @@ class TiltEffect {
             scale: options.scale || 1.05,
             speed: options.speed || 400,
             glare: options.glare !== false,
-            maxGlare: options.maxGlare || 0.3
+            maxGlare: options.maxGlare || 0.3,
+            depth: options.depth || 50
         };
         
         this.init();
@@ -153,13 +560,21 @@ class TiltEffect {
                 glare.style.width = '100%';
                 glare.style.height = '100%';
                 glare.style.borderRadius = 'inherit';
-                glare.style.background = 'linear-gradient(45deg, rgba(255,255,255,0.1), transparent)';
+                glare.style.background = 'linear-gradient(45deg, rgba(255,255,255,0.2), transparent)';
                 glare.style.opacity = '0';
                 glare.style.pointerEvents = 'none';
                 glare.style.transition = `opacity ${this.options.speed}ms ease`;
                 element.style.position = 'relative';
                 element.appendChild(glare);
             }
+            
+            // Add depth layers for children
+            const children = element.querySelectorAll('*');
+            children.forEach((child, index) => {
+                const depth = Math.min(index * 10, this.options.depth);
+                child.style.transform = `translateZ(${depth}px)`;
+                child.style.transformStyle = 'preserve-3d';
+            });
             
             element.addEventListener('mouseenter', (e) => this.handleMouseEnter(e, element));
             element.addEventListener('mousemove', (e) => this.handleMouseMove(e, element));
@@ -185,19 +600,22 @@ class TiltEffect {
         const tiltX = percentY * this.options.maxTilt;
         const tiltY = -percentX * this.options.maxTilt;
         
+        // Enhanced 3D transform with perspective and depth
         element.style.transform = `
             perspective(${this.options.perspective}px)
             rotateX(${tiltX}deg)
             rotateY(${tiltY}deg)
+            translateZ(${this.options.depth}px)
             scale(${this.options.scale})
         `;
         
         if (this.options.glare) {
             const glare = element.querySelector('.tilt-glare');
             if (glare) {
-                const glareOpacity = Math.abs(percentX) * this.options.maxGlare;
+                const glareOpacity = Math.sqrt(percentX * percentX + percentY * percentY) * this.options.maxGlare;
                 glare.style.opacity = glareOpacity;
-                glare.style.background = `linear-gradient(${Math.atan2(percentY, percentX) * (180 / Math.PI) + 90}deg, rgba(255,255,255,0.3), transparent)`;
+                const angle = Math.atan2(percentY, percentX) * (180 / Math.PI) + 90;
+                glare.style.background = `linear-gradient(${angle}deg, rgba(255,255,255,0.4), transparent 70%)`;
             }
         }
     }
@@ -208,6 +626,7 @@ class TiltEffect {
             perspective(${this.options.perspective}px)
             rotateX(0deg)
             rotateY(0deg)
+            translateZ(0px)
             scale(1)
         `;
         
@@ -219,76 +638,241 @@ class TiltEffect {
         }
     }
 }
+// ============================================
+// ULTRA LIQUID MAGNETIC CURSOR (UPGRADED)
+// ============================================
+
+class LiquidCursor {
+
+    constructor() {
+
+        this.dot = document.querySelector('.cursor-dot');
+
+        if (!this.dot) return;
+
+        this.mx = 0;
+        this.my = 0;
+
+        this.cx = 0;
+        this.cy = 0;
+
+        this.trail = [];
+        this.maxTrail = 18;
+
+        // create liquid canvas
+        this.canvas = document.createElement('canvas');
+
+        this.canvas.style.cssText = `
+            position:fixed;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
+            pointer-events:none;
+            z-index:9999;
+        `;
+
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+
+        document.body.appendChild(this.canvas);
+
+        this.ctx = this.canvas.getContext('2d');
+
+        window.addEventListener('mousemove', e => {
+
+            this.mx = e.clientX;
+            this.my = e.clientY;
+
+        });
+
+        window.addEventListener('resize', () => {
+
+            this.canvas.width = window.innerWidth;
+            this.canvas.height = window.innerHeight;
+
+        });
+
+        this.bindMagnetic();
+
+        this.animate();
+    }
+
+
+    bindMagnetic() {
+
+        const targets =
+            document.querySelectorAll(
+                'a, button, .btn, .filter-btn, .overlay-btn, .service-card, .project-card'
+            );
+
+        targets.forEach(el => {
+
+            el.addEventListener('mousemove', e => {
+
+                const rect = el.getBoundingClientRect();
+
+                const x =
+                    e.clientX - rect.left - rect.width / 2;
+
+                const y =
+                    e.clientY - rect.top - rect.height / 2;
+
+                el.style.transform =
+                    `translate(${x * 0.18}px, ${y * 0.18}px)`;
+
+                this.dot.classList.add('active');
+
+            });
+
+            el.addEventListener('mouseleave', () => {
+
+                el.style.transform = '';
+
+                this.dot.classList.remove('active');
+
+            });
+
+        });
+
+    }
+
+
+    animate() {
+
+        this.cx += (this.mx - this.cx) * 0.14;
+        this.cy += (this.my - this.cy) * 0.14;
+
+        this.dot.style.left = this.cx + 'px';
+        this.dot.style.top = this.cy + 'px';
+
+
+        this.trail.push({
+            x: this.cx,
+            y: this.cy
+        });
+
+        if (this.trail.length > this.maxTrail)
+            this.trail.shift();
+
+
+        const ctx = this.ctx;
+
+        ctx.clearRect(
+            0,
+            0,
+            this.canvas.width,
+            this.canvas.height
+        );
+
+
+        for (let i = 0; i < this.trail.length; i++) {
+
+            const p = this.trail[i];
+
+            const t = i / this.trail.length;
+
+            const size = t * 10;
+
+            const alpha = t * 0.5;
+
+            // liquid blob
+            ctx.beginPath();
+
+            ctx.arc(
+                p.x,
+                p.y,
+                size,
+                0,
+                Math.PI * 2
+            );
+
+            ctx.fillStyle =
+                `rgba(0,217,255,${alpha})`;
+
+            ctx.fill();
+
+
+            // glow
+            const grad =
+                ctx.createRadialGradient(
+                    p.x,
+                    p.y,
+                    0,
+                    p.x,
+                    p.y,
+                    size * 3
+                );
+
+            grad.addColorStop(
+                0,
+                `rgba(0,217,255,${alpha * 0.5})`
+            );
+
+            grad.addColorStop(
+                1,
+                'transparent'
+            );
+
+            ctx.beginPath();
+
+            ctx.arc(
+                p.x,
+                p.y,
+                size * 3,
+                0,
+                Math.PI * 2
+            );
+
+            ctx.fillStyle = grad;
+
+            ctx.fill();
+        }
+
+        requestAnimationFrame(
+            () => this.animate()
+        );
+    }
+
+}
+
+
+// initialize cursor
+document.addEventListener(
+    'DOMContentLoaded',
+    () => {
+
+        new LiquidCursor();
+
+    }
+);
+
 
 // Initialize 3D tilt for various elements
 document.addEventListener('DOMContentLoaded', () => {
-    new TiltEffect('.stat-card', { maxTilt: 10, scale: 1.05 });
-    new TiltEffect('.service-card', { maxTilt: 8, scale: 1.03 });
-    new TiltEffect('.project-card', { maxTilt: 10, scale: 1.02 });
-    new TiltEffect('.skill-tile', { maxTilt: 15, scale: 1.1 });
+    new TiltEffect3D('.stat-card', { maxTilt: 12, scale: 1.08, depth: 60 });
+    new TiltEffect3D('.service-card', { maxTilt: 10, scale: 1.05, depth: 70 });
+    new TiltEffect3D('.project-card', { maxTilt: 12, scale: 1.05, depth: 50 });
+    new TiltEffect3D('.skill-tile', { maxTilt: 18, scale: 1.15, depth: 40 });
 });
 
-// ============================================
-// MAGNETIC CURSOR EFFECT
-// ============================================
-const cursorDot = document.querySelector('.cursor-dot');
-
-if (cursorDot) {
-    let mouseX = 0, mouseY = 0;
-    let cursorX = 0, cursorY = 0;
-    
-    window.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-    });
-    
-    function animateCursor() {
-        cursorX += (mouseX - cursorX) * 0.15;
-        cursorY += (mouseY - cursorY) * 0.15;
-        
-        cursorDot.style.left = `${cursorX}px`;
-        cursorDot.style.top = `${cursorY}px`;
-        
-        requestAnimationFrame(animateCursor);
-    }
-    
-    animateCursor();
-    
-    // Magnetic effect on interactive elements
-    document.querySelectorAll('a, button, .btn, .filter-btn, .overlay-btn').forEach(el => {
-        el.addEventListener('mouseenter', () => {
-            cursorDot.classList.add('active');
-        });
-        
-        el.addEventListener('mouseleave', () => {
-            cursorDot.classList.remove('active');
-        });
-        
-        el.addEventListener('mousemove', (e) => {
-            const rect = el.getBoundingClientRect();
-            const x = e.clientX - rect.left - rect.width / 2;
-            const y = e.clientY - rect.top - rect.height / 2;
-            
-            el.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
-        });
-        
-        el.addEventListener('mouseleave', () => {
-            el.style.transform = '';
-        });
-    });
-}
 
 // ============================================
-// HERO IMAGE PARALLAX WITH MOUSE
+// HERO IMAGE PARALLAX WITH 3D DEPTH
 // ============================================
 const heroImage = document.querySelector('.blob-shape');
 
 if (heroImage) {
     window.addEventListener('mousemove', (e) => {
-        const x = (e.clientX / window.innerWidth - 0.5) * 40;
-        const y = (e.clientY / window.innerHeight - 0.5) * 40;
+        const x = (e.clientX / window.innerWidth - 0.5) * 50;
+        const y = (e.clientY / window.innerHeight - 0.5) * 50;
         
-        heroImage.style.transform = `translate(${x}px, ${y}px) rotateY(${x * 0.5}deg) rotateX(${-y * 0.5}deg)`;
+        heroImage.style.transform = `
+            translate(${x}px, ${y}px) 
+            rotateY(${x * 0.5}deg) 
+            rotateX(${-y * 0.5}deg)
+            translateZ(50px)
+        `;
     });
 }
 
@@ -426,7 +1010,7 @@ if (typedTextElement) {
 }
 
 // ============================================
-// PROJECT FILTERING
+// PROJECT FILTERING WITH ANIMATION
 // ============================================
 const filterButtons = document.querySelectorAll('.filter-btn');
 const projectCards = document.querySelectorAll('.project-card');
@@ -438,18 +1022,18 @@ filterButtons.forEach(button => {
 
         const filterValue = button.getAttribute('data-filter');
 
-        projectCards.forEach(card => {
+        projectCards.forEach((card, index) => {
             const category = card.getAttribute('data-category');
 
             if (filterValue === 'all' || category === filterValue) {
                 card.style.display = 'block';
                 setTimeout(() => {
                     card.style.opacity = '1';
-                    card.style.transform = 'scale(1)';
-                }, 10);
+                    card.style.transform = 'scale(1) translateY(0)';
+                }, index * 50);
             } else {
                 card.style.opacity = '0';
-                card.style.transform = 'scale(0.8)';
+                card.style.transform = 'scale(0.8) translateY(20px)';
                 setTimeout(() => {
                     card.style.display = 'none';
                 }, 300);
@@ -530,7 +1114,7 @@ function clearFormErrors() {
 // ============================================
 function createConfetti() {
     const colors = ['#00D9FF', '#7B2FFF', '#FF006E', '#00FFA3', '#FFD600'];
-    const confettiCount = 80;
+    const confettiCount = 100;
 
     for (let i = 0; i < confettiCount; i++) {
         const confetti = document.createElement('div');
@@ -704,7 +1288,7 @@ window.addEventListener('load', () => {
 });
 
 // ============================================
-// PERFORMANCE: REDUCE ANIMATIONS ON LOW FPS
+// PERFORMANCE OPTIMIZATION
 // ============================================
 let lastTime = performance.now();
 let fps = 60;
@@ -724,5 +1308,3 @@ function measureFPS() {
 }
 
 measureFPS();
-
-
