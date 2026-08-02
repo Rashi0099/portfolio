@@ -22,6 +22,8 @@ if (mobileMenu) {
     mobileMenu.addEventListener('click', () => {
         const isActive = mobileMenu.classList.toggle('active');
         navMenu.classList.toggle('active', isActive);
+        document.querySelector('.navbar').classList.toggle('menu-active', isActive);
+        document.body.style.overflow = isActive ? 'hidden' : ''; // Prevent background scrolling
 
         const [b0, b1, b2] = mobileMenu.querySelectorAll('.bar');
         if (isActive) {
@@ -39,6 +41,9 @@ if (mobileMenu) {
         link.addEventListener('click', () => {
             mobileMenu.classList.remove('active');
             navMenu.classList.remove('active');
+            document.querySelector('.navbar').classList.remove('menu-active');
+            document.body.style.overflow = '';
+            
             mobileMenu.querySelectorAll('.bar').forEach(b => {
                 b.style.transform = '';
                 b.style.opacity   = '';

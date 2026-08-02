@@ -524,17 +524,17 @@ p  { font-size: 0.97rem; color: var(--text); }
     color: var(--text);
 }
 
-/* Brand Colors on Hover */
-.skill-tile:nth-child(1):hover i { color: #3776AB; } /* Python */
-.skill-tile:nth-child(2):hover i { color: #44B78B; } /* Django */
-.skill-tile:nth-child(3):hover i { color: #E34F26; } /* HTML5 */
-.skill-tile:nth-child(4):hover i { color: #1572B6; } /* CSS3 */
-.skill-tile:nth-child(5):hover i { color: #F7DF1E; } /* JavaScript */
-.skill-tile:nth-child(6):hover i { color: #F05032; } /* Git */
-.skill-tile:nth-child(7):hover i { color: #336791; } /* SQL */
-.skill-tile:nth-child(8):hover i { color: #ED8B00; } /* Java */
-.skill-tile:nth-child(9):hover i { color: #7952B3; } /* Bootstrap */
-.skill-tile:nth-child(10):hover i { color: #4EAA25; } /* Unix */
+/* Brand Colors */
+.skill-tile:nth-child(1) i { color: #3776AB; } /* Python */
+.skill-tile:nth-child(2) i { color: #44B78B; } /* Django */
+.skill-tile:nth-child(3) i { color: #E34F26; } /* HTML5 */
+.skill-tile:nth-child(4) i { color: #1572B6; } /* CSS3 */
+.skill-tile:nth-child(5) i { color: #F7DF1E; } /* JavaScript */
+.skill-tile:nth-child(6) i { color: #F05032; } /* Git */
+.skill-tile:nth-child(7) i { color: #336791; } /* SQL */
+.skill-tile:nth-child(8) i { color: #ED8B00; } /* Java */
+.skill-tile:nth-child(9) i { color: #7952B3; } /* Bootstrap */
+.skill-tile:nth-child(10) i { color: #4EAA25; } /* Unix */
 
 /* ============================================================
    8. SERVICES SECTION (NO HOVER EFFECT)
@@ -1072,12 +1072,17 @@ footer {
         flex-direction: column;
         position: fixed;
         inset: 0;
-        background: rgba(10, 15, 30, 0.97);
-        backdrop-filter: blur(10px);
+        background: rgba(10, 15, 30, 0.98);
         justify-content: center;
         align-items: center;
         gap: 24px;
         z-index: 999;
+    }
+
+    .navbar.menu-active {
+        backdrop-filter: none !important;
+        background: transparent !important;
+        box-shadow: none !important;
     }
 
     .navbar .nav-menu.active {
