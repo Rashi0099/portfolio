@@ -48,7 +48,6 @@
 }
 
 html {
-    scroll-behavior: smooth;
 }
 
 body {
@@ -187,7 +186,6 @@ p  { font-size: 0.97rem; color: var(--text); }
     background: linear-gradient(90deg, var(--primary), var(--accent));
     width: 0%;
     z-index: 9999;
-    transition: width 0.1s linear;
 }
 
 .navbar {
@@ -636,7 +634,6 @@ p  { font-size: 0.97rem; color: var(--text); }
     display: flex;
     gap: 24px;
     overflow-x: auto;
-    scroll-snap-type: x mandatory;
     padding: 6px 4px 22px;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: thin;
@@ -650,7 +647,6 @@ p  { font-size: 0.97rem; color: var(--text); }
 /* Individual card */
 .project-card {
     flex: 0 0 300px;
-    scroll-snap-align: start;
     background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);

@@ -173,14 +173,24 @@ if (projectsGrid) {
         setTimeout(() => { userInteracting = false; }, 1500);
     }, { passive: true });
 
-    setInterval(() => {
-        if (userInteracting) return;
-        projectsGrid.scrollLeft += autoScrollDir * 1.2;
+    let lastTimestamp = 0;
+    const speedPerMs = 1.2 / 25; // Matching the old speed: 1.2 pixels per 25ms
 
-        const maxScroll = projectsGrid.scrollWidth - projectsGrid.clientWidth;
-        if (projectsGrid.scrollLeft >= maxScroll - 1) autoScrollDir = -1;
-        if (projectsGrid.scrollLeft <= 0)              autoScrollDir = 1;
-    }, 25);
+    function animateScroll(timestamp) {
+        if (!lastTimestamp) lastTimestamp = timestamp;
+        const deltaTime = timestamp - lastTimestamp;
+        lastTimestamp = timestamp;
+
+        if (!userInteracting) {
+            projectsGrid.scrollLeft += autoScrollDir * (speedPerMs * deltaTime);
+            
+            const maxScroll = projectsGrid.scrollWidth - projectsGrid.clientWidth;
+            if (projectsGrid.scrollLeft >= maxScroll - 1) autoScrollDir = -1;
+            if (projectsGrid.scrollLeft <= 0)              autoScrollDir = 1;
+        }
+        requestAnimationFrame(animateScroll);
+    }
+    requestAnimationFrame(animateScroll);
 }
 
 
