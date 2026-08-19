@@ -635,38 +635,64 @@
 
     <!-- DASHBOARD SCREEN -->
     <div id="dashboard-screen">
-        <header>
-            <div class="header-brand">
-                <i class="fas fa-user-shield" style="color: var(--primary); font-size: 1.4rem;"></i>
-                <h1>Portfolio Admin</h1>
-                <span class="badge">Live Firebase</span>
-            </div>
-            <div class="header-actions">
-                <span class="user-email" id="current-user-email"></span>
-                <a href="index.html" target="_blank" class="btn btn-secondary"><i class="fas fa-external-link-alt"></i> View Site</a>
-                <button id="logout-btn" class="btn btn-danger"><i class="fas fa-sign-out-alt"></i> Logout</button>
-            </div>
-        </header>
+        <div class="admin-layout">
+            <!-- SIDEBAR NAV -->
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-brand">
+                    <i class="fas fa-user-shield" style="color: var(--primary); font-size: 1.5rem;"></i>
+                    <h2>Admin CMS</h2>
+                </div>
+                <ul class="sidebar-menu">
+                    <li>
+                        <button class="sidebar-link active" onclick="switchTab('projects-tab', this, 'Projects')">
+                            <span><i class="fas fa-folder-open"></i> Projects</span>
+                            <span class="sidebar-badge" id="project-count">0</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="sidebar-link" onclick="switchTab('messages-tab', this, 'Messages Inbox')">
+                            <span><i class="fas fa-envelope"></i> Messages</span>
+                            <span class="sidebar-badge" id="message-count">0</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="sidebar-link" onclick="switchTab('settings-tab', this, 'Settings')">
+                            <span><i class="fas fa-cog"></i> Settings</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="sidebar-link" onclick="switchTab('skills-tab', this, 'Skills')">
+                            <span><i class="fas fa-star"></i> Skills</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="sidebar-link" onclick="switchTab('services-tab', this, 'Services')">
+                            <span><i class="fas fa-briefcase"></i> Services</span>
+                        </button>
+                    </li>
+                </ul>
+                <div class="sidebar-footer">
+                    <span style="font-size:0.8rem; color:var(--text-muted); overflow:hidden; text-overflow:ellipsis;" id="current-user-email">admin@portfolio.com</span>
+                    <a href="index.html" target="_blank" class="btn btn-secondary" style="justify-content:center; width:100%;">
+                        <i class="fas fa-external-link-alt"></i> View Site
+                    </a>
+                    <button id="logout-btn-side" class="btn btn-danger" style="justify-content:center; width:100%;">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </aside>
 
-        <main>
-            
-            <div class="tabs" style="flex-wrap: wrap;">
-                <button class="tab-btn active" onclick="switchTab('projects-tab', this)">
-                    <i class="fas fa-folder-open"></i> Projects (<span id="project-count">0</span>)
-                </button>
-                <button class="tab-btn" onclick="switchTab('messages-tab', this)">
-                    <i class="fas fa-envelope"></i> Messages Inbox (<span id="message-count">0</span>)
-                </button>
-                <button class="tab-btn" onclick="switchTab('settings-tab', this)">
-                    <i class="fas fa-cog"></i> Settings
-                </button>
-                <button class="tab-btn" onclick="switchTab('skills-tab', this)">
-                    <i class="fas fa-star"></i> Skills
-                </button>
-                <button class="tab-btn" onclick="switchTab('services-tab', this)">
-                    <i class="fas fa-briefcase"></i> Services
-                </button>
-            </div>
+            <!-- MAIN CONTENT WRAPPER -->
+            <div class="main-wrapper">
+                <div class="top-navbar">
+                    <div style="display:flex; align-items:center; gap:15px;">
+                        <button class="mobile-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+                        <h2 id="top-title" style="margin:0; font-size:1.2rem; color:#fff;"><i class="fas fa-folder-open" style="color:var(--primary);"></i> Projects</h2>
+                    </div>
+                    <span class="badge">Live Firebase</span>
+                </div>
+
+                <main style="padding: 30px;">
 
 
             <!-- TAB 1: PROJECTS -->
@@ -1132,6 +1158,7 @@
         });
 
         // Logout
+        const logoutSide = document.getElementById('logout-btn-side'); if(logoutSide) logoutSide.addEventListener('click', () => signOut(auth));
         logoutBtn.addEventListener('click', () => {
             signOut(auth);
         });
@@ -1213,25 +1240,21 @@
                     return;
                 }
 
+                window._projectsMap = {};
                 snapshot.forEach((docSnap) => {
                     const data = docSnap.data();
                     const id = docSnap.id;
+                    window._projectsMap[id] = data;
+
                     const item = document.createElement('div');
                     item.className = 'project-item';
-                    const t = (data.title || '').replace(/'/g, "\'").replace(/"/g, '&quot;');
-                    const c = (data.category || '').replace(/'/g, "\'");
-                    const d = (data.description || '').replace(/'/g, "\'").replace(/\r?\n/g, ' ');
-                    const img = (data.image || '').replace(/'/g, "\'");
-                    const l = (data.liveUrl || '').replace(/'/g, "\'");
-                    const g = (data.githubUrl || '').replace(/'/g, "\'");
-
                     item.innerHTML = `
                         <div class="project-info">
                             <h4>${data.title || ''} <span class="project-tag">${data.category || ''}</span></h4>
                             <p>${data.description || ''}</p>
                         </div>
                         <div class="action-btns-group">
-                            <button class="btn btn-secondary" onclick="openEditProject('${id}', '${t}', '${c}', '${d}', '${img}', '${l}', '${g}')">
+                            <button class="btn btn-secondary" onclick="openEditProject('${id}')">
                                 <i class="fas fa-edit"></i>
                             </button>
                             <button class="btn btn-danger" onclick="deleteProject('${id}')">
@@ -1394,13 +1417,13 @@
                     const btnGroup = document.createElement('div');
                     btnGroup.className = 'action-btns-group';
 
+                    if (!window._skillsMap) window._skillsMap = {};
+                    window._skillsMap[docSnap.id] = data;
+
                     const editBtn = document.createElement('button');
                     editBtn.className = 'btn btn-secondary';
                     editBtn.innerHTML = '<i class="fas fa-edit"></i>';
-                    const nameEsc = (data.name || '').replace(/'/g, "\'");
-                    const iconEsc = (data.icon || '').replace(/'/g, "\'");
-                    const colorEsc = (data.color || '').replace(/'/g, "\'");
-                    editBtn.onclick = () => window.openEditSkill(docSnap.id, nameEsc, iconEsc, colorEsc);
+                    editBtn.onclick = () => window.openEditSkill(docSnap.id);
 
                     const delBtn = document.createElement('button');
                     delBtn.className = 'btn btn-danger';
@@ -1433,11 +1456,11 @@
                     return;
                 }
 
+                window._servicesMap = {};
                 snapshot.forEach(docSnap => {
                     const data = docSnap.data();
-                    const st = (data.title || '').replace(/'/g, "\'");
-                    const si = (data.icon || '').replace(/'/g, "\'");
-                    const sd = (data.description || '').replace(/'/g, "\'").replace(/\r?\n/g, ' ');
+                    const id = docSnap.id;
+                    window._servicesMap[id] = data;
 
                     const item = document.createElement('div');
                     item.className = 'project-item';
@@ -1447,10 +1470,10 @@
                             <p>${data.description || ''}</p>
                         </div>
                         <div class="action-btns-group">
-                            <button class="btn btn-secondary" onclick="openEditService('${docSnap.id}', '${st}', '${si}', '${sd}')">
+                            <button class="btn btn-secondary" onclick="openEditService('${id}')">
                                 <i class="fas fa-edit"></i>
                             </button>
-                            <button class="btn btn-danger" onclick="deleteService('${docSnap.id}')">
+                            <button class="btn btn-danger" onclick="deleteService('${id}')">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </div>
@@ -1511,14 +1534,19 @@
 
         // Tab switcher function
         
-        window.openEditProject = (id, title, category, description, image, liveUrl, githubUrl) => {
+        window._projectsMap = window._projectsMap || {};
+        window._skillsMap = window._skillsMap || {};
+        window._servicesMap = window._servicesMap || {};
+
+        window.openEditProject = (id) => {
+            const data = (window._projectsMap && window._projectsMap[id]) || {};
             document.getElementById('edit-p-id').value = id;
-            document.getElementById('edit-p-title').value = title || '';
-            document.getElementById('edit-p-category').value = category || 'fullstack';
-            document.getElementById('edit-p-desc').value = description || '';
-            document.getElementById('edit-p-image').value = image || '';
-            document.getElementById('edit-p-live').value = liveUrl || '';
-            document.getElementById('edit-p-github').value = githubUrl || '';
+            document.getElementById('edit-p-title').value = data.title || '';
+            document.getElementById('edit-p-category').value = data.category || 'fullstack';
+            document.getElementById('edit-p-desc').value = data.description || '';
+            document.getElementById('edit-p-image').value = data.image || '';
+            document.getElementById('edit-p-live').value = data.liveUrl || '';
+            document.getElementById('edit-p-github').value = data.githubUrl || '';
 
             document.getElementById('edit-project-form').style.display = 'block';
             document.getElementById('edit-skill-form').style.display = 'none';
@@ -1527,11 +1555,12 @@
             document.getElementById('edit-modal').classList.add('active');
         };
 
-        window.openEditSkill = (id, name, icon, color) => {
+        window.openEditSkill = (id) => {
+            const data = (window._skillsMap && window._skillsMap[id]) || {};
             document.getElementById('edit-sk-id').value = id;
-            document.getElementById('edit-sk-name').value = name || '';
-            document.getElementById('edit-sk-icon').value = icon || '';
-            document.getElementById('edit-sk-color').value = color || '#00d9ff';
+            document.getElementById('edit-sk-name').value = data.name || '';
+            document.getElementById('edit-sk-icon').value = data.icon || '';
+            document.getElementById('edit-sk-color').value = data.color || '#00d9ff';
 
             document.getElementById('edit-project-form').style.display = 'none';
             document.getElementById('edit-skill-form').style.display = 'block';
@@ -1540,11 +1569,12 @@
             document.getElementById('edit-modal').classList.add('active');
         };
 
-        window.openEditService = (id, title, icon, description) => {
+        window.openEditService = (id) => {
+            const data = (window._servicesMap && window._servicesMap[id]) || {};
             document.getElementById('edit-sv-id').value = id;
-            document.getElementById('edit-sv-title').value = title || '';
-            document.getElementById('edit-sv-icon').value = icon || '';
-            document.getElementById('edit-sv-desc').value = description || '';
+            document.getElementById('edit-sv-title').value = data.title || '';
+            document.getElementById('edit-sv-icon').value = data.icon || '';
+            document.getElementById('edit-sv-desc').value = data.description || '';
 
             document.getElementById('edit-project-form').style.display = 'none';
             document.getElementById('edit-skill-form').style.display = 'none';
