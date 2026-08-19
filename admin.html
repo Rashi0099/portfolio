@@ -629,11 +629,6 @@
                     <i class="fas fa-sign-in-alt"></i> Login
                 </button>
                 <div id="login-error" class="error-msg" style="display:none; margin-top:12px; padding:10px; background:rgba(255,77,109,0.15); border:1px solid var(--danger); color:var(--danger); border-radius:8px; font-size:0.85rem; text-align:left;"></div>
-                <div style="margin-top: 16px; border-top: 1px solid var(--border); padding-top: 12px;">
-                    <button type="button" id="toggle-auth-btn" class="btn btn-secondary" style="width:100%; font-size:0.82rem;">
-                        First time? Create Admin Account
-                    </button>
-                </div>
             </form>
         </div>
     </div>
@@ -1181,26 +1176,9 @@
             }
         });
 
-        // Auth Mode State (Login vs Register)
-        let isRegisterMode = false;
-        const toggleAuthBtn = document.getElementById('toggle-auth-btn');
         const authSubmitBtn = document.getElementById('auth-submit-btn');
 
-        if (toggleAuthBtn) {
-            toggleAuthBtn.addEventListener('click', () => {
-                isRegisterMode = !isRegisterMode;
-                loginError.style.display = 'none';
-                if (isRegisterMode) {
-                    authSubmitBtn.innerHTML = '<i class="fas fa-user-plus"></i> Create Admin Account';
-                    toggleAuthBtn.textContent = 'Already have an account? Back to Login';
-                } else {
-                    authSubmitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
-                    toggleAuthBtn.textContent = 'First time? Create Admin Account';
-                }
-            });
-        }
-
-        // Login / Register Submit
+        // Login Submit
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('login-email').value.trim();
@@ -1208,23 +1186,12 @@
             loginError.style.display = 'none';
 
             try {
-                if (isRegisterMode) {
-                    await createUserWithEmailAndPassword(auth, email, password);
-                    alert("✅ Admin account created successfully! Welcome to Admin Panel.");
-                } else {
-                    await signInWithEmailAndPassword(auth, email, password);
-                }
+                await signInWithEmailAndPassword(auth, email, password);
             } catch (err) {
                 console.error("Auth error:", err);
                 let msg = err.message || "Failed to authenticate.";
-                if (err.code === 'auth/invalid-credential' || err.code === 'auth/user-not-found') {
-                    msg = "❌ Incorrect email or password. If you haven't created an admin account yet, click 'First time? Create Admin Account' below.";
-                } else if (err.code === 'auth/wrong-password') {
-                    msg = "❌ Incorrect password. Please try again.";
-                } else if (err.code === 'auth/email-already-in-use') {
-                    msg = "⚠️ This email is already registered. Please click 'Back to Login' to sign in.";
-                } else if (err.code === 'auth/weak-password') {
-                    msg = "⚠️ Password must be at least 6 characters long.";
+                if (err.code === 'auth/invalid-credential' || err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') {
+                    msg = "❌ Incorrect email or password. Access denied.";
                 } else if (err.code === 'auth/invalid-email') {
                     msg = "⚠️ Please enter a valid email address.";
                 }
