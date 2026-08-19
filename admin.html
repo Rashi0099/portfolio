@@ -550,6 +550,9 @@
                             <button type="submit" class="btn btn-primary" style="width: 100%;">
                                 <i class="fas fa-save"></i> Save Skill
                             </button>
+                            <button type="button" onclick="populateDefaultSkills()" class="btn" style="width:100%;margin-top:10px;background:rgba(0,217,255,0.1);color:var(--primary);border:1px solid rgba(0,217,255,0.3);">
+                                <i class="fas fa-magic"></i> Populate Default Skills
+                            </button>
                         </form>
                     </div>
                     <div class="glass-card">
@@ -609,6 +612,7 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+        window._firebaseDb = db; // Expose for non-module scripts
 
         // Elements
         const loginScreen = document.getElementById('login-screen');
@@ -796,16 +800,37 @@
             // Realtime Skills
             onSnapshot(query(collection(db, 'skills'), orderBy('createdAt', 'asc')), (snapshot) => {
                 skillsContainer.innerHTML = '';
+                if (snapshot.empty) {
+                    skillsContainer.innerHTML = '<p style="color:var(--text-muted);font-size:0.9rem;">No skills yet. Click "Populate Default Skills" to add them!</p>';
+                    return;
+                }
                 snapshot.forEach(docSnap => {
                     const data = docSnap.data();
-                    skillsContainer.innerHTML += `
-                        <div class="project-item">
-                            <div class="project-info">
-                                <h4><i class="${data.icon}" style="color: ${data.color}"></i> ${data.name}</h4>
-                            </div>
-                            <button class="btn btn-danger" onclick="deleteSkill('${docSnap.id}')"><i class="fas fa-trash"></i></button>
-                        </div>
-                    `;
+                    const item = document.createElement('div');
+                    item.className = 'project-item';
+                    // icon preview
+                    const iconEl = document.createElement('i');
+                    (data.icon || 'fas fa-code').trim().split(/\s+/).forEach(c => iconEl.classList.add(c));
+                    iconEl.style.color = data.color || '#fff';
+                    iconEl.style.fontSize = '1.4rem';
+                    iconEl.style.marginRight = '10px';
+                    // info
+                    const infoDiv = document.createElement('div');
+                    infoDiv.className = 'project-info';
+                    infoDiv.style.display = 'flex';
+                    infoDiv.style.alignItems = 'center';
+                    const h4 = document.createElement('h4');
+                    h4.appendChild(iconEl);
+                    h4.appendChild(document.createTextNode(' ' + (data.name || '')));
+                    infoDiv.appendChild(h4);
+                    // delete btn
+                    const btn = document.createElement('button');
+                    btn.className = 'btn btn-danger';
+                    btn.innerHTML = '<i class="fas fa-trash"></i>';
+                    btn.onclick = () => window.deleteSkill(docSnap.id);
+                    item.appendChild(infoDiv);
+                    item.appendChild(btn);
+                    skillsContainer.appendChild(item);
                 });
             });
 
@@ -896,6 +921,34 @@
             const previewName = document.getElementById('preview-name');
             if (previewIcon) { previewIcon.className = icon; previewIcon.style.color = color; }
             if (previewName) previewName.textContent = name;
+        }
+
+        async function populateDefaultSkills() {
+            if (!confirm('This will add the 9 default portfolio skills to Firebase. Continue?')) return;
+
+            const defaultSkills = [
+                { name: 'Python',     icon: 'fab fa-python',    color: '#3776AB' },
+                { name: 'Django',     icon: 'fa-solid fa-d',    color: '#44B78B' },
+                { name: 'HTML5',      icon: 'fab fa-html5',     color: '#E34F26' },
+                { name: 'CSS3',       icon: 'fab fa-css3-alt',  color: '#1572B6' },
+                { name: 'JavaScript', icon: 'fab fa-js',        color: '#F7DF1E' },
+                { name: 'Git',        icon: 'fab fa-git-alt',   color: '#F05032' },
+                { name: 'SQL',        icon: 'fas fa-database',  color: '#336791' },
+                { name: 'Java',       icon: 'fab fa-java',      color: '#ED8B00' },
+                { name: 'Bootstrap',  icon: 'fab fa-bootstrap', color: '#7952B3' },
+                { name: 'Unix',       icon: 'fas fa-terminal',  color: '#4EAA25' },
+            ];
+
+            // Use firebase module via window reference set in module script
+            if (!window._firebaseDb) {
+                alert('Firebase not ready. Please wait a moment and try again.');
+                return;
+            }
+            const { addDoc, collection, serverTimestamp } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js');
+            for (const skill of defaultSkills) {
+                await addDoc(collection(window._firebaseDb, 'skills'), { ...skill, createdAt: serverTimestamp() });
+            }
+            alert('Default skills added successfully!');
         }
     </script>
 </body>

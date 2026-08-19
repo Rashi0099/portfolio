@@ -464,20 +464,7 @@
                             const liveBtn = p.liveUrl ? `<a href="${p.liveUrl}" target="_blank" class="project-link" title="Live Demo"><i class="fas fa-external-link-alt"></i></a>` : '';
                             const ghBtn = p.githubUrl ? `<a href="${p.githubUrl}" target="_blank" class="project-link" title="GitHub"><i class="fab fa-github"></i></a>` : '';
 
-                            card.innerHTML = `
-                                <div class="project-img">
-                                    <img src="${p.image || 'img/project1.png'}" alt="${p.title}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&auto=format&fit=crop&q=80';">
-                                    <div class="project-overlay">
-                                        ${liveBtn}
-                                        ${ghBtn}
-                                    </div>
-                                </div>
-                                <div class="project-info">
-                                    <span class="project-tag">${p.category ? p.category.toUpperCase() : 'PROJECT'}</span>
-                                    <h3>${p.title}</h3>
-                                    <p>${p.description}</p>
-                                </div>
-                            `;
+                            card.innerHTML = `<div class="project-img"><img src="${p.image || 'img/project1.png'}" alt="${p.title}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&auto=format&fit=crop&q=80';"><div class="project-overlay">${liveBtn}${ghBtn}</div></div><div class="project-info"><span class="project-tag">${p.category ? p.category.toUpperCase() : 'PROJECT'}</span><h3>${p.title}</h3><p>${p.description}</p></div>`;
                             projectsGrid.appendChild(card);
                         });
                     }
@@ -499,7 +486,7 @@
                 }
             });
 
-            // 4. Dynamic Skills
+            // 4. Dynamic Skills (safe DOM creation)
             const skillsGrid = document.querySelector('.skills-grid');
             if (skillsGrid) {
                 onSnapshot(query(collection(db, 'skills'), orderBy('createdAt', 'asc')), (snapshot) => {
@@ -507,12 +494,17 @@
                         skillsGrid.innerHTML = '';
                         snapshot.forEach((docSnap) => {
                             const s = docSnap.data();
-                            skillsGrid.innerHTML += `
-                                <div class="skill-tile">
-                                    <i class="${s.icon}" style="color: ${s.color}"></i>
-                                    <span>${s.name}</span>
-                                </div>
-                            `;
+                            const tile = document.createElement('div');
+                            tile.className = 'skill-tile';
+                            const icon = document.createElement('i');
+                            // sanitize: split on space and use only valid class tokens
+                            (s.icon || 'fas fa-code').trim().split(/\s+/).forEach(cls => icon.classList.add(cls));
+                            icon.style.color = s.color || 'var(--primary)';
+                            const label = document.createElement('span');
+                            label.textContent = s.name || '';
+                            tile.appendChild(icon);
+                            tile.appendChild(label);
+                            skillsGrid.appendChild(tile);
                         });
                     }
                 });
@@ -527,11 +519,7 @@
                         snapshot.forEach((docSnap) => {
                             const s = docSnap.data();
                             servicesGrid.innerHTML += `
-                                <div class="service-card">
-                                    <div class="service-icon"><i class="${s.icon}"></i></div>
-                                    <h3>${s.title}</h3>
-                                    <p>${s.description}</p>
-                                </div>
+                                <div class="service-card"><div class="service-icon"><i class="${s.icon}"></i></div><h3>${s.title}</h3><p>${s.description}</p></div>
                             `;
                         });
                     }
