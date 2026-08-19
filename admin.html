@@ -782,10 +782,6 @@
                                     <option value="hidden">Hide Completely</option>
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <label>Freelance Text</label>
-                                <input type="text" id="s-freelance" placeholder="Available for freelance work">
-                            </div>
                             <button type="submit" class="btn btn-primary" style="width: 100%;">
                                 <i class="fas fa-save"></i> Save Contact Info
                             </button>
@@ -1409,7 +1405,6 @@
                         phone: document.getElementById('s-phone').value,
                         email: document.getElementById('s-email').value,
                         location: document.getElementById('s-location').value,
-                        freelance: document.getElementById('s-freelance').value,
                         freelanceState: document.getElementById('s-freelance-state').value
                     }, { merge: true });
                     alert('Contact info saved!');
@@ -1521,7 +1516,6 @@
                     document.getElementById('s-email').value = d.email || '';
                     document.getElementById('s-profile-img').value = d.profileImg || '';
                     document.getElementById('s-location').value = d.location || '';
-                    document.getElementById('s-freelance').value = d.freelance || '';
                     document.getElementById('s-freelance-state').value = d.freelanceState || 'available';
                     document.getElementById('s-resume').value = d.resumeUrl || '';
                 } else {
@@ -1535,7 +1529,6 @@
                         phone: "+91 9778106863",
                         email: "abdulrasheed5140@gmail.com",
                         location: "Malappuram, Kerala, India",
-                        freelance: "Available for freelance work",
                         freelanceState: "available",
                         resumeUrl: "img/AbdulrasheedCV.pdf"
                     };

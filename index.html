@@ -473,20 +473,22 @@
                     if(d.phone) { const el = document.getElementById('dyn-phone'); if(el) el.textContent = d.phone; }
                     if(d.email) { const el = document.getElementById('dyn-email'); if(el) el.textContent = d.email; }
                     if(d.location) { const el = document.getElementById('dyn-location'); if(el) el.textContent = d.location; }
-                    if(d.freelance) { const el = document.getElementById('dyn-freelance'); if(el) el.textContent = d.freelance; }
                     if(d.profileImg) { const el = document.getElementById('dyn-profile-img'); if(el) el.src = d.profileImg; }
                     if(d.resumeUrl) { const el = document.getElementById('dyn-resume-btn'); if(el) el.href = d.resumeUrl; }
                     
                     const freelanceContainer = document.getElementById('dyn-freelance-container');
-                    if (freelanceContainer) {
+                    const freelanceText = document.getElementById('dyn-freelance');
+                    if (freelanceContainer && freelanceText) {
                         if (d.freelanceState === 'hidden') {
                             freelanceContainer.style.display = 'none';
                         } else {
                             freelanceContainer.style.display = 'flex';
                             if (d.freelanceState === 'not_available') {
                                 freelanceContainer.classList.add('not-available');
+                                freelanceText.textContent = "Not available for freelance work";
                             } else {
                                 freelanceContainer.classList.remove('not-available');
+                                freelanceText.textContent = "Available for freelance work";
                             }
                         }
                     }
