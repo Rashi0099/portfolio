@@ -1452,6 +1452,14 @@
                     `;
                     socialsContainer.appendChild(item);
                 });
+            }, (error) => {
+                console.error("Firebase Socials Error:", error);
+                socialsContainer.innerHTML = `<p style="color:var(--danger); font-size:0.9rem; padding:10px;">⚠️ Firebase Error: ${error.message}</p>
+                <div style="width:100%; text-align:center; margin-top:10px;">
+                    <button class="btn btn-secondary" onclick="populateDefaultSocials()" style="padding: 6px 14px; font-size:0.85rem;">
+                        <i class="fas fa-magic"></i> Try Loading Default Socials Anyway
+                    </button>
+                </div>`;
             });
         }
         
