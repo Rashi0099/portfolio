@@ -390,14 +390,25 @@
         </header>
 
         <main>
-            <div class="tabs">
+            
+            <div class="tabs" style="flex-wrap: wrap;">
                 <button class="tab-btn active" onclick="switchTab('projects-tab')">
                     <i class="fas fa-folder-open"></i> Projects (<span id="project-count">0</span>)
                 </button>
                 <button class="tab-btn" onclick="switchTab('messages-tab')">
                     <i class="fas fa-envelope"></i> Messages Inbox (<span id="message-count">0</span>)
                 </button>
+                <button class="tab-btn" onclick="switchTab('settings-tab')">
+                    <i class="fas fa-cog"></i> Settings
+                </button>
+                <button class="tab-btn" onclick="switchTab('skills-tab')">
+                    <i class="fas fa-star"></i> Skills
+                </button>
+                <button class="tab-btn" onclick="switchTab('services-tab')">
+                    <i class="fas fa-briefcase"></i> Services
+                </button>
             </div>
+
 
             <!-- TAB 1: PROJECTS -->
             <div id="projects-tab" class="tab-content active">
@@ -459,14 +470,126 @@
                     </div>
                 </div>
             </div>
+        
+            <!-- TAB 3: SETTINGS -->
+            <div id="settings-tab" class="tab-content">
+                <div class="glass-card">
+                    <h3 style="margin-bottom: 18px;"><i class="fas fa-cog" style="color: var(--primary);"></i> General Settings</h3>
+                    <form id="settings-form">
+                        <h4>Hero Section</h4>
+                        <div class="form-group">
+                            <label>Subtitle</label>
+                            <input type="text" id="s-subtitle" placeholder="Hello, I'm">
+                        </div>
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" id="s-name" placeholder="Abdul Rasheed YP">
+                        </div>
+                        <div class="form-group">
+                            <label>Roles (comma separated)</label>
+                            <input type="text" id="s-roles" placeholder="Python Developer, Full-Stack Developer">
+                        </div>
+                        <hr style="border-color: var(--border); margin: 20px 0;">
+                        <h4>About Section</h4>
+                        <div class="form-group">
+                            <label>About Text</label>
+                            <textarea id="s-about" rows="4"></textarea>
+                        </div>
+                        <hr style="border-color: var(--border); margin: 20px 0;">
+                        <h4>Contact Info</h4>
+                        <div class="form-group">
+                            <label>Phone</label>
+                            <input type="text" id="s-phone" placeholder="+91 ...">
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="s-email" placeholder="email@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Location</label>
+                            <input type="text" id="s-location" placeholder="Kerala, India">
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">
+                            <i class="fas fa-save"></i> Save Settings
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- TAB 4: SKILLS -->
+            <div id="skills-tab" class="tab-content">
+                <div class="admin-grid">
+                    <div class="glass-card">
+                        <h3 style="margin-bottom: 18px;"><i class="fas fa-plus-circle" style="color: var(--primary);"></i> Add Skill</h3>
+                        <form id="add-skill-form">
+                            <div class="form-group">
+                                <label>Skill Name *</label>
+                                <input type="text" id="sk-name" required placeholder="e.g. Python">
+                            </div>
+                            <div class="form-group">
+                                <label>FontAwesome Icon Class *</label>
+                                <input type="text" id="sk-icon" required placeholder="fab fa-python">
+                            </div>
+                            <div class="form-group">
+                                <label>Brand Color *</label>
+                                <input type="color" id="sk-color" required value="#3776AB" style="height: 45px; padding: 5px;">
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                                <i class="fas fa-save"></i> Save Skill
+                            </button>
+                        </form>
+                    </div>
+                    <div class="glass-card">
+                        <h3 style="margin-bottom: 18px;"><i class="fas fa-list" style="color: var(--primary);"></i> Existing Skills</h3>
+                        <div id="skills-list-container">
+                            <p style="color: var(--text-muted); font-size: 0.9rem;">Loading skills...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 5: SERVICES -->
+            <div id="services-tab" class="tab-content">
+                <div class="admin-grid">
+                    <div class="glass-card">
+                        <h3 style="margin-bottom: 18px;"><i class="fas fa-plus-circle" style="color: var(--primary);"></i> Add Service</h3>
+                        <form id="add-service-form">
+                            <div class="form-group">
+                                <label>Service Title *</label>
+                                <input type="text" id="sv-title" required placeholder="e.g. Web Development">
+                            </div>
+                            <div class="form-group">
+                                <label>Description *</label>
+                                <textarea id="sv-desc" rows="3" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>FontAwesome Icon Class *</label>
+                                <input type="text" id="sv-icon" required placeholder="fas fa-code">
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                                <i class="fas fa-save"></i> Save Service
+                            </button>
+                        </form>
+                    </div>
+                    <div class="glass-card">
+                        <h3 style="margin-bottom: 18px;"><i class="fas fa-list" style="color: var(--primary);"></i> Existing Services</h3>
+                        <div id="services-list-container">
+                            <p style="color: var(--text-muted); font-size: 0.9rem;">Loading services...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </main>
     </div>
 
     <!-- FIREBASE MODULE SCRIPT -->
     <script type="module">
+        
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, setDoc, onSnapshot, query, orderBy, serverTimestamp, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
         import { firebaseConfig } from "./firebase-config.js";
 
         // Initialize Firebase
@@ -486,6 +609,68 @@
         const messagesContainer = document.getElementById('messages-list-container');
         const projectCountEl = document.getElementById('project-count');
         const messageCountEl = document.getElementById('message-count');
+
+        
+        const addSkillForm = document.getElementById('add-skill-form');
+        const addServiceForm = document.getElementById('add-service-form');
+        const settingsForm = document.getElementById('settings-form');
+        const skillsContainer = document.getElementById('skills-list-container');
+        const servicesContainer = document.getElementById('services-list-container');
+
+        // Settings Submit
+        settingsForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = {
+                subtitle: document.getElementById('s-subtitle').value,
+                name: document.getElementById('s-name').value,
+                roles: document.getElementById('s-roles').value,
+                about: document.getElementById('s-about').value,
+                phone: document.getElementById('s-phone').value,
+                email: document.getElementById('s-email').value,
+                location: document.getElementById('s-location').value,
+            };
+            try {
+                await setDoc(doc(db, 'settings', 'general'), data);
+                alert('Settings saved!');
+            } catch (err) {
+                alert('Error saving settings: ' + err.message);
+            }
+        });
+
+        // Add Skill
+        addSkillForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            try {
+                await addDoc(collection(db, 'skills'), {
+                    name: document.getElementById('sk-name').value,
+                    icon: document.getElementById('sk-icon').value,
+                    color: document.getElementById('sk-color').value,
+                    createdAt: serverTimestamp()
+                });
+                addSkillForm.reset();
+            } catch (err) { alert('Error: ' + err.message); }
+        });
+
+        // Add Service
+        addServiceForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            try {
+                await addDoc(collection(db, 'services'), {
+                    title: document.getElementById('sv-title').value,
+                    description: document.getElementById('sv-desc').value,
+                    icon: document.getElementById('sv-icon').value,
+                    createdAt: serverTimestamp()
+                });
+                addServiceForm.reset();
+            } catch (err) { alert('Error: ' + err.message); }
+        });
+
+        window.deleteSkill = async (id) => {
+            if (confirm('Delete skill?')) await deleteDoc(doc(db, 'skills', id));
+        };
+        window.deleteService = async (id) => {
+            if (confirm('Delete service?')) await deleteDoc(doc(db, 'services', id));
+        };
 
         // Auth state listener
         onAuthStateChanged(auth, (user) => {
@@ -575,6 +760,54 @@
                         </button>
                     `;
                     projectsContainer.appendChild(item);
+                });
+            });
+
+            
+            // Realtime Settings
+            onSnapshot(doc(db, 'settings', 'general'), (docSnap) => {
+                if (docSnap.exists()) {
+                    const d = docSnap.data();
+                    document.getElementById('s-subtitle').value = d.subtitle || '';
+                    document.getElementById('s-name').value = d.name || '';
+                    document.getElementById('s-roles').value = d.roles || '';
+                    document.getElementById('s-about').value = d.about || '';
+                    document.getElementById('s-phone').value = d.phone || '';
+                    document.getElementById('s-email').value = d.email || '';
+                    document.getElementById('s-location').value = d.location || '';
+                }
+            });
+
+            // Realtime Skills
+            onSnapshot(query(collection(db, 'skills'), orderBy('createdAt', 'asc')), (snapshot) => {
+                skillsContainer.innerHTML = '';
+                snapshot.forEach(docSnap => {
+                    const data = docSnap.data();
+                    skillsContainer.innerHTML += `
+                        <div class="project-item">
+                            <div class="project-info">
+                                <h4><i class="${data.icon}" style="color: ${data.color}"></i> ${data.name}</h4>
+                            </div>
+                            <button class="btn btn-danger" onclick="deleteSkill('${docSnap.id}')"><i class="fas fa-trash"></i></button>
+                        </div>
+                    `;
+                });
+            });
+
+            // Realtime Services
+            onSnapshot(query(collection(db, 'services'), orderBy('createdAt', 'asc')), (snapshot) => {
+                servicesContainer.innerHTML = '';
+                snapshot.forEach(docSnap => {
+                    const data = docSnap.data();
+                    servicesContainer.innerHTML += `
+                        <div class="project-item">
+                            <div class="project-info">
+                                <h4><i class="${data.icon}"></i> ${data.title}</h4>
+                                <p>${data.description}</p>
+                            </div>
+                            <button class="btn btn-danger" onclick="deleteService('${docSnap.id}')"><i class="fas fa-trash"></i></button>
+                        </div>
+                    `;
                 });
             });
 

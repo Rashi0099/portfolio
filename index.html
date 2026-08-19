@@ -47,10 +47,10 @@
         
         <div class="container hero-content">
             <div class="hero-text">
-                <span class="subtitle">Hello, I'm</span>
-                <h1 class="hero-name">Abdul Rasheed YP</h1>
+                <span class="subtitle" id="dyn-subtitle">Hello, I'm</span>
+                <h1 class="hero-name" id="dyn-name">Abdul Rasheed YP</h1>
                 <h2>
-                    <span id="typed-text">Python Full-Stack Developer</span>
+                    <span id="typed-text"></span><span id="dyn-roles" style="display:none;">Python Full-Stack Developer</span>
                 </h2>
                 <p>
                     I build scalable and user-friendly web applications. Passionate about coding, technology, and
@@ -90,7 +90,7 @@
                 <p>Who I am & what I do</p>
             </div>
             <div class="about-wrapper">
-                <div class="about-text">
+                <div class="about-text" id="dyn-about-container">
                     <h3>Python Full-Stack Developer </h3>
                     <p>
                         I'm a commerce graduate transitioning into software development,
@@ -353,7 +353,7 @@
                         </div>
                         <div>
                             <h4>Phone</h4>
-                            <p>+91 9778106863</p>
+                            <p><span id="dyn-phone">+91 9778106863</span></p>
                         </div>
                     </div>
                     <div class="contact-item">
@@ -362,7 +362,7 @@
                         </div>
                         <div>
                             <h4>Email</h4>
-                            <p>abdulrasheed5140@gmail.com</p>
+                            <p><span id="dyn-email">abdulrasheed5140@gmail.com</span></p>
                         </div>
                     </div>
                     <div class="contact-item">
@@ -371,7 +371,7 @@
                         </div>
                         <div>
                             <h4>Location</h4>
-                            <p>Malappuram, Kerala, India</p>
+                            <p><span id="dyn-location">Malappuram, Kerala, India</span></p>
                         </div>
                     </div>
                     <div class="availability-status">
@@ -438,8 +438,10 @@
     <script src="script.js?v=14"></script>
     <!-- Firebase Dynamic Integration Module -->
     <script type="module">
+        
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
         import { firebaseConfig } from "./firebase-config.js";
 
         try {
@@ -477,6 +479,60 @@
                                 </div>
                             `;
                             projectsGrid.appendChild(card);
+                        });
+                    }
+                });
+            }
+
+            
+            // 3. Dynamic Settings
+            onSnapshot(doc(db, 'settings', 'general'), (docSnap) => {
+                if (docSnap.exists()) {
+                    const d = docSnap.data();
+                    if(d.subtitle) { const el = document.getElementById('dyn-subtitle'); if(el) el.textContent = d.subtitle; }
+                    if(d.name) { const el = document.getElementById('dyn-name'); if(el) el.textContent = d.name; }
+                    if(d.roles) { const el = document.getElementById('dyn-roles'); if(el) el.textContent = d.roles; } // Need to re-trigger typed.js if we wanted to, but let's just store it
+                    if(d.about) { const el = document.getElementById('dyn-about'); if(el) el.textContent = d.about; }
+                    if(d.phone) { const el = document.getElementById('dyn-phone'); if(el) el.textContent = d.phone; }
+                    if(d.email) { const el = document.getElementById('dyn-email'); if(el) el.textContent = d.email; }
+                    if(d.location) { const el = document.getElementById('dyn-location'); if(el) el.textContent = d.location; }
+                }
+            });
+
+            // 4. Dynamic Skills
+            const skillsGrid = document.querySelector('.skills-grid');
+            if (skillsGrid) {
+                onSnapshot(query(collection(db, 'skills'), orderBy('createdAt', 'asc')), (snapshot) => {
+                    if (!snapshot.empty) {
+                        skillsGrid.innerHTML = '';
+                        snapshot.forEach((docSnap) => {
+                            const s = docSnap.data();
+                            skillsGrid.innerHTML += `
+                                <div class="skill-tile">
+                                    <i class="${s.icon}" style="color: ${s.color}"></i>
+                                    <span>${s.name}</span>
+                                </div>
+                            `;
+                        });
+                    }
+                });
+            }
+
+            // 5. Dynamic Services
+            const servicesGrid = document.querySelector('.services-grid');
+            if (servicesGrid) {
+                onSnapshot(query(collection(db, 'services'), orderBy('createdAt', 'asc')), (snapshot) => {
+                    if (!snapshot.empty) {
+                        servicesGrid.innerHTML = '';
+                        snapshot.forEach((docSnap) => {
+                            const s = docSnap.data();
+                            servicesGrid.innerHTML += `
+                                <div class="service-card">
+                                    <div class="service-icon"><i class="${s.icon}"></i></div>
+                                    <h3>${s.title}</h3>
+                                    <p>${s.description}</p>
+                                </div>
+                            `;
                         });
                     }
                 });
