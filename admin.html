@@ -774,6 +774,10 @@
                                 <label>Location</label>
                                 <input type="text" id="s-location" placeholder="Kerala, India">
                             </div>
+                            <div class="form-group">
+                                <label>Freelance Status</label>
+                                <input type="text" id="s-freelance" placeholder="Available for freelance work">
+                            </div>
                             <button type="submit" class="btn btn-primary" style="width: 100%;">
                                 <i class="fas fa-save"></i> Save Contact Info
                             </button>
@@ -848,6 +852,10 @@
                         <div class="form-group">
                             <label>Roles (comma separated)</label>
                             <input type="text" id="s-roles" placeholder="Python Developer, Full-Stack Developer">
+                        </div>
+                        <div class="form-group">
+                            <label>Hero Description</label>
+                            <textarea id="s-hero-desc" rows="3" placeholder="I build scalable and user-friendly web applications..."></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary" style="width: 100%;">
                             <i class="fas fa-save"></i> Save Home Settings
@@ -1104,6 +1112,7 @@
                     subtitle: document.getElementById('s-subtitle').value,
                     name: document.getElementById('s-name').value,
                     roles: document.getElementById('s-roles').value,
+                    heroDesc: document.getElementById('s-hero-desc').value,
                     profileImg: document.getElementById('s-profile-img').value
                 }, { merge: true });
                 alert('Home settings saved!');
@@ -1391,7 +1400,8 @@
                     await setDoc(doc(db, 'settings', 'general'), {
                         phone: document.getElementById('s-phone').value,
                         email: document.getElementById('s-email').value,
-                        location: document.getElementById('s-location').value
+                        location: document.getElementById('s-location').value,
+                        freelance: document.getElementById('s-freelance').value
                     }, { merge: true });
                     alert('Contact info saved!');
                 } catch (err) {
@@ -1496,11 +1506,13 @@
                     document.getElementById('s-subtitle').value = d.subtitle || '';
                     document.getElementById('s-name').value = d.name || '';
                     document.getElementById('s-roles').value = d.roles || '';
+                    document.getElementById('s-hero-desc').value = d.heroDesc || '';
                     document.getElementById('s-about').value = d.about || '';
                     document.getElementById('s-phone').value = d.phone || '';
                     document.getElementById('s-email').value = d.email || '';
                     document.getElementById('s-profile-img').value = d.profileImg || '';
                     document.getElementById('s-location').value = d.location || '';
+                    document.getElementById('s-freelance').value = d.freelance || '';
                     document.getElementById('s-resume').value = d.resumeUrl || '';
                 } else {
                     // Seed defaults if empty
@@ -1508,10 +1520,12 @@
                         subtitle: "Hello, I'm",
                         name: "Abdul Rasheed YP",
                         roles: "Python Full-Stack Developer",
+                        heroDesc: "I build scalable and user-friendly web applications. Passionate about coding, technology, and continuous learning.",
                         about: "I am a passionate Python Full-Stack Developer with experience in web application development, backend systems, and modern responsive frontend design.",
                         phone: "+91 9778106863",
                         email: "abdulrasheed5140@gmail.com",
                         location: "Malappuram, Kerala, India",
+                        freelance: "Available for freelance work",
                         resumeUrl: "img/AbdulrasheedCV.pdf"
                     };
                     try {

@@ -52,7 +52,7 @@
                 <h2>
                     <span id="typed-text"></span><span id="dyn-roles" style="display:none;">Python Full-Stack Developer</span>
                 </h2>
-                <p>
+                <p id="dyn-hero-desc">
                     I build scalable and user-friendly web applications. Passionate about coding, technology, and
                     continuous learning.
                 </p>
@@ -87,19 +87,17 @@
             <div class="about-wrapper">
                 <div class="about-text" id="dyn-about-container">
                     <h3>Python Full-Stack Developer </h3>
-                    <p>
+                    <div id="dyn-about" style="white-space: pre-line;">
                         I'm a commerce graduate transitioning into software development,
                         currently focused on building practical web applications using Python.
-                    </p>
-                    <p>
+
                         I train at <strong>Brototype</strong>, where my learning is fully
                         project-driven — writing real code, solving real problems, and
                         following industry-level development practices.
-                    </p>
-                    <p class="about-focus">
+
                         My goal is to become a job-ready full-stack developer with strong
                         fundamentals in backend development, databases, and clean frontend design.
-                    </p>
+                    </div>
                     <div class="about-buttons">
                         <a href="#projects" class="btn btn-filled">
                             <span>View Projects</span>
@@ -371,7 +369,7 @@
                     </div>
                     <div class="availability-status">
                         <div class="status-indicator"></div>
-                        <span>Available for freelance work</span>
+                        <span id="dyn-freelance">Available for freelance work</span>
                     </div>
                 </div>
                 <form id="contact-form" class="contact-form" action="https://api.web3forms.com/submit" method="POST">
@@ -469,11 +467,13 @@
                     const d = docSnap.data();
                     if(d.subtitle) { const el = document.getElementById('dyn-subtitle'); if(el) el.textContent = d.subtitle; }
                     if(d.name) { const el = document.getElementById('dyn-name'); if(el) el.textContent = d.name; }
-                    if(d.roles) { const el = document.getElementById('dyn-roles'); if(el) el.textContent = d.roles; } // Need to re-trigger typed.js if we wanted to, but let's just store it
-                    if(d.about) { const el = document.getElementById('dyn-about'); if(el) el.textContent = d.about; }
+                    if(d.roles) { const el = document.getElementById('dyn-roles'); if(el) el.textContent = d.roles; }
+                    if(d.heroDesc) { const el = document.getElementById('dyn-hero-desc'); if(el) el.textContent = d.heroDesc; }
+                    if(d.about) { const el = document.getElementById('dyn-about'); if(el) el.innerHTML = d.about; }
                     if(d.phone) { const el = document.getElementById('dyn-phone'); if(el) el.textContent = d.phone; }
                     if(d.email) { const el = document.getElementById('dyn-email'); if(el) el.textContent = d.email; }
                     if(d.location) { const el = document.getElementById('dyn-location'); if(el) el.textContent = d.location; }
+                    if(d.freelance) { const el = document.getElementById('dyn-freelance'); if(el) el.textContent = d.freelance; }
                     if(d.profileImg) { const el = document.getElementById('dyn-profile-img'); if(el) el.src = d.profileImg; }
                     if(d.resumeUrl) { const el = document.getElementById('dyn-resume-btn'); if(el) el.href = d.resumeUrl; }
                 }
