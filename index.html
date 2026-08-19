@@ -486,43 +486,82 @@
                 }
             });
 
-            // 4. Dynamic Skills (safe DOM creation)
+            // 4. Dynamic Skills (safe DOM creation + Auto-seeding)
             const skillsGrid = document.querySelector('.skills-grid');
             if (skillsGrid) {
-                onSnapshot(query(collection(db, 'skills'), orderBy('createdAt', 'asc')), (snapshot) => {
-                    if (!snapshot.empty) {
-                        skillsGrid.innerHTML = '';
-                        snapshot.forEach((docSnap) => {
-                            const s = docSnap.data();
-                            const tile = document.createElement('div');
-                            tile.className = 'skill-tile';
-                            const icon = document.createElement('i');
-                            // sanitize: split on space and use only valid class tokens
-                            (s.icon || 'fas fa-code').trim().split(/\s+/).forEach(cls => icon.classList.add(cls));
-                            icon.style.color = s.color || 'var(--primary)';
-                            const label = document.createElement('span');
-                            label.textContent = s.name || '';
-                            tile.appendChild(icon);
-                            tile.appendChild(label);
-                            skillsGrid.appendChild(tile);
-                        });
+                let skillsSeeded = false;
+                onSnapshot(query(collection(db, 'skills'), orderBy('createdAt', 'asc')), async (snapshot) => {
+                    if (snapshot.empty && !skillsSeeded) {
+                        skillsSeeded = true;
+                        const defaultSkills = [
+                            { name: 'Python', icon: 'fab fa-python', color: '#3776AB' },
+                            { name: 'Django', icon: 'fa-solid fa-d', color: '#44B78B' },
+                            { name: 'HTML5', icon: 'fab fa-html5', color: '#E34F26' },
+                            { name: 'CSS3', icon: 'fab fa-css3-alt', color: '#1572B6' },
+                            { name: 'JavaScript', icon: 'fab fa-js', color: '#F7DF1E' },
+                            { name: 'Git', icon: 'fab fa-git-alt', color: '#F05032' },
+                            { name: 'SQL', icon: 'fas fa-database', color: '#336791' },
+                            { name: 'Java', icon: 'fab fa-java', color: '#ED8B00' },
+                            { name: 'Bootstrap', icon: 'fab fa-bootstrap', color: '#7952B3' },
+                            { name: 'Unix', icon: 'fas fa-terminal', color: '#4EAA25' }
+                        ];
+                        for (const item of defaultSkills) {
+                            try {
+                                await addDoc(collection(db, 'skills'), { ...item, createdAt: serverTimestamp() });
+                            } catch(e) {}
+                        }
+                        return;
                     }
+
+                    skillsGrid.innerHTML = '';
+                    snapshot.forEach((docSnap) => {
+                        const s = docSnap.data();
+                        const tile = document.createElement('div');
+                        tile.className = 'skill-tile';
+                        const icon = document.createElement('i');
+                        (s.icon || 'fas fa-code').trim().split(/\s+/).forEach(cls => icon.classList.add(cls));
+                        icon.style.color = s.color || 'var(--primary)';
+                        const label = document.createElement('span');
+                        label.textContent = s.name || '';
+                        tile.appendChild(icon);
+                        tile.appendChild(label);
+                        skillsGrid.appendChild(tile);
+                    });
                 });
             }
 
-            // 5. Dynamic Services
+            // 5. Dynamic Services (safe DOM creation + Auto-seeding)
             const servicesGrid = document.querySelector('.services-grid');
             if (servicesGrid) {
-                onSnapshot(query(collection(db, 'services'), orderBy('createdAt', 'asc')), (snapshot) => {
-                    if (!snapshot.empty) {
-                        servicesGrid.innerHTML = '';
-                        snapshot.forEach((docSnap) => {
-                            const s = docSnap.data();
-                            servicesGrid.innerHTML += `
-                                <div class="service-card"><div class="service-icon"><i class="${s.icon}"></i></div><h3>${s.title}</h3><p>${s.description}</p></div>
-                            `;
-                        });
+                let servicesSeeded = false;
+                onSnapshot(query(collection(db, 'services'), orderBy('createdAt', 'asc')), async (snapshot) => {
+                    if (snapshot.empty && !servicesSeeded) {
+                        servicesSeeded = true;
+                        const defaultServices = [
+                            { title: 'Full-Stack Web Development', description: 'Building scalable, responsive web applications using Python, Django, and modern frontend technologies.', icon: 'fas fa-code' },
+                            { title: 'Backend & API Design', description: 'Developing robust RESTful APIs, database schemas, and backend logic tailored for high performance.', icon: 'fas fa-server' },
+                            { title: 'Database & Cloud Integration', description: 'Designing, optimizing SQL databases and integrating cloud services like Firebase and AWS.', icon: 'fas fa-database' }
+                        ];
+                        for (const item of defaultServices) {
+                            try {
+                                await addDoc(collection(db, 'services'), { ...item, createdAt: serverTimestamp() });
+                            } catch(e) {}
+                        }
+                        return;
                     }
+
+                    servicesGrid.innerHTML = '';
+                    snapshot.forEach((docSnap) => {
+                        const s = docSnap.data();
+                        const card = document.createElement('div');
+                        card.className = 'service-card';
+                        card.innerHTML = `
+                            <div class="service-icon"><i class="${s.icon || 'fas fa-code'}"></i></div>
+                            <h3>${s.title || ''}</h3>
+                            <p>${s.description || ''}</p>
+                        `;
+                        servicesGrid.appendChild(card);
+                    });
                 });
             }
 
