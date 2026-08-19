@@ -822,8 +822,8 @@
             });
 
             
-            // Realtime Settings
-            onSnapshot(doc(db, 'settings', 'general'), (docSnap) => {
+            // Realtime Settings (Auto-seed default values if empty)
+            onSnapshot(doc(db, 'settings', 'general'), async (docSnap) => {
                 if (docSnap.exists()) {
                     const d = docSnap.data();
                     document.getElementById('s-subtitle').value = d.subtitle || '';
@@ -834,6 +834,21 @@
                     document.getElementById('s-email').value = d.email || '';
                     document.getElementById('s-location').value = d.location || '';
                     document.getElementById('s-resume').value = d.resumeUrl || '';
+                } else {
+                    // Seed defaults if empty
+                    const defaultSettings = {
+                        subtitle: "Hello, I'm",
+                        name: "Abdul Rasheed YP",
+                        roles: "Python Full-Stack Developer",
+                        about: "I am a passionate Python Full-Stack Developer with experience in web application development, backend systems, and modern responsive frontend design.",
+                        phone: "+91 9778106863",
+                        email: "abdulrasheed5140@gmail.com",
+                        location: "Malappuram, Kerala, India",
+                        resumeUrl: "img/AbdulrasheedCV.pdf"
+                    };
+                    try {
+                        await setDoc(doc(db, 'settings', 'general'), defaultSettings);
+                    } catch(e) {}
                 }
             });
 
