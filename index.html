@@ -75,7 +75,7 @@
             </div>
             <div class="hero-image">
                 <div class="blob-shape">
-                    <img src="img/profile-pic.png" alt="Abdul Rasheed" class="profile-img">
+                    <img src="img/profile-pic.png" alt="Abdul Rasheed" class="profile-img" id="dyn-profile-img">
                     <div class="glow-effect"></div>
                 </div>
             </div>
@@ -110,7 +110,7 @@
                             <span>View Projects</span>
                             <i class="fas fa-arrow-right"></i>
                         </a>
-                        <a href="img/AbdulrasheedCV.pdf" class="btn btn-outline" target="_blank" download>
+                        <a href="img/AbdulrasheedCV.pdf" class="btn btn-outline" target="_blank" download id="dyn-resume-btn">
                             <span>Download CV</span>
                             <i class="fas fa-download"></i>
                         </a>
@@ -483,6 +483,8 @@
                     if(d.phone) { const el = document.getElementById('dyn-phone'); if(el) el.textContent = d.phone; }
                     if(d.email) { const el = document.getElementById('dyn-email'); if(el) el.textContent = d.email; }
                     if(d.location) { const el = document.getElementById('dyn-location'); if(el) el.textContent = d.location; }
+                    if(d.profileImg) { const el = document.getElementById('dyn-profile-img'); if(el) el.src = d.profileImg; }
+                    if(d.resumeUrl) { const el = document.getElementById('dyn-resume-btn'); if(el) el.href = d.resumeUrl; }
                 }
             });
 

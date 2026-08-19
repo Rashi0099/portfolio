@@ -436,6 +436,10 @@
                             <div class="form-group">
                                 <label>Image URL or Path *</label>
                                 <input type="text" id="p-image" required placeholder="img/project1.png">
+                                <label style="margin-top: 8px; font-size: 0.85rem; color: var(--primary); display: block; cursor: pointer;">
+                                    📁 Or Upload Project Image File
+                                </label>
+                                <input type="file" accept="image/*" onchange="handleFileUpload(this, 'p-image')" style="background: var(--bg); border: 1px dashed var(--border); padding: 8px; border-radius: 8px; width: 100%;">
                             </div>
                             <div class="form-group">
                                 <label>Live Demo URL</label>
@@ -478,6 +482,14 @@
                     <form id="settings-form">
                         <h4>Hero Section</h4>
                         <div class="form-group">
+                            <label>Profile Image URL / Path</label>
+                            <input type="text" id="s-profile-img" placeholder="img/profile-pic.png">
+                            <label style="margin-top: 8px; font-size: 0.85rem; color: var(--primary); display: block; cursor: pointer;">
+                                📁 Or Upload Profile Picture
+                            </label>
+                            <input type="file" accept="image/*" onchange="handleFileUpload(this, 's-profile-img')" style="background: var(--bg); border: 1px dashed var(--border); padding: 8px; border-radius: 8px; width: 100%;">
+                        </div>
+                        <div class="form-group">
                             <label>Subtitle</label>
                             <input type="text" id="s-subtitle" placeholder="Hello, I'm">
                         </div>
@@ -514,7 +526,11 @@
                         <div class="form-group">
                             <label>Resume File Path or URL</label>
                             <input type="text" id="s-resume" placeholder="img/AbdulrasheedCV.pdf">
-                            <small style="color:var(--text-muted);font-size:0.78rem;">Upload CV to img/ folder via git, then enter the path here (e.g. img/AbdulrasheedCV.pdf)</small>
+                            <label style="margin-top: 8px; font-size: 0.85rem; color: var(--primary); display: block; cursor: pointer;">
+                                📁 Or Upload Resume File (PDF / Image)
+                            </label>
+                            <input type="file" accept=".pdf,image/*" onchange="handleFileUpload(this, 's-resume')" style="background: var(--bg); border: 1px dashed var(--border); padding: 8px; border-radius: 8px; width: 100%;">
+                            <small style="color:var(--text-muted);font-size:0.78rem;">Upload PDF or enter direct link/path</small>
                         </div>
                         <button type="submit" class="btn btn-primary" style="width: 100%;">
                             <i class="fas fa-save"></i> Save Settings
@@ -647,8 +663,9 @@
                 about: document.getElementById('s-about').value,
                 phone: document.getElementById('s-phone').value,
                 email: document.getElementById('s-email').value,
+                profileImg: document.getElementById('s-profile-img').value,
                 location: document.getElementById('s-location').value,
-                    resumeUrl: document.getElementById('s-resume').value,
+                resumeUrl: document.getElementById('s-resume').value,
             };
             try {
                 await setDoc(doc(db, 'settings', 'general'), data);
@@ -832,6 +849,7 @@
                     document.getElementById('s-about').value = d.about || '';
                     document.getElementById('s-phone').value = d.phone || '';
                     document.getElementById('s-email').value = d.email || '';
+                    document.getElementById('s-profile-img').value = d.profileImg || '';
                     document.getElementById('s-location').value = d.location || '';
                     document.getElementById('s-resume').value = d.resumeUrl || '';
                 } else {
@@ -1024,6 +1042,58 @@
             if (!input) return;
             const clean = sanitizeIcon(input.value);
             if (clean !== input.value) input.value = clean;
+        }
+
+        
+        function handleFileUpload(inputEl, targetInputId) {
+            const file = inputEl.files[0];
+            if (!file) return;
+
+            const targetInput = document.getElementById(targetInputId);
+            if (!targetInput) return;
+
+            // If image, compress via Canvas
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        let width = img.width;
+                        let height = img.height;
+                        const maxDim = 800; // Compress to max 800px
+
+                        if (width > maxDim || height > maxDim) {
+                            if (width > height) {
+                                height = Math.round((height * maxDim) / width);
+                                width = maxDim;
+                            } else {
+                                width = Math.round((width * maxDim) / height);
+                                height = maxDim;
+                            }
+                        }
+
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        const dataUrl = canvas.toDataURL('image/jpeg', 0.82);
+                        targetInput.value = dataUrl;
+                        alert('✅ Image uploaded & compressed successfully! Click Save.');
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                // PDF or other documents
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    targetInput.value = e.target.result;
+                    alert('✅ File processed successfully! Click Save.');
+                };
+                reader.readAsDataURL(file);
+            }
         }
 
         function updateSkillPreview() {
