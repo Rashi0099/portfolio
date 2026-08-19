@@ -656,6 +656,11 @@
                         </button>
                     </li>
                     <li>
+                        <button class="sidebar-link" onclick="switchTab('navigation-tab', this, 'Navigation Menu')">
+                            <span><i class="fas fa-compass"></i> Navigation Menu</span>
+                        </button>
+                    </li>
+                    <li>
                         <button class="sidebar-link" onclick="switchTab('settings-tab', this, 'Settings')">
                             <span><i class="fas fa-cog"></i> Settings</span>
                         </button>
@@ -694,6 +699,43 @@
 
                 <main style="padding: 30px;">
 
+
+            <!-- TAB: NAVIGATION MENU -->
+            <div id="navigation-tab" class="tab-content">
+                <div class="admin-grid">
+                    <div class="glass-card">
+                        <h3 style="margin-bottom: 18px;"><i class="fas fa-plus-circle" style="color: var(--primary);"></i> Add Menu Item</h3>
+                        <form id="add-nav-form">
+                            <div class="form-group">
+                                <label>Menu Label *</label>
+                                <input type="text" id="nav-label" required placeholder="e.g. About Me">
+                            </div>
+                            <div class="form-group">
+                                <label>Target Link (Href) *</label>
+                                <input type="text" id="nav-href" required placeholder="e.g. #about or https://...">
+                            </div>
+                            <div class="form-group">
+                                <label>Display Order (Number) *</label>
+                                <input type="number" id="nav-order" required value="1">
+                            </div>
+                            <div class="form-group" style="display: flex; align-items: center; gap: 10px;">
+                                <input type="checkbox" id="nav-isbtn" style="width: 20px; height: 20px;">
+                                <label for="nav-isbtn" style="margin: 0;">Style as Primary Button?</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 15px;">
+                                <i class="fas fa-save"></i> Add Menu Item
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="glass-card">
+                        <h3 style="margin-bottom: 18px;"><i class="fas fa-compass" style="color: var(--primary);"></i> Current Menu Items</h3>
+                        <div id="navigation-list-container" style="display: flex; flex-direction: column; gap: 10px;">
+                            <!-- Items injected here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <!-- TAB 1: PROJECTS -->
             <div id="projects-tab" class="tab-content active">
@@ -956,6 +998,31 @@
                 </div>
             </form>
 
+            <!-- EDIT NAV FORM -->
+            <form id="edit-nav-form" style="display:none;">
+                <input type="hidden" id="edit-n-id">
+                <div class="form-group">
+                    <label>Menu Label *</label>
+                    <input type="text" id="edit-n-label" required>
+                </div>
+                <div class="form-group">
+                    <label>Target Link (Href) *</label>
+                    <input type="text" id="edit-n-href" required>
+                </div>
+                <div class="form-group">
+                    <label>Display Order (Number) *</label>
+                    <input type="number" id="edit-n-order" required>
+                </div>
+                <div class="form-group" style="display: flex; align-items: center; gap: 10px;">
+                    <input type="checkbox" id="edit-n-isbtn" style="width: 20px; height: 20px;">
+                    <label for="edit-n-isbtn" style="margin: 0;">Style as Primary Button?</label>
+                </div>
+                <div style="display:flex; gap:10px; margin-top:20px;">
+                    <button type="submit" class="btn btn-primary" style="flex:1;"><i class="fas fa-save"></i> Save Changes</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Cancel</button>
+                </div>
+            </form>
+
             <!-- EDIT SKILL FORM -->
             <form id="edit-skill-form" style="display:none;">
                 <input type="hidden" id="edit-sk-id">
@@ -1022,6 +1089,8 @@
         const loginError = document.getElementById('login-error');
         const logoutBtn = document.getElementById('logout-btn');
         const currentUserEmail = document.getElementById('current-user-email');
+        const addNavForm = document.getElementById('add-nav-form');
+        const navContainer = document.getElementById('navigation-list-container');
         const addProjectForm = document.getElementById('add-project-form');
         const projectsContainer = document.getElementById('projects-list-container');
         const messagesContainer = document.getElementById('messages-list-container');
@@ -1056,6 +1125,23 @@
                 alert('Error saving settings: ' + err.message);
             }
         });
+
+        // Add Navigation
+        if (addNavForm) {
+            addNavForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                try {
+                    await addDoc(collection(db, 'navigation'), {
+                        label: document.getElementById('nav-label').value,
+                        href: document.getElementById('nav-href').value,
+                        order: Number(document.getElementById('nav-order').value),
+                        isButton: document.getElementById('nav-isbtn').checked,
+                        createdAt: serverTimestamp()
+                    });
+                    addNavForm.reset();
+                } catch (err) { alert('Error: ' + err.message); }
+            });
+        }
 
         // Add Skill
         addSkillForm.addEventListener('submit', async (e) => {
@@ -1294,6 +1380,28 @@
                 });
             }
 
+            // Submit Edit Nav
+            const editNavForm = document.getElementById('edit-nav-form');
+            if (editNavForm) {
+                editNavForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const id = document.getElementById('edit-n-id').value;
+                    try {
+                        await updateDoc(doc(db, 'navigation', id), {
+                            label: document.getElementById('edit-n-label').value,
+                            href: document.getElementById('edit-n-href').value,
+                            order: Number(document.getElementById('edit-n-order').value),
+                            isButton: document.getElementById('edit-n-isbtn').checked,
+                            updatedAt: serverTimestamp()
+                        });
+                        window.closeEditModal();
+                        alert('✅ Menu updated successfully!');
+                    } catch(err) {
+                        alert('Error updating menu: ' + err.message);
+                    }
+                });
+            }
+
             // Submit Edit Skill
             const editSkillForm = document.getElementById('edit-skill-form');
             if (editSkillForm) {
@@ -1335,6 +1443,60 @@
                     }
                 });
             }
+
+            // Realtime Navigation (Auto-seed if empty)
+            let adminNavSeeded = false;
+            onSnapshot(query(collection(db, 'navigation'), orderBy('order', 'asc')), async (snapshot) => {
+                if(navContainer) navContainer.innerHTML = '';
+                if (snapshot.empty && !adminNavSeeded) {
+                    adminNavSeeded = true;
+                    if(navContainer) navContainer.innerHTML = '<p style="color:var(--text-muted);font-size:0.9rem;">Seeding default navigation...</p>';
+                    const defaultNav = [
+                        { label: 'Home', href: '#home', order: 1, isButton: false },
+                        { label: 'About', href: '#about', order: 2, isButton: false },
+                        { label: 'Skills', href: '#skills', order: 3, isButton: false },
+                        { label: 'Services', href: '#services', order: 4, isButton: false },
+                        { label: 'Projects', href: '#projects', order: 5, isButton: false },
+                        { label: 'Contact', href: '#contact', order: 6, isButton: true }
+                    ];
+                    for (const item of defaultNav) {
+                        try { await addDoc(collection(db, 'navigation'), { ...item, createdAt: serverTimestamp() }); } catch(e){}
+                    }
+                    return;
+                }
+
+                window._navsMap = {};
+                snapshot.forEach(docSnap => {
+                    const data = docSnap.data();
+                    const id = docSnap.id;
+                    window._navsMap[id] = data;
+
+                    if(navContainer) {
+                        const item = document.createElement('div');
+                        item.className = 'project-item';
+                        item.style.display = 'flex';
+                        item.style.alignItems = 'center';
+                        item.style.justifyContent = 'space-between';
+                        
+                        const badgeHtml = data.isButton ? '<span class="project-tag" style="background:var(--primary);color:#000;">Button</span>' : '';
+                        
+                        item.innerHTML = `
+                            <div style="display:flex; align-items:center; gap:15px;">
+                                <div style="background:rgba(255,255,255,0.1); padding:8px 15px; border-radius:8px; font-weight:bold;">${data.order}</div>
+                                <div>
+                                    <h4 style="margin:0; font-size:1.1rem;">${data.label} ${badgeHtml}</h4>
+                                    <span style="color:var(--text-muted); font-size:0.85rem;">${data.href}</span>
+                                </div>
+                            </div>
+                            <div class="action-btns-group">
+                                <button class="btn btn-secondary" onclick="openEditNav('${id}')"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-danger" onclick="deleteNav('${id}')"><i class="fas fa-trash"></i></button>
+                            </div>
+                        `;
+                        navContainer.appendChild(item);
+                    }
+                });
+            });
 
             // Realtime Settings (Auto-seed default values if empty)
             onSnapshot(doc(db, 'settings', 'general'), async (docSnap) => {
@@ -1540,6 +1702,27 @@
         window._skillsMap = window._skillsMap || {};
         window._servicesMap = window._servicesMap || {};
 
+        window.deleteNav = async (id) => {
+            if (confirm('Delete this menu item?')) await deleteDoc(doc(db, 'navigation', id));
+        };
+
+        window._navsMap = window._navsMap || {};
+        window.openEditNav = (id) => {
+            const data = (window._navsMap && window._navsMap[id]) || {};
+            document.getElementById('edit-n-id').value = id;
+            document.getElementById('edit-n-label').value = data.label || '';
+            document.getElementById('edit-n-href').value = data.href || '';
+            document.getElementById('edit-n-order').value = data.order || 0;
+            document.getElementById('edit-n-isbtn').checked = !!data.isButton;
+
+            document.getElementById('edit-nav-form').style.display = 'block';
+            document.getElementById('edit-project-form').style.display = 'none';
+            document.getElementById('edit-skill-form').style.display = 'none';
+            document.getElementById('edit-service-form').style.display = 'none';
+            document.getElementById('modal-title').innerHTML = '<i class="fas fa-edit" style="color:var(--primary);"></i> Edit Menu Item';
+            document.getElementById('edit-modal').classList.add('active');
+        };
+
         window.openEditProject = (id) => {
             const data = (window._projectsMap && window._projectsMap[id]) || {};
             document.getElementById('edit-p-id').value = id;
@@ -1550,6 +1733,7 @@
             document.getElementById('edit-p-live').value = data.liveUrl || '';
             document.getElementById('edit-p-github').value = data.githubUrl || '';
 
+            document.getElementById('edit-nav-form').style.display = 'none';
             document.getElementById('edit-project-form').style.display = 'block';
             document.getElementById('edit-skill-form').style.display = 'none';
             document.getElementById('edit-service-form').style.display = 'none';
@@ -1564,6 +1748,7 @@
             document.getElementById('edit-sk-icon').value = data.icon || '';
             document.getElementById('edit-sk-color').value = data.color || '#00d9ff';
 
+            document.getElementById('edit-nav-form').style.display = 'none';
             document.getElementById('edit-project-form').style.display = 'none';
             document.getElementById('edit-skill-form').style.display = 'block';
             document.getElementById('edit-service-form').style.display = 'none';
@@ -1578,6 +1763,7 @@
             document.getElementById('edit-sv-icon').value = data.icon || '';
             document.getElementById('edit-sv-desc').value = data.description || '';
 
+            document.getElementById('edit-nav-form').style.display = 'none';
             document.getElementById('edit-project-form').style.display = 'none';
             document.getElementById('edit-skill-form').style.display = 'none';
             document.getElementById('edit-service-form').style.display = 'block';
