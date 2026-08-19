@@ -535,8 +535,11 @@
                             </div>
                             <div class="form-group">
                                 <label>FontAwesome Icon Class *</label>
-                                <input type="text" id="sk-icon" required placeholder="fab fa-python" oninput="updateSkillPreview()">
-                                <small style="color:var(--text-muted);font-size:0.78rem;">Find icons at <a href="https://fontawesome.com/icons" target="_blank" style="color:var(--primary);">fontawesome.com/icons</a></small>
+                                <input type="text" id="sk-icon" required placeholder="fab fa-python" oninput="sanitizeIconInput(); updateSkillPreview();">
+                                <small style="color:var(--text-muted);font-size:0.78rem;">
+                                    ⚠️ Copy only the <b style="color:var(--primary);">class value</b> — e.g. <code style="color:var(--success);">fab fa-react</code><br>
+                                    (NOT the full &lt;i&gt; tag). Find icons at <a href="https://fontawesome.com/icons" target="_blank" style="color:var(--primary);">fontawesome.com/icons</a>
+                                </small>
                             </div>
                             <div class="form-group">
                                 <label>Brand Color *</label>
@@ -661,7 +664,7 @@
             try {
                 await addDoc(collection(db, 'skills'), {
                     name: document.getElementById('sk-name').value,
-                    icon: document.getElementById('sk-icon').value,
+                    icon: sanitizeIcon(document.getElementById('sk-icon').value),
                     color: document.getElementById('sk-color').value,
                     createdAt: serverTimestamp()
                 });
@@ -913,8 +916,29 @@
 
     <!-- Skill Preview (non-module global) -->
     <script>
+        // Strip any HTML tags and extract just the class value
+        // Handles: "fab fa-react", "<i class="fab fa-react"></i>", "fa-brands fa-react"
+        function sanitizeIcon(raw) {
+            const s = (raw || '').trim();
+            // If it looks like an HTML tag, extract the class attribute value
+            const match = s.match(/class=["']([^"']+)["']/);
+            if (match) return match[1].trim();
+            // If it contains < or >, strip all tags
+            if (s.includes('<') || s.includes('>')) {
+                return s.replace(/<[^>]+>/g, '').trim();
+            }
+            return s;
+        }
+
+        function sanitizeIconInput() {
+            const input = document.getElementById('sk-icon');
+            if (!input) return;
+            const clean = sanitizeIcon(input.value);
+            if (clean !== input.value) input.value = clean;
+        }
+
         function updateSkillPreview() {
-            const icon  = document.getElementById('sk-icon')?.value.trim() || 'fab fa-python';
+            const icon  = sanitizeIcon(document.getElementById('sk-icon')?.value || 'fab fa-python');
             const name  = document.getElementById('sk-name')?.value.trim() || 'Skill Name';
             const color = document.getElementById('sk-color')?.value || '#00d9ff';
             const previewIcon = document.getElementById('preview-icon');
