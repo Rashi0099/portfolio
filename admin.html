@@ -755,11 +755,48 @@
 
         // Realtime Data Loader
         function loadDashboardData() {
-            // Realtime Projects
-            const pQuery = query(collection(db, 'projects'), orderBy('createdAt', 'desc'));
-            onSnapshot(pQuery, (snapshot) => {
+            // Realtime Projects (Auto-seed if empty)
+            let adminProjectsSeeded = false;
+            onSnapshot(collection(db, 'projects'), async (snapshot) => {
                 projectsContainer.innerHTML = '';
                 projectCountEl.textContent = snapshot.size;
+
+                if (snapshot.empty && !adminProjectsSeeded) {
+                    adminProjectsSeeded = true;
+                    projectsContainer.innerHTML = '<p style="color:var(--text-muted);font-size:0.9rem;">Seeding default projects...</p>';
+                    const defaultProjects = [
+                        {
+                            title: "Portfolio Website",
+                            category: "frontend",
+                            image: "img/Screenshot 2026-01-23 235442.png",
+                            description: "Personal portfolio website built with modern HTML, CSS, and JavaScript featuring smooth animations.",
+                            liveUrl: "https://rashi0099.github.io/portfolio.0/",
+                            githubUrl: "https://github.com/Rashi0099/"
+                        },
+                        {
+                            title: "Frontend Development",
+                            category: "python",
+                            image: "img/Screenshot 2026-01-23 234941.png",
+                            description: "Developed responsive frontend components using HTML, CSS clean structure and interactive behavior.",
+                            liveUrl: "https://rashi0099.github.io/nikeeee/",
+                            githubUrl: "https://github.com/Rashi0099/"
+                        },
+                        {
+                            title: "E-commerce Demo",
+                            category: "web",
+                            image: "img/Screenshot 2026-01-23 234547.png",
+                            description: "Modern e-commerce page layout practicing CSS Grid, Flexbox, and responsive design principles.",
+                            liveUrl: "https://rashi0099.github.io/fashion-wear.0/",
+                            githubUrl: "https://github.com/Rashi0099/"
+                        }
+                    ];
+                    for (const proj of defaultProjects) {
+                        try {
+                            await addDoc(collection(db, 'projects'), { ...proj, createdAt: serverTimestamp() });
+                        } catch(e){}
+                    }
+                    return;
+                }
 
                 if (snapshot.empty) {
                     projectsContainer.innerHTML = '<p style="color: var(--text-muted); font-size: 0.9rem;">No projects added yet.</p>';
@@ -773,8 +810,8 @@
                     item.className = 'project-item';
                     item.innerHTML = `
                         <div class="project-info">
-                            <h4>${data.title} <span class="project-tag">${data.category}</span></h4>
-                            <p>${data.description}</p>
+                            <h4>${data.title || ''} <span class="project-tag">${data.category || ''}</span></h4>
+                            <p>${data.description || ''}</p>
                         </div>
                         <button class="btn btn-danger" onclick="deleteProject('${id}')">
                             <i class="fas fa-trash"></i>

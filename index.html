@@ -451,7 +451,7 @@
             // 1. Dynamic Projects Loading from Firestore
             const projectsGrid = document.querySelector('.projects-grid');
             if (projectsGrid) {
-                const q = query(collection(db, 'projects'), orderBy('createdAt', 'desc'));
+                const q = collection(db, 'projects');
                 onSnapshot(q, (snapshot) => {
                     if (!snapshot.empty) {
                         projectsGrid.innerHTML = ''; // Clear default fallback cards
