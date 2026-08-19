@@ -800,24 +800,46 @@
                 }
             });
 
-            // Realtime Skills
-            onSnapshot(query(collection(db, 'skills'), orderBy('createdAt', 'asc')), (snapshot) => {
+            // Realtime Skills (Auto-seed if empty)
+            let adminSkillsSeeded = false;
+            onSnapshot(collection(db, 'skills'), async (snapshot) => {
                 skillsContainer.innerHTML = '';
-                if (snapshot.empty) {
-                    skillsContainer.innerHTML = '<p style="color:var(--text-muted);font-size:0.9rem;">No skills yet. Click "Populate Default Skills" to add them!</p>';
+                if (snapshot.empty && !adminSkillsSeeded) {
+                    adminSkillsSeeded = true;
+                    skillsContainer.innerHTML = '<p style="color:var(--text-muted);font-size:0.9rem;">Seeding default skills...</p>';
+                    const defaultSkills = [
+                        { name: 'Python',     icon: 'fab fa-python',    color: '#3776AB' },
+                        { name: 'Django',     icon: 'fa-solid fa-d',    color: '#44B78B' },
+                        { name: 'HTML5',      icon: 'fab fa-html5',     color: '#E34F26' },
+                        { name: 'CSS3',       icon: 'fab fa-css3-alt',  color: '#1572B6' },
+                        { name: 'JavaScript', icon: 'fab fa-js',        color: '#F7DF1E' },
+                        { name: 'Git',        icon: 'fab fa-git-alt',   color: '#F05032' },
+                        { name: 'SQL',        icon: 'fas fa-database',  color: '#336791' },
+                        { name: 'Java',       icon: 'fab fa-java',      color: '#ED8B00' },
+                        { name: 'Bootstrap',  icon: 'fab fa-bootstrap', color: '#7952B3' },
+                        { name: 'Unix',       icon: 'fas fa-terminal',  color: '#4EAA25' },
+                    ];
+                    for (const sk of defaultSkills) {
+                        try { await addDoc(collection(db, 'skills'), { ...sk, createdAt: serverTimestamp() }); } catch(e){}
+                    }
                     return;
                 }
+
+                if (snapshot.empty) {
+                    skillsContainer.innerHTML = '<p style="color:var(--text-muted);font-size:0.9rem;">No skills found. Click "Populate Default Skills" above!</p>';
+                    return;
+                }
+
                 snapshot.forEach(docSnap => {
                     const data = docSnap.data();
                     const item = document.createElement('div');
                     item.className = 'project-item';
-                    // icon preview
                     const iconEl = document.createElement('i');
                     (data.icon || 'fas fa-code').trim().split(/\s+/).forEach(c => iconEl.classList.add(c));
                     iconEl.style.color = data.color || '#fff';
                     iconEl.style.fontSize = '1.4rem';
                     iconEl.style.marginRight = '10px';
-                    // info
+                    
                     const infoDiv = document.createElement('div');
                     infoDiv.className = 'project-info';
                     infoDiv.style.display = 'flex';
@@ -826,7 +848,7 @@
                     h4.appendChild(iconEl);
                     h4.appendChild(document.createTextNode(' ' + (data.name || '')));
                     infoDiv.appendChild(h4);
-                    // delete btn
+                    
                     const btn = document.createElement('button');
                     btn.className = 'btn btn-danger';
                     btn.innerHTML = '<i class="fas fa-trash"></i>';
@@ -837,16 +859,31 @@
                 });
             });
 
-            // Realtime Services
-            onSnapshot(query(collection(db, 'services'), orderBy('createdAt', 'asc')), (snapshot) => {
+            // Realtime Services (Auto-seed if empty)
+            let adminServicesSeeded = false;
+            onSnapshot(collection(db, 'services'), async (snapshot) => {
                 servicesContainer.innerHTML = '';
+                if (snapshot.empty && !adminServicesSeeded) {
+                    adminServicesSeeded = true;
+                    servicesContainer.innerHTML = '<p style="color:var(--text-muted);font-size:0.9rem;">Seeding default services...</p>';
+                    const defaultServices = [
+                        { title: 'Full-Stack Web Development', description: 'Building scalable, responsive web applications using Python, Django, and modern frontend technologies.', icon: 'fas fa-code' },
+                        { title: 'Backend & API Design', description: 'Developing robust RESTful APIs, database schemas, and backend logic tailored for high performance.', icon: 'fas fa-server' },
+                        { title: 'Database & Cloud Integration', description: 'Designing, optimizing SQL databases and integrating cloud services like Firebase and AWS.', icon: 'fas fa-database' }
+                    ];
+                    for (const sv of defaultServices) {
+                        try { await addDoc(collection(db, 'services'), { ...sv, createdAt: serverTimestamp() }); } catch(e){}
+                    }
+                    return;
+                }
+
                 snapshot.forEach(docSnap => {
                     const data = docSnap.data();
                     servicesContainer.innerHTML += `
                         <div class="project-item">
                             <div class="project-info">
-                                <h4><i class="${data.icon}"></i> ${data.title}</h4>
-                                <p>${data.description}</p>
+                                <h4><i class="${data.icon || 'fas fa-code'}"></i> ${data.title || ''}</h4>
+                                <p>${data.description || ''}</p>
                             </div>
                             <button class="btn btn-danger" onclick="deleteService('${docSnap.id}')"><i class="fas fa-trash"></i></button>
                         </div>
