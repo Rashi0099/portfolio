@@ -363,13 +363,18 @@
                     <input type="email" id="login-email" required placeholder="admin@example.com">
                 </div>
                 <div class="form-group">
-                    <label for="login-password">Password</label>
+                    <label for="login-password">Password (min 6 chars)</label>
                     <input type="password" id="login-password" required placeholder="••••••••">
                 </div>
-                <button type="submit" class="btn btn-primary">
+                <button type="submit" id="auth-submit-btn" class="btn btn-primary" style="width:100%;">
                     <i class="fas fa-sign-in-alt"></i> Login
                 </button>
-                <div id="login-error" class="error-msg">Invalid credentials.</div>
+                <div id="login-error" class="error-msg" style="display:none; margin-top:12px; padding:10px; background:rgba(255,77,109,0.15); border:1px solid var(--danger); color:var(--danger); border-radius:8px; font-size:0.85rem; text-align:left;"></div>
+                <div style="margin-top: 16px; border-top: 1px solid var(--border); padding-top: 12px;">
+                    <button type="button" id="toggle-auth-btn" class="btn btn-secondary" style="width:100%; font-size:0.82rem;">
+                        First time? Create Admin Account
+                    </button>
+                </div>
             </form>
         </div>
     </div>
@@ -719,7 +724,7 @@
     <script type="module">
         
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, setDoc, onSnapshot, query, orderBy, serverTimestamp, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         import { firebaseConfig } from "./firebase-config.js";
@@ -811,7 +816,7 @@
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 loginScreen.style.display = 'none';
-                dashboardScreen.style.display = 'flex';
+                dashboardScreen.style.display = 'block';
                 currentUserEmail.textContent = user.email;
                 loadDashboardData();
             } else {
@@ -820,7 +825,26 @@
             }
         });
 
-        // Login Submit
+        // Auth Mode State (Login vs Register)
+        let isRegisterMode = false;
+        const toggleAuthBtn = document.getElementById('toggle-auth-btn');
+        const authSubmitBtn = document.getElementById('auth-submit-btn');
+
+        if (toggleAuthBtn) {
+            toggleAuthBtn.addEventListener('click', () => {
+                isRegisterMode = !isRegisterMode;
+                loginError.style.display = 'none';
+                if (isRegisterMode) {
+                    authSubmitBtn.innerHTML = '<i class="fas fa-user-plus"></i> Create Admin Account';
+                    toggleAuthBtn.textContent = 'Already have an account? Back to Login';
+                } else {
+                    authSubmitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+                    toggleAuthBtn.textContent = 'First time? Create Admin Account';
+                }
+            });
+        }
+
+        // Login / Register Submit
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('login-email').value.trim();
@@ -828,9 +852,27 @@
             loginError.style.display = 'none';
 
             try {
-                await signInWithEmailAndPassword(auth, email, password);
+                if (isRegisterMode) {
+                    await createUserWithEmailAndPassword(auth, email, password);
+                    alert("✅ Admin account created successfully! Welcome to Admin Panel.");
+                } else {
+                    await signInWithEmailAndPassword(auth, email, password);
+                }
             } catch (err) {
-                loginError.textContent = err.message || "Failed to login.";
+                console.error("Auth error:", err);
+                let msg = err.message || "Failed to authenticate.";
+                if (err.code === 'auth/invalid-credential' || err.code === 'auth/user-not-found') {
+                    msg = "❌ Incorrect email or password. If you haven't created an admin account yet, click 'First time? Create Admin Account' below.";
+                } else if (err.code === 'auth/wrong-password') {
+                    msg = "❌ Incorrect password. Please try again.";
+                } else if (err.code === 'auth/email-already-in-use') {
+                    msg = "⚠️ This email is already registered. Please click 'Back to Login' to sign in.";
+                } else if (err.code === 'auth/weak-password') {
+                    msg = "⚠️ Password must be at least 6 characters long.";
+                } else if (err.code === 'auth/invalid-email') {
+                    msg = "⚠️ Please enter a valid email address.";
+                }
+                loginError.textContent = msg;
                 loginError.style.display = 'block';
             }
         });
