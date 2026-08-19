@@ -65,12 +65,7 @@
                         <span>Contact Me</span>
                     </a>
                 </div>
-                <div class="social-links">
-                    <a href="https://github.com/Rashi0099" class="social-icon"><i class="fab fa-github"></i></a>
-                    <a href="https://www.linkedin.com/in/abdul-rasheed5140/" class="social-icon"><i
-                            class="fab fa-linkedin"></i></a>
-                    <a href="https://www.instagram.com/rasheed00._?igsh=enRuam40MG9ydWhi&utm_source=qr"
-                        class="social-icon"><i class="fab fa-instagram"></i></a>
+                <div class="social-links" id="hero-social-links">
                 </div>
             </div>
             <div class="hero-image">
@@ -416,11 +411,7 @@
                     <span class="logo-text">Abdul <strong>Rasheed</strong></span>
                 </div>
                 <p>&copy; 2026 Abdul Rasheed YP. All rights reserved.</p>
-                <div class="footer-socials">
-                    <a href="https://github.com/Rashi0099"><i class="fab fa-github"></i></a>
-                    <a href="https://www.linkedin.com/in/abdul-rasheed5140/"><i class="fab fa-linkedin"></i></a>
-                    <a href="https://www.instagram.com/rasheed00._?igsh=enRuam40MG9ydWhi&utm_source=qr"><i
-                            class="fab fa-instagram"></i></a>
+                <div class="footer-socials" id="footer-social-links">
                 </div>
             </div>
         </div>
@@ -527,6 +518,41 @@
                                 <p>${s.description || ''}</p>
                             `;
                             servicesGrid.appendChild(card);
+                        });
+                    }
+                });
+            }
+            
+            // 6. Dynamic Social Links
+            const heroSocials = document.getElementById('hero-social-links');
+            const footerSocials = document.getElementById('footer-social-links');
+            if (heroSocials || footerSocials) {
+                onSnapshot(query(collection(db, 'socials'), orderBy('createdAt', 'asc')), (snapshot) => {
+                    if (!snapshot.empty) {
+                        if (heroSocials) heroSocials.innerHTML = '';
+                        if (footerSocials) footerSocials.innerHTML = '';
+                        
+                        snapshot.forEach((docSnap) => {
+                            const s = docSnap.data();
+                            
+                            // Hero Links (have .social-icon class)
+                            if (heroSocials) {
+                                const aHero = document.createElement('a');
+                                aHero.href = s.url || '#';
+                                aHero.target = '_blank';
+                                aHero.className = 'social-icon';
+                                aHero.innerHTML = `<i class="${s.icon || 'fas fa-link'}"></i>`;
+                                heroSocials.appendChild(aHero);
+                            }
+                            
+                            // Footer Links (no class)
+                            if (footerSocials) {
+                                const aFooter = document.createElement('a');
+                                aFooter.href = s.url || '#';
+                                aFooter.target = '_blank';
+                                aFooter.innerHTML = `<i class="${s.icon || 'fas fa-link'}"></i>`;
+                                footerSocials.appendChild(aFooter);
+                            }
                         });
                     }
                 });
