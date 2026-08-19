@@ -616,6 +616,103 @@
             </div>
 
         </main>
+            </div>
+        </div>
+    </div>
+
+    
+    <!-- EDIT MODAL OVERLAY -->
+    <div class="modal-overlay" id="edit-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title"><i class="fas fa-edit" style="color:var(--primary);"></i> Edit Item</h3>
+                <button class="close-modal" onclick="closeEditModal()">&times;</button>
+            </div>
+            
+            <!-- EDIT PROJECT FORM -->
+            <form id="edit-project-form" style="display:none;">
+                <input type="hidden" id="edit-p-id">
+                <div class="form-group">
+                    <label>Project Title *</label>
+                    <input type="text" id="edit-p-title" required>
+                </div>
+                <div class="form-group">
+                    <label>Category Tag *</label>
+                    <select id="edit-p-category">
+                        <option value="fullstack">Full-Stack</option>
+                        <option value="python">Python / Django</option>
+                        <option value="frontend">Frontend</option>
+                        <option value="web">Web Apps</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Description *</label>
+                    <textarea id="edit-p-desc" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Image URL or Path *</label>
+                    <input type="text" id="edit-p-image" required>
+                    <label style="margin-top: 8px; font-size: 0.85rem; color: var(--primary); display: block; cursor: pointer;">
+                        📁 Or Upload New Image
+                    </label>
+                    <input type="file" accept="image/*" onchange="handleFileUpload(this, 'edit-p-image')" style="background: var(--bg); border: 1px dashed var(--border); padding: 8px; border-radius: 8px; width: 100%;">
+                </div>
+                <div class="form-group">
+                    <label>Live Demo URL</label>
+                    <input type="url" id="edit-p-live">
+                </div>
+                <div class="form-group">
+                    <label>GitHub Repo URL</label>
+                    <input type="url" id="edit-p-github">
+                </div>
+                <div style="display:flex; gap:10px; margin-top:20px;">
+                    <button type="submit" class="btn btn-primary" style="flex:1;"><i class="fas fa-save"></i> Save Changes</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Cancel</button>
+                </div>
+            </form>
+
+            <!-- EDIT SKILL FORM -->
+            <form id="edit-skill-form" style="display:none;">
+                <input type="hidden" id="edit-sk-id">
+                <div class="form-group">
+                    <label>Skill Name *</label>
+                    <input type="text" id="edit-sk-name" required>
+                </div>
+                <div class="form-group">
+                    <label>FontAwesome Icon Class *</label>
+                    <input type="text" id="edit-sk-icon" required oninput="sanitizeIconInput('edit-sk-icon')">
+                </div>
+                <div class="form-group">
+                    <label>Brand Color *</label>
+                    <input type="color" id="edit-sk-color" required style="height: 45px; padding: 5px; width:100%;">
+                </div>
+                <div style="display:flex; gap:10px; margin-top:20px;">
+                    <button type="submit" class="btn btn-primary" style="flex:1;"><i class="fas fa-save"></i> Update Skill</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Cancel</button>
+                </div>
+            </form>
+
+            <!-- EDIT SERVICE FORM -->
+            <form id="edit-service-form" style="display:none;">
+                <input type="hidden" id="edit-sv-id">
+                <div class="form-group">
+                    <label>Service Title *</label>
+                    <input type="text" id="edit-sv-title" required>
+                </div>
+                <div class="form-group">
+                    <label>FontAwesome Icon Class *</label>
+                    <input type="text" id="edit-sv-icon" required>
+                </div>
+                <div class="form-group">
+                    <label>Description *</label>
+                    <textarea id="edit-sv-desc" rows="3" required></textarea>
+                </div>
+                <div style="display:flex; gap:10px; margin-top:20px;">
+                    <button type="submit" class="btn btn-primary" style="flex:1;"><i class="fas fa-save"></i> Update Service</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <!-- FIREBASE MODULE SCRIPT -->
@@ -825,20 +922,100 @@
                     const id = docSnap.id;
                     const item = document.createElement('div');
                     item.className = 'project-item';
+                    const t = (data.title || '').replace(/'/g, "\'").replace(/"/g, '&quot;');
+                    const c = (data.category || '').replace(/'/g, "\'");
+                    const d = (data.description || '').replace(/'/g, "\'").replace(/
+/g, ' ');
+                    const img = (data.image || '').replace(/'/g, "\'");
+                    const l = (data.liveUrl || '').replace(/'/g, "\'");
+                    const g = (data.githubUrl || '').replace(/'/g, "\'");
+
                     item.innerHTML = `
                         <div class="project-info">
                             <h4>${data.title || ''} <span class="project-tag">${data.category || ''}</span></h4>
                             <p>${data.description || ''}</p>
                         </div>
-                        <button class="btn btn-danger" onclick="deleteProject('${id}')">
-                            <i class="fas fa-trash"></i>
-                        </button>
+                        <div class="action-btns-group">
+                            <button class="btn btn-secondary" onclick="openEditProject('${id}', '${t}', '${c}', '${d}', '${img}', '${l}', '${g}')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-danger" onclick="deleteProject('${id}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
                     `;
                     projectsContainer.appendChild(item);
                 });
             });
 
             
+            
+            // Submit Edit Project
+            const editProjForm = document.getElementById('edit-project-form');
+            if (editProjForm) {
+                editProjForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const id = document.getElementById('edit-p-id').value;
+                    try {
+                        await updateDoc(doc(db, 'projects', id), {
+                            title: document.getElementById('edit-p-title').value,
+                            category: document.getElementById('edit-p-category').value,
+                            description: document.getElementById('edit-p-desc').value,
+                            image: document.getElementById('edit-p-image').value,
+                            liveUrl: document.getElementById('edit-p-live').value,
+                            githubUrl: document.getElementById('edit-p-github').value,
+                            updatedAt: serverTimestamp()
+                        });
+                        window.closeEditModal();
+                        alert('✅ Project updated successfully!');
+                    } catch(err) {
+                        alert('Error updating project: ' + err.message);
+                    }
+                });
+            }
+
+            // Submit Edit Skill
+            const editSkillForm = document.getElementById('edit-skill-form');
+            if (editSkillForm) {
+                editSkillForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const id = document.getElementById('edit-sk-id').value;
+                    try {
+                        await updateDoc(doc(db, 'skills', id), {
+                            name: document.getElementById('edit-sk-name').value,
+                            icon: sanitizeIcon(document.getElementById('edit-sk-icon').value),
+                            color: document.getElementById('edit-sk-color').value,
+                            updatedAt: serverTimestamp()
+                        });
+                        window.closeEditModal();
+                        alert('✅ Skill updated successfully!');
+                    } catch(err) {
+                        alert('Error updating skill: ' + err.message);
+                    }
+                });
+            }
+
+            // Submit Edit Service
+            const editServiceForm = document.getElementById('edit-service-form');
+            if (editServiceForm) {
+                editServiceForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const id = document.getElementById('edit-sv-id').value;
+                    try {
+                        await updateDoc(doc(db, 'services', id), {
+                            title: document.getElementById('edit-sv-title').value,
+                            icon: document.getElementById('edit-sv-icon').value,
+                            description: document.getElementById('edit-sv-desc').value,
+                            updatedAt: serverTimestamp()
+                        });
+                        window.closeEditModal();
+                        alert('✅ Service updated successfully!');
+                    } catch(err) {
+                        alert('Error updating service: ' + err.message);
+                    }
+                });
+            }
+
             // Realtime Settings (Auto-seed default values if empty)
             onSnapshot(doc(db, 'settings', 'general'), async (docSnap) => {
                 if (docSnap.exists()) {
@@ -919,12 +1096,26 @@
                     h4.appendChild(document.createTextNode(' ' + (data.name || '')));
                     infoDiv.appendChild(h4);
                     
-                    const btn = document.createElement('button');
-                    btn.className = 'btn btn-danger';
-                    btn.innerHTML = '<i class="fas fa-trash"></i>';
-                    btn.onclick = () => window.deleteSkill(docSnap.id);
+                    const btnGroup = document.createElement('div');
+                    btnGroup.className = 'action-btns-group';
+
+                    const editBtn = document.createElement('button');
+                    editBtn.className = 'btn btn-secondary';
+                    editBtn.innerHTML = '<i class="fas fa-edit"></i>';
+                    const nameEsc = (data.name || '').replace(/'/g, "\'");
+                    const iconEsc = (data.icon || '').replace(/'/g, "\'");
+                    const colorEsc = (data.color || '').replace(/'/g, "\'");
+                    editBtn.onclick = () => window.openEditSkill(docSnap.id, nameEsc, iconEsc, colorEsc);
+
+                    const delBtn = document.createElement('button');
+                    delBtn.className = 'btn btn-danger';
+                    delBtn.innerHTML = '<i class="fas fa-trash"></i>';
+                    delBtn.onclick = () => window.deleteSkill(docSnap.id);
+
+                    btnGroup.appendChild(editBtn);
+                    btnGroup.appendChild(delBtn);
                     item.appendChild(infoDiv);
-                    item.appendChild(btn);
+                    item.appendChild(btnGroup);
                     skillsContainer.appendChild(item);
                 });
             });
@@ -950,13 +1141,27 @@
                 snapshot.forEach(docSnap => {
                     const data = docSnap.data();
                     servicesContainer.innerHTML += `
-                        <div class="project-item">
-                            <div class="project-info">
-                                <h4><i class="${data.icon || 'fas fa-code'}"></i> ${data.title || ''}</h4>
-                                <p>${data.description || ''}</p>
+                        const st = (data.title || '').replace(/'/g, "\'");
+                        const si = (data.icon || '').replace(/'/g, "\'");
+                        const sd = (data.description || '').replace(/'/g, "\'").replace(/
+/g, ' ');
+
+                        servicesContainer.innerHTML += `
+                            <div class="project-item">
+                                <div class="project-info">
+                                    <h4><i class="${data.icon || 'fas fa-code'}"></i> ${data.title || ''}</h4>
+                                    <p>${data.description || ''}</p>
+                                </div>
+                                <div class="action-btns-group">
+                                    <button class="btn btn-secondary" onclick="openEditService('${docSnap.id}', '${st}', '${si}', '${sd}')">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-danger" onclick="deleteService('${docSnap.id}')">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
                             </div>
-                            <button class="btn btn-danger" onclick="deleteService('${docSnap.id}')"><i class="fas fa-trash"></i></button>
-                        </div>
+                        `;
                     `;
                 });
             });
@@ -1012,7 +1217,75 @@
         };
 
         // Tab switcher function
-        window.switchTab = (tabId, el) => {
+        
+        window.openEditProject = (id, title, category, description, image, liveUrl, githubUrl) => {
+            document.getElementById('edit-p-id').value = id;
+            document.getElementById('edit-p-title').value = title || '';
+            document.getElementById('edit-p-category').value = category || 'fullstack';
+            document.getElementById('edit-p-desc').value = description || '';
+            document.getElementById('edit-p-image').value = image || '';
+            document.getElementById('edit-p-live').value = liveUrl || '';
+            document.getElementById('edit-p-github').value = githubUrl || '';
+
+            document.getElementById('edit-project-form').style.display = 'block';
+            document.getElementById('edit-skill-form').style.display = 'none';
+            document.getElementById('edit-service-form').style.display = 'none';
+            document.getElementById('modal-title').innerHTML = '<i class="fas fa-edit" style="color:var(--primary);"></i> Edit Project';
+            document.getElementById('edit-modal').classList.add('active');
+        };
+
+        window.openEditSkill = (id, name, icon, color) => {
+            document.getElementById('edit-sk-id').value = id;
+            document.getElementById('edit-sk-name').value = name || '';
+            document.getElementById('edit-sk-icon').value = icon || '';
+            document.getElementById('edit-sk-color').value = color || '#00d9ff';
+
+            document.getElementById('edit-project-form').style.display = 'none';
+            document.getElementById('edit-skill-form').style.display = 'block';
+            document.getElementById('edit-service-form').style.display = 'none';
+            document.getElementById('modal-title').innerHTML = '<i class="fas fa-edit" style="color:var(--primary);"></i> Edit Skill';
+            document.getElementById('edit-modal').classList.add('active');
+        };
+
+        window.openEditService = (id, title, icon, description) => {
+            document.getElementById('edit-sv-id').value = id;
+            document.getElementById('edit-sv-title').value = title || '';
+            document.getElementById('edit-sv-icon').value = icon || '';
+            document.getElementById('edit-sv-desc').value = description || '';
+
+            document.getElementById('edit-project-form').style.display = 'none';
+            document.getElementById('edit-skill-form').style.display = 'none';
+            document.getElementById('edit-service-form').style.display = 'block';
+            document.getElementById('modal-title').innerHTML = '<i class="fas fa-edit" style="color:var(--primary);"></i> Edit Service';
+            document.getElementById('edit-modal').classList.add('active');
+        };
+
+        window.closeEditModal = () => {
+            const modal = document.getElementById('edit-modal');
+            if (modal) modal.classList.remove('active');
+        };
+
+        window.toggleSidebar = () => {
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar) sidebar.classList.toggle('mobile-open');
+        };
+
+        window.switchTab = (tabId, el, title) => {
+            document.querySelectorAll('.sidebar-link').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            if (el) el.classList.add('active');
+            const target = document.getElementById(tabId);
+            if (target) target.classList.add('active');
+            if (title) {
+                const topTitle = document.getElementById('top-title');
+                if (topTitle && el) topTitle.innerHTML = el.querySelector('span').innerHTML;
+            }
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar) sidebar.classList.remove('mobile-open');
+        };
+
+        // Old switchTab replaced
+        const oldSwitchTab = () => {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
             el.classList.add('active');
