@@ -31,7 +31,7 @@
                 <span class="bar"></span>
                 <span class="bar"></span>
             </div>
-            <ul class="nav-menu" id="dynamic-nav-menu">
+            <ul class="nav-menu">
                 <li><a href="#home" class="nav-link">Home</a></li>
                 <li><a href="#about" class="nav-link">About</a></li>
                 <li><a href="#skills" class="nav-link">Skills</a></li>
@@ -532,40 +532,6 @@
                 });
             }
             
-            // 6. Dynamic Navigation Menu
-            const navMenuEl = document.getElementById('dynamic-nav-menu');
-            if (navMenuEl) {
-                onSnapshot(query(collection(db, 'navigation'), orderBy('order', 'asc')), (snapshot) => {
-                    if (!snapshot.empty) {
-                        navMenuEl.innerHTML = '';
-                        snapshot.forEach((docSnap) => {
-                            const data = docSnap.data();
-                            const li = document.createElement('li');
-                            const a = document.createElement('a');
-                            a.href = data.href || '#';
-                            a.textContent = data.label || '';
-                            if (data.isButton) {
-                                a.className = 'nav-link btn-primary';
-                            } else {
-                                a.className = 'nav-link';
-                            }
-                            li.appendChild(a);
-                            navMenuEl.appendChild(li);
-                        });
-                        
-                        // Re-attach scroll listener for new links
-                        document.querySelectorAll('.nav-link').forEach(link => {
-                            if (!link.classList.contains('btn-primary')) {
-                                link.addEventListener('click', () => {
-                                    document.getElementById('mobile-menu')?.classList.remove('active');
-                                    document.querySelector('.nav-menu')?.classList.remove('active');
-                                });
-                            }
-                        });
-                    }
-                });
-            }
-
             // 2. Save Contact Form Message to Firestore
             const contactForm = document.getElementById('contact-form');
             if (contactForm) {
