@@ -1458,7 +1458,14 @@
             onSnapshot(query(collection(db, 'socials'), orderBy('createdAt', 'asc')), (snapshot) => {
                 socialsContainer.innerHTML = '';
                 if (snapshot.empty) {
-                    socialsContainer.innerHTML = '<p style="color: var(--text-muted); font-size: 0.9rem;">No social links added yet.</p>';
+                    socialsContainer.innerHTML = `
+                        <div style="width:100%; text-align:center;">
+                            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom:12px;">No social links added yet.</p>
+                            <button class="btn btn-secondary" onclick="populateDefaultSocials()" style="padding: 6px 14px; font-size:0.85rem;">
+                                <i class="fas fa-magic"></i> Load Default Socials
+                            </button>
+                        </div>
+                    `;
                     return;
                 }
                 snapshot.forEach((docSnap) => {
@@ -1484,6 +1491,26 @@
         window.deleteSocial = async (id) => {
             if (confirm('Are you sure you want to delete this social link?')) {
                 await deleteDoc(doc(db, 'socials', id));
+            }
+        };
+
+        window.populateDefaultSocials = async () => {
+            const defaults = [
+                { name: 'GitHub', url: 'https://github.com/Rashi0099', icon: 'fab fa-github' },
+                { name: 'LinkedIn', url: 'https://www.linkedin.com/in/abdul-rasheed5140/', icon: 'fab fa-linkedin' },
+                { name: 'Instagram', url: 'https://www.instagram.com/rasheed00._?igsh=enRuam40MG9ydWhi&utm_source=qr', icon: 'fab fa-instagram' }
+            ];
+            try {
+                for (let i=0; i<defaults.length; i++) {
+                    await addDoc(collection(db, 'socials'), {
+                        name: defaults[i].name,
+                        url: defaults[i].url,
+                        icon: defaults[i].icon,
+                        createdAt: serverTimestamp()
+                    });
+                }
+            } catch(e) {
+                alert('Error loading defaults: ' + e.message);
             }
         };
 
