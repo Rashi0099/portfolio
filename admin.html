@@ -392,19 +392,19 @@
         <main>
             
             <div class="tabs" style="flex-wrap: wrap;">
-                <button class="tab-btn active" onclick="switchTab('projects-tab')">
+                <button class="tab-btn active" onclick="switchTab('projects-tab', this)">
                     <i class="fas fa-folder-open"></i> Projects (<span id="project-count">0</span>)
                 </button>
-                <button class="tab-btn" onclick="switchTab('messages-tab')">
+                <button class="tab-btn" onclick="switchTab('messages-tab', this)">
                     <i class="fas fa-envelope"></i> Messages Inbox (<span id="message-count">0</span>)
                 </button>
-                <button class="tab-btn" onclick="switchTab('settings-tab')">
+                <button class="tab-btn" onclick="switchTab('settings-tab', this)">
                     <i class="fas fa-cog"></i> Settings
                 </button>
-                <button class="tab-btn" onclick="switchTab('skills-tab')">
+                <button class="tab-btn" onclick="switchTab('skills-tab', this)">
                     <i class="fas fa-star"></i> Skills
                 </button>
-                <button class="tab-btn" onclick="switchTab('services-tab')">
+                <button class="tab-btn" onclick="switchTab('services-tab', this)">
                     <i class="fas fa-briefcase"></i> Services
                 </button>
             </div>
@@ -509,6 +509,13 @@
                             <label>Location</label>
                             <input type="text" id="s-location" placeholder="Kerala, India">
                         </div>
+                        <hr style="border-color: var(--border); margin: 20px 0;">
+                        <h4 style="margin-bottom:12px;"><i class="fas fa-file-pdf" style="color:var(--danger);"></i> Resume / CV</h4>
+                        <div class="form-group">
+                            <label>Resume File Path or URL</label>
+                            <input type="text" id="s-resume" placeholder="img/AbdulrasheedCV.pdf">
+                            <small style="color:var(--text-muted);font-size:0.78rem;">Upload CV to img/ folder via git, then enter the path here (e.g. img/AbdulrasheedCV.pdf)</small>
+                        </div>
                         <button type="submit" class="btn btn-primary" style="width: 100%;">
                             <i class="fas fa-save"></i> Save Settings
                         </button>
@@ -524,15 +531,21 @@
                         <form id="add-skill-form">
                             <div class="form-group">
                                 <label>Skill Name *</label>
-                                <input type="text" id="sk-name" required placeholder="e.g. Python">
+                                <input type="text" id="sk-name" required placeholder="e.g. Python" oninput="updateSkillPreview()">
                             </div>
                             <div class="form-group">
                                 <label>FontAwesome Icon Class *</label>
-                                <input type="text" id="sk-icon" required placeholder="fab fa-python">
+                                <input type="text" id="sk-icon" required placeholder="fab fa-python" oninput="updateSkillPreview()">
+                                <small style="color:var(--text-muted);font-size:0.78rem;">Find icons at <a href="https://fontawesome.com/icons" target="_blank" style="color:var(--primary);">fontawesome.com/icons</a></small>
                             </div>
                             <div class="form-group">
                                 <label>Brand Color *</label>
-                                <input type="color" id="sk-color" required value="#3776AB" style="height: 45px; padding: 5px;">
+                                <input type="color" id="sk-color" required value="#3776AB" style="height: 45px; padding: 5px; width:100%;" oninput="updateSkillPreview()">
+                            </div>
+                            <!-- Live Preview -->
+                            <div id="skill-preview" style="display:flex;align-items:center;gap:14px;background:var(--bg-light);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:16px;">
+                                <i id="preview-icon" class="fab fa-python" style="font-size:2rem;color:#3776AB;"></i>
+                                <span id="preview-name" style="font-weight:600;font-size:1rem;">Python</span>
                             </div>
                             <button type="submit" class="btn btn-primary" style="width: 100%;">
                                 <i class="fas fa-save"></i> Save Skill
@@ -628,6 +641,7 @@
                 phone: document.getElementById('s-phone').value,
                 email: document.getElementById('s-email').value,
                 location: document.getElementById('s-location').value,
+                    resumeUrl: document.getElementById('s-resume').value,
             };
             try {
                 await setDoc(doc(db, 'settings', 'general'), data);
@@ -775,6 +789,7 @@
                     document.getElementById('s-phone').value = d.phone || '';
                     document.getElementById('s-email').value = d.email || '';
                     document.getElementById('s-location').value = d.location || '';
+                    document.getElementById('s-resume').value = d.resumeUrl || '';
                 }
             });
 
@@ -862,13 +877,26 @@
         };
 
         // Tab switcher function
-        window.switchTab = (tabId) => {
+        window.switchTab = (tabId, el) => {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            
-            event.currentTarget.classList.add('active');
+            el.classList.add('active');
             document.getElementById(tabId).classList.add('active');
         };
+
+    </script>
+
+    <!-- Skill Preview (non-module global) -->
+    <script>
+        function updateSkillPreview() {
+            const icon  = document.getElementById('sk-icon')?.value.trim() || 'fab fa-python';
+            const name  = document.getElementById('sk-name')?.value.trim() || 'Skill Name';
+            const color = document.getElementById('sk-color')?.value || '#00d9ff';
+            const previewIcon = document.getElementById('preview-icon');
+            const previewName = document.getElementById('preview-name');
+            if (previewIcon) { previewIcon.className = icon; previewIcon.style.color = color; }
+            if (previewName) previewName.textContent = name;
+        }
     </script>
 </body>
 </html>
