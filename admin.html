@@ -1159,9 +1159,11 @@
 
         // Logout
         const logoutSide = document.getElementById('logout-btn-side'); if(logoutSide) logoutSide.addEventListener('click', () => signOut(auth));
-        logoutBtn.addEventListener('click', () => {
-            signOut(auth);
-        });
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', () => {
+                signOut(auth);
+            });
+        }
 
         // Add Project
         addProjectForm.addEventListener('submit', async (e) => {
@@ -1607,13 +1609,7 @@
             if (sidebar) sidebar.classList.remove('mobile-open');
         };
 
-        // Old switchTab replaced
-        const oldSwitchTab = () => {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            el.classList.add('active');
-            document.getElementById(tabId).classList.add('active');
-        };
+
 
     </script>
 
