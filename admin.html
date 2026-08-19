@@ -966,8 +966,7 @@
                     item.className = 'project-item';
                     const t = (data.title || '').replace(/'/g, "\'").replace(/"/g, '&quot;');
                     const c = (data.category || '').replace(/'/g, "\'");
-                    const d = (data.description || '').replace(/'/g, "\'").replace(/
-/g, ' ');
+                    const d = (data.description || '').replace(/'/g, "\'").replace(/\r?\n/g, ' ');
                     const img = (data.image || '').replace(/'/g, "\'");
                     const l = (data.liveUrl || '').replace(/'/g, "\'");
                     const g = (data.githubUrl || '').replace(/'/g, "\'");
@@ -1182,29 +1181,27 @@
 
                 snapshot.forEach(docSnap => {
                     const data = docSnap.data();
-                    servicesContainer.innerHTML += `
-                        const st = (data.title || '').replace(/'/g, "\'");
-                        const si = (data.icon || '').replace(/'/g, "\'");
-                        const sd = (data.description || '').replace(/'/g, "\'").replace(/
-/g, ' ');
+                    const st = (data.title || '').replace(/'/g, "\'");
+                    const si = (data.icon || '').replace(/'/g, "\'");
+                    const sd = (data.description || '').replace(/'/g, "\'").replace(/\r?\n/g, ' ');
 
-                        servicesContainer.innerHTML += `
-                            <div class="project-item">
-                                <div class="project-info">
-                                    <h4><i class="${data.icon || 'fas fa-code'}"></i> ${data.title || ''}</h4>
-                                    <p>${data.description || ''}</p>
-                                </div>
-                                <div class="action-btns-group">
-                                    <button class="btn btn-secondary" onclick="openEditService('${docSnap.id}', '${st}', '${si}', '${sd}')">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="btn btn-danger" onclick="deleteService('${docSnap.id}')">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        `;
+                    const item = document.createElement('div');
+                    item.className = 'project-item';
+                    item.innerHTML = `
+                        <div class="project-info">
+                            <h4><i class="${data.icon || 'fas fa-code'}"></i> ${data.title || ''}</h4>
+                            <p>${data.description || ''}</p>
+                        </div>
+                        <div class="action-btns-group">
+                            <button class="btn btn-secondary" onclick="openEditService('${docSnap.id}', '${st}', '${si}', '${sd}')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-danger" onclick="deleteService('${docSnap.id}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
                     `;
+                    servicesContainer.appendChild(item);
                 });
             });
 
