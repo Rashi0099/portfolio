@@ -775,7 +775,15 @@
                                 <input type="text" id="s-location" placeholder="Kerala, India">
                             </div>
                             <div class="form-group">
-                                <label>Freelance Status</label>
+                                <label>Freelance Indicator State</label>
+                                <select id="s-freelance-state">
+                                    <option value="available">Available (Green Indicator)</option>
+                                    <option value="not_available">Not Available (Red Indicator)</option>
+                                    <option value="hidden">Hide Completely</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Freelance Text</label>
                                 <input type="text" id="s-freelance" placeholder="Available for freelance work">
                             </div>
                             <button type="submit" class="btn btn-primary" style="width: 100%;">
@@ -1401,7 +1409,8 @@
                         phone: document.getElementById('s-phone').value,
                         email: document.getElementById('s-email').value,
                         location: document.getElementById('s-location').value,
-                        freelance: document.getElementById('s-freelance').value
+                        freelance: document.getElementById('s-freelance').value,
+                        freelanceState: document.getElementById('s-freelance-state').value
                     }, { merge: true });
                     alert('Contact info saved!');
                 } catch (err) {
@@ -1513,6 +1522,7 @@
                     document.getElementById('s-profile-img').value = d.profileImg || '';
                     document.getElementById('s-location').value = d.location || '';
                     document.getElementById('s-freelance').value = d.freelance || '';
+                    document.getElementById('s-freelance-state').value = d.freelanceState || 'available';
                     document.getElementById('s-resume').value = d.resumeUrl || '';
                 } else {
                     // Seed defaults if empty
@@ -1526,6 +1536,7 @@
                         email: "abdulrasheed5140@gmail.com",
                         location: "Malappuram, Kerala, India",
                         freelance: "Available for freelance work",
+                        freelanceState: "available",
                         resumeUrl: "img/AbdulrasheedCV.pdf"
                     };
                     try {

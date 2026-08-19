@@ -367,7 +367,7 @@
                             <p><span id="dyn-location">Malappuram, Kerala, India</span></p>
                         </div>
                     </div>
-                    <div class="availability-status">
+                    <div class="availability-status" id="dyn-freelance-container">
                         <div class="status-indicator"></div>
                         <span id="dyn-freelance">Available for freelance work</span>
                     </div>
@@ -476,6 +476,20 @@
                     if(d.freelance) { const el = document.getElementById('dyn-freelance'); if(el) el.textContent = d.freelance; }
                     if(d.profileImg) { const el = document.getElementById('dyn-profile-img'); if(el) el.src = d.profileImg; }
                     if(d.resumeUrl) { const el = document.getElementById('dyn-resume-btn'); if(el) el.href = d.resumeUrl; }
+                    
+                    const freelanceContainer = document.getElementById('dyn-freelance-container');
+                    if (freelanceContainer) {
+                        if (d.freelanceState === 'hidden') {
+                            freelanceContainer.style.display = 'none';
+                        } else {
+                            freelanceContainer.style.display = 'flex';
+                            if (d.freelanceState === 'not_available') {
+                                freelanceContainer.classList.add('not-available');
+                            } else {
+                                freelanceContainer.classList.remove('not-available');
+                            }
+                        }
+                    }
                 }
             });
 

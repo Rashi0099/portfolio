@@ -826,6 +826,13 @@ p  { font-size: 0.97rem; color: var(--text); }
     font-weight: 500;
 }
 
+.availability-status.not-available .status-indicator {
+    background: #ff3366;
+}
+.availability-status.not-available span {
+    color: #ff3366;
+}
+
 /* Contact Form */
 .contact-form {
     display: flex;
