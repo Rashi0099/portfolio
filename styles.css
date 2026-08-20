@@ -390,9 +390,9 @@ p  { font-size: 0.97rem; color: var(--text); }
 }
 
 .blob-shape {
-    width: 320px;
-    height: 320px;
-    border-radius: 24px;
+    width: 420px;
+    height: 420px;
+    border-radius: 28px;
     overflow: hidden;
     position: relative;
     background: var(--bg-card);
@@ -1152,7 +1152,7 @@ footer {
     .hero-btns { justify-content: center; }
     .social-links { justify-content: center; }
     .hero-image { order: -1; }
-    .blob-shape { width: 260px; height: 260px; }
+    .blob-shape { width: 340px; height: 340px; }
 
     .about-wrapper {
         grid-template-columns: 1fr;
@@ -1210,7 +1210,7 @@ footer {
     }
 
     .hero { padding-top: 100px; }
-    .blob-shape { width: 220px; height: 220px; }
+    .blob-shape { width: 280px; height: 280px; }
 
     .about-stats {
         grid-template-columns: 1fr;
