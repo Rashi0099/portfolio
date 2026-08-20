@@ -562,6 +562,7 @@ p  { font-size: 0.97rem; color: var(--text); }
 ============================================================ */
 .skills {
     position: relative;
+    background-image: url('img/skills-bg.png');
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
