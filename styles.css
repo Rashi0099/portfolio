@@ -288,7 +288,7 @@ p  { font-size: 0.97rem; color: var(--text); }
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    z-index: 10;
+    z-index: 1;
 }
 
 /* Subtle static background grid */
@@ -396,6 +396,7 @@ p  { font-size: 0.97rem; color: var(--text); }
     overflow: hidden;
     position: relative;
     background: var(--bg-card);
+    z-index: 100;
     
     /* 3D Premium Shadow */
     box-shadow: 
