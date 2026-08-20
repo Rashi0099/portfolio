@@ -1259,6 +1259,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, setDoc, updateDoc, onSnapshot, query, orderBy, serverTimestamp, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
         import { firebaseConfig } from "./firebase-config.js";
 
@@ -1266,7 +1267,28 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+        const storage = getStorage(app);
         window._firebaseDb = db; // Expose for non-module scripts
+
+        // ── Firebase Storage Upload Helper ──
+        // Returns a Promise that resolves to the download URL
+        window.uploadToFirebaseStorage = (file, path, onProgress) => {
+            return new Promise((resolve, reject) => {
+                const storageRef = ref(storage, path);
+                const uploadTask = uploadBytesResumable(storageRef, file);
+                uploadTask.on('state_changed',
+                    (snapshot) => {
+                        const pct = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+                        if (onProgress) onProgress(pct);
+                    },
+                    (error) => reject(error),
+                    async () => {
+                        const url = await getDownloadURL(uploadTask.snapshot.ref);
+                        resolve(url);
+                    }
+                );
+            });
+        };
 
         // Elements
         const loginScreen = document.getElementById('login-screen');
@@ -1953,24 +1975,29 @@
         // Cover Image Preview Helpers
         window._currentAddProjectId = null;
 
-        window.previewCoverImage = (inputEl) => {
-            if (inputEl.files && inputEl.files[0]) {
-                const file = inputEl.files[0];
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const urlInput = document.getElementById('p-image');
-                    if (urlInput) urlInput.value = e.target.result;
-                    const previewBox = document.getElementById('p-cover-preview-box');
-                    const previewImg = document.getElementById('p-cover-preview-img');
-                    if (previewBox && previewImg) {
-                        previewImg.src = e.target.result;
-                        previewBox.style.display = 'block';
-                    }
-                    // Update drop zone text
-                    const dz = document.getElementById('p-cover-drop-zone');
-                    if (dz) dz.innerHTML = `<i class="fas fa-check-circle" style="font-size:1.4rem; color:#22c55e;"></i><p style="color:#22c55e; margin:6px 0 0; font-size:0.84rem;">${file.name} selected</p>`;
-                };
-                reader.readAsDataURL(file);
+        window.previewCoverImage = async (inputEl) => {
+            if (!inputEl.files || !inputEl.files[0]) return;
+            const file = inputEl.files[0];
+            const urlInput = document.getElementById('p-image');
+            const previewBox = document.getElementById('p-cover-preview-box');
+            const previewImg = document.getElementById('p-cover-preview-img');
+            const dz = document.getElementById('p-cover-drop-zone');
+
+            // Show uploading state
+            if (dz) dz.innerHTML = '<i class="fas fa-spinner fa-spin" style="font-size:1.6rem; color:var(--primary);"></i><p style="color:var(--primary); margin:6px 0 0; font-size:0.84rem;">Uploading to Firebase... 0%</p>';
+
+            try {
+                const path = `project-covers/${Date.now()}_${file.name.replace(/\s/g,'_')}`;
+                const url = await window.uploadToFirebaseStorage(file, path, (pct) => {
+                    if (dz) dz.querySelector('p').textContent = `Uploading to Firebase... ${pct}%`;
+                });
+                if (urlInput) urlInput.value = url;
+                if (previewImg) previewImg.src = url;
+                if (previewBox) previewBox.style.display = 'block';
+                if (dz) dz.innerHTML = `<i class="fas fa-check-circle" style="font-size:1.4rem; color:#22c55e;"></i><p style="color:#22c55e; margin:6px 0 0; font-size:0.84rem;">${file.name} — uploaded ✓</p>`;
+            } catch(err) {
+                if (dz) dz.innerHTML = '<i class="fas fa-cloud-upload-alt" style="font-size:1.8rem; color:var(--primary); opacity:0.7;"></i><p style="color:#ef4444; margin:6px 0 0; font-size:0.84rem;">Upload failed — try again</p>';
+                alert('Upload error: ' + err.message);
             }
         };
 
@@ -2097,37 +2124,41 @@
             container.appendChild(card);
         };
 
-        window.uploadRowImage = (inputEl) => {
-            if (inputEl.files && inputEl.files[0]) {
-                const file = inputEl.files[0];
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const card = inputEl.closest('.screenshot-row-card');
-                    if (!card) return;
-                    const urlInput = card.querySelector('.sc-url-input');
+        window.uploadRowImage = async (inputEl) => {
+            if (!inputEl.files || !inputEl.files[0]) return;
+            const file = inputEl.files[0];
+            const card = inputEl.closest('.screenshot-row-card');
+            if (!card) return;
+            const urlInput = card.querySelector('.sc-url-input');
+            const uploadLabel = inputEl.closest('label');
 
-                    // Show local preview thumbnail in the card
-                    let previewEl = card.querySelector('.sc-local-preview');
-                    if (!previewEl) {
-                        previewEl = document.createElement('div');
-                        previewEl.className = 'sc-local-preview';
-                        previewEl.style.cssText = 'margin-top:6px; border-radius:8px; overflow:hidden; border:1px solid rgba(255,255,255,0.1);';
-                        card.appendChild(previewEl);
-                    }
-                    previewEl.innerHTML = `
-                        <img src="${e.target.result}" style="width:100%; max-height:120px; object-fit:cover;">
-                        <div style="background:rgba(0,0,0,0.5); padding:5px 10px; font-size:0.75rem; color:#fbbf24; display:flex; align-items:center; gap:5px;">
-                            <i class="fas fa-exclamation-triangle"></i>
-                            Local preview only — paste a hosted URL above for saving to Firestore (e.g. upload to imgbb.com or your server first)
-                        </div>
-                    `;
+            // Show progress in upload button
+            if (uploadLabel) uploadLabel.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 0%';
 
-                    // Only set URL if it's a short path, not a giant base64 blob
-                    if (urlInput && !urlInput.value.trim()) {
-                        urlInput.placeholder = 'Paste a hosted URL here (base64 too large for Firestore)';
-                    }
-                };
-                reader.readAsDataURL(file);
+            try {
+                const path = `project-screenshots/${Date.now()}_${file.name.replace(/\s/g,'_')}`;
+                const url = await window.uploadToFirebaseStorage(file, path, (pct) => {
+                    if (uploadLabel) uploadLabel.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${pct}%`;
+                });
+                if (urlInput) urlInput.value = url;
+                if (uploadLabel) uploadLabel.innerHTML = '<i class="fas fa-check-circle" style="color:#22c55e;"></i> Done';
+                // Show thumbnail preview
+                let previewEl = card.querySelector('.sc-local-preview');
+                if (!previewEl) {
+                    previewEl = document.createElement('div');
+                    previewEl.className = 'sc-local-preview';
+                    previewEl.style.cssText = 'margin-top:6px; border-radius:8px; overflow:hidden; border:1px solid rgba(255,255,255,0.1);';
+                    card.appendChild(previewEl);
+                }
+                previewEl.innerHTML = `
+                    <img src="${url}" style="width:100%; max-height:100px; object-fit:cover;">
+                    <div style="background:rgba(0,0,0,0.4); padding:4px 8px; font-size:0.72rem; color:#22c55e; display:flex; align-items:center; gap:4px;">
+                        <i class="fas fa-check-circle"></i> Uploaded to Firebase Storage
+                    </div>
+                `;
+            } catch(err) {
+                if (uploadLabel) uploadLabel.innerHTML = '<i class="fas fa-upload"></i> Retry';
+                alert('Screenshot upload failed: ' + err.message);
             }
         };
 
@@ -2182,20 +2213,28 @@
         });
 
         // Edit Modal — Cover Image Preview Helpers
-        window.previewEditCoverImage = (inputEl) => {
-            if (inputEl.files && inputEl.files[0]) {
-                const file = inputEl.files[0];
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const urlInput = document.getElementById('edit-p-image');
-                    if (urlInput) { urlInput.value = e.target.result; }
-                    const previewBox = document.getElementById('edit-cover-preview-box');
-                    const previewImg = document.getElementById('edit-cover-preview-img');
-                    if (previewBox && previewImg) { previewImg.src = e.target.result; previewBox.style.display = 'block'; }
-                    const dz = document.getElementById('edit-cover-drop-zone');
-                    if (dz) dz.innerHTML = `<i class="fas fa-check-circle" style="font-size:1.2rem; color:#22c55e;"></i><p style="color:#22c55e; margin:4px 0 0; font-size:0.8rem;">${file.name} selected</p>`;
-                };
-                reader.readAsDataURL(file);
+        window.previewEditCoverImage = async (inputEl) => {
+            if (!inputEl.files || !inputEl.files[0]) return;
+            const file = inputEl.files[0];
+            const urlInput = document.getElementById('edit-p-image');
+            const previewBox = document.getElementById('edit-cover-preview-box');
+            const previewImg = document.getElementById('edit-cover-preview-img');
+            const dz = document.getElementById('edit-cover-drop-zone');
+
+            if (dz) dz.innerHTML = '<i class="fas fa-spinner fa-spin" style="font-size:1.2rem; color:var(--primary);"></i><p style="color:var(--primary); margin:4px 0 0; font-size:0.8rem;">Uploading... 0%</p>';
+
+            try {
+                const path = `project-covers/${Date.now()}_${file.name.replace(/\s/g,'_')}`;
+                const url = await window.uploadToFirebaseStorage(file, path, (pct) => {
+                    if (dz) dz.querySelector('p').textContent = `Uploading... ${pct}%`;
+                });
+                if (urlInput) { urlInput.value = url; }
+                if (previewImg) previewImg.src = url;
+                if (previewBox) previewBox.style.display = 'block';
+                if (dz) dz.innerHTML = `<i class="fas fa-check-circle" style="font-size:1.2rem; color:#22c55e;"></i><p style="color:#22c55e; margin:4px 0 0; font-size:0.8rem;">${file.name} — uploaded ✓</p>`;
+            } catch(err) {
+                if (dz) dz.innerHTML = '<i class="fas fa-cloud-upload-alt" style="font-size:1.4rem; color:var(--primary); opacity:0.7;"></i><p style="color:#ef4444; margin:4px 0 0; font-size:0.8rem;">Upload failed — try again</p>';
+                alert('Upload error: ' + err.message);
             }
         };
 
