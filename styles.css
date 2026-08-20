@@ -436,6 +436,7 @@ p  { font-size: 0.97rem; color: var(--text); }
     background: var(--bg-card);
     box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.08);
     transform: perspective(1000px) rotateY(-5deg) rotateX(5deg);
+    margin-bottom: 24px;
 }
 
 .about-profile-anim {
@@ -1181,6 +1182,10 @@ footer {
     .about-wrapper {
         grid-template-columns: 1fr;
         text-align: center;
+    }
+
+    .blob-shape-small {
+        margin: 0 auto 24px auto;
     }
 
     .about-text .about-buttons { justify-content: center; }
