@@ -86,7 +86,12 @@
             </div>
             <div class="about-wrapper">
                 <div class="about-text" id="dyn-about-container">
-                    <h3>Python Full-Stack Developer </h3>
+                    <div class="about-profile-anim">
+                        <div class="blob-shape-small">
+                            <img src="img/profile-pic.png" alt="Abdul Rasheed" class="profile-img" id="dyn-profile-img-2">
+                        </div>
+                    </div>
+                    <h3 style="margin-top: 24px;">Python Full-Stack Developer</h3>
                     <div id="dyn-about" style="white-space: pre-line;">
                         I'm a commerce graduate transitioning into software development,
                         currently focused on building practical web applications using Python.
@@ -350,7 +355,12 @@
                     if(d.phone) { const el = document.getElementById('dyn-phone'); if(el) el.textContent = d.phone; }
                     if(d.email) { const el = document.getElementById('dyn-email'); if(el) el.textContent = d.email; }
                     if(d.location) { const el = document.getElementById('dyn-location'); if(el) el.textContent = d.location; }
-                    if(d.profileImg) { const el = document.getElementById('dyn-profile-img'); if(el) el.src = d.profileImg; }
+                    if(d.profileImg) { 
+                        const el = document.getElementById('dyn-profile-img'); 
+                        const el2 = document.getElementById('dyn-profile-img-2'); 
+                        if(el) el.src = d.profileImg; 
+                        if(el2) el2.src = d.profileImg; 
+                    }
                     if(d.resumeUrl) { const el = document.getElementById('dyn-resume-btn'); if(el) el.href = d.resumeUrl; }
                     
                     const freelanceContainer = document.getElementById('dyn-freelance-container');

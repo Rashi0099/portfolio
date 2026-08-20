@@ -291,3 +291,22 @@ function createConfetti() {
     }
 }
 
+
+// ============================================================
+// 8. ABOUT SECTION PROFILE ANIMATION
+// ============================================================
+const aboutProfileAnim = document.querySelector('.about-profile-anim');
+if (aboutProfileAnim) {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('show-img');
+            } else {
+                // Optional: remove class if you want it to animate every time you scroll past
+                // entry.target.classList.remove('show-img'); 
+            }
+        });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    
+    observer.observe(aboutProfileAnim);
+}
