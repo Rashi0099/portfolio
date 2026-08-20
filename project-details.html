@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Core Styles -->
-    <link rel="stylesheet" href="styles.css?v=24">
+    <link rel="stylesheet" href="styles.css?v=25">
 
     <style>
         :root {
@@ -60,12 +60,12 @@
 
         /* Top Header Meta */
         .header-meta-box {
-            margin-bottom: 32px;
+            margin-bottom: 28px;
         }
 
         .project-title-large {
             font-family: var(--font-heading);
-            font-size: clamp(2.2rem, 5vw, 3.2rem);
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
             font-weight: 800;
             letter-spacing: -0.02em;
             line-height: 1.15;
@@ -90,13 +90,40 @@
             text-transform: uppercase;
         }
 
+        /* Generic Glass Card */
+        .detail-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 28px;
+            margin-bottom: 32px;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.4);
+            transition: border-color 0.3s ease;
+        }
+
+        .detail-card:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .detail-card h3 {
+            font-family: var(--font-heading);
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #f8fafc;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
         /* 50/50 Split Interactive Screenshot Row */
         .screenshot-interactive-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 36px;
             align-items: stretch;
-            margin-bottom: 44px;
+            margin-bottom: 36px;
         }
 
         @media (max-width: 960px) {
@@ -204,7 +231,7 @@
             object-fit: cover;
         }
 
-        /* Right Half: Explanation Box for Active Screenshot */
+        /* Right Half: Active Screenshot Explanation Card */
         .explanation-half-box {
             background: rgba(15, 23, 42, 0.6);
             backdrop-filter: blur(16px);
@@ -253,39 +280,18 @@
             white-space: pre-line;
         }
 
-        /* Bottom Case Study Grid */
-        .case-study-details-grid {
+        /* Bottom Grid: Features & Tech Stack */
+        .case-study-bottom-grid {
             display: grid;
-            grid-template-columns: 1.3fr 1fr;
-            gap: 36px;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 32px;
         }
 
         @media (max-width: 900px) {
-            .case-study-details-grid {
+            .case-study-bottom-grid {
                 grid-template-columns: 1fr;
                 gap: 24px;
             }
-        }
-
-        .detail-card {
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            padding: 28px;
-            margin-bottom: 24px;
-            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.4);
-        }
-
-        .detail-card h3 {
-            font-family: var(--font-heading);
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 18px;
-            color: #f8fafc;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
 
         .features-list {
@@ -413,7 +419,7 @@
             <!-- Dynamic Case Study View -->
             <div id="project-content" class="fade-in-up" style="display:none;">
                 
-                <!-- Header Meta -->
+                <!-- 1. Header Meta -->
                 <div class="header-meta-box">
                     <span class="project-tag-badge" id="det-category"><i class="fas fa-layer-group"></i> Fullstack</span>
                     <h1 class="project-title-large" id="det-title">Project Title</h1>
@@ -422,7 +428,15 @@
                     </p>
                 </div>
 
-                <!-- 50/50 SPLIT INTERACTIVE SCREENSHOT & EXPLANATION ROW -->
+                <!-- 2. FULL WIDTH PROJECT OVERVIEW BOX (ABOVE IMAGES) -->
+                <div class="detail-card">
+                    <h3><i class="fas fa-file-alt" style="color:var(--primary);"></i> Project Overview</h3>
+                    <div id="det-long-desc" style="color: #cbd5e1; line-height: 1.85; font-size: 1.02rem; white-space: pre-line;">
+                        Project overview details...
+                    </div>
+                </div>
+
+                <!-- 3. 50/50 SPLIT INTERACTIVE SCREENSHOT & EXPLANATION ROW -->
                 <div class="screenshot-interactive-row">
                     
                     <!-- Left 50%: Image Viewer & Thumbnails -->
@@ -456,45 +470,34 @@
 
                 </div>
 
-                <!-- BOTTOM CASE STUDY DETAILS GRID -->
-                <div class="case-study-details-grid">
+                <!-- 4. BOTTOM GRID: FEATURES & TECH STACK -->
+                <div class="case-study-bottom-grid">
                     
-                    <!-- Left: Full Overview / Explanation -->
-                    <div class="detail-card">
-                        <h3><i class="fas fa-file-alt" style="color:var(--primary);"></i> Project Story & Overview</h3>
-                        <div id="det-long-desc" style="color: #cbd5e1; line-height: 1.85; font-size: 0.98rem; white-space: pre-line;">
-                            Project overview details...
-                        </div>
+                    <!-- Features Card -->
+                    <div class="detail-card" id="features-card" style="display:none;">
+                        <h3><i class="fas fa-star" style="color:var(--primary);"></i> Key Features & Highlights</h3>
+                        <ul class="features-list" id="det-features">
+                            <!-- Features list items -->
+                        </ul>
                     </div>
 
-                    <!-- Right: Features & Tech Stack -->
-                    <div>
-                        <!-- Features -->
-                        <div class="detail-card" id="features-card" style="display:none;">
-                            <h3><i class="fas fa-star" style="color:var(--primary);"></i> Key Features & Highlights</h3>
-                            <ul class="features-list" id="det-features">
-                                <!-- Features list items -->
-                            </ul>
+                    <!-- Tech Stack & Links -->
+                    <div class="detail-card">
+                        <h3><i class="fas fa-code" style="color:var(--primary);"></i> Tech Stack & Links</h3>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <div id="det-tech-stack">
+                                <!-- Tech pills inserted here -->
+                            </div>
                         </div>
 
-                        <!-- Tech Stack & Links -->
-                        <div class="detail-card">
-                            <h3><i class="fas fa-code" style="color:var(--primary);"></i> Tech Stack & Links</h3>
-                            
-                            <div style="margin-bottom: 20px;">
-                                <div id="det-tech-stack">
-                                    <!-- Tech pills inserted here -->
-                                </div>
-                            </div>
-
-                            <div class="action-links-group">
-                                <a id="det-live-btn" href="#" target="_blank" class="btn btn-filled" style="display:none; flex:1; min-width:150px; justify-content:center;">
-                                    <i class="fas fa-external-link-alt"></i> Live Demo
-                                </a>
-                                <a id="det-github-btn" href="#" target="_blank" class="btn btn-outlined" style="display:none; flex:1; min-width:150px; justify-content:center;">
-                                    <i class="fab fa-github"></i> GitHub Code
-                                </a>
-                            </div>
+                        <div class="action-links-group">
+                            <a id="det-live-btn" href="#" target="_blank" class="btn btn-filled" style="display:none; flex:1; min-width:150px; justify-content:center;">
+                                <i class="fas fa-external-link-alt"></i> Live Demo
+                            </a>
+                            <a id="det-github-btn" href="#" target="_blank" class="btn btn-outlined" style="display:none; flex:1; min-width:150px; justify-content:center;">
+                                <i class="fab fa-github"></i> GitHub Code
+                            </a>
                         </div>
                     </div>
 
@@ -556,10 +559,11 @@
                 document.getElementById('det-short-desc').textContent = data.description || '';
                 document.title = `${data.title || 'Project'} | Case Study`;
 
-                // 2. Detailed Description & Features
+                // 2. Full Width Overview Section (Above Image Showcase)
                 const longDesc = data.longDescription || data.description || 'No detailed overview available for this project yet.';
                 document.getElementById('det-long-desc').textContent = longDesc;
 
+                // 3. Features List
                 if (data.features && Array.isArray(data.features) && data.features.length > 0) {
                     const featCard = document.getElementById('features-card');
                     const featList = document.getElementById('det-features');
@@ -586,7 +590,7 @@
                     featCard.style.display = 'block';
                 }
 
-                // 3. Tech Stack Pills
+                // 4. Tech Stack Pills
                 const techContainer = document.getElementById('det-tech-stack');
                 techContainer.innerHTML = '';
                 const techList = Array.isArray(data.techStack) ? data.techStack : (data.techStack ? data.techStack.split(',') : []);
@@ -603,7 +607,7 @@
                     techContainer.innerHTML = '<span class="tech-pill"><i class="fas fa-microchip" style="font-size:0.75rem; color:var(--primary);"></i> Web Development</span>';
                 }
 
-                // 4. Action Buttons
+                // 5. Action Buttons
                 if (data.liveUrl) {
                     const btn = document.getElementById('det-live-btn');
                     btn.href = data.liveUrl;
@@ -615,7 +619,7 @@
                     btn.style.display = 'inline-flex';
                 }
 
-                // 5. Build Gallery Items Array
+                // 6. Build Gallery Items Array
                 galleryItems = [];
 
                 // Helper to parse image item (handles string format "URL | Title | Description")
