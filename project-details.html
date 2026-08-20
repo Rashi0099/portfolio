@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Core Styles -->
-    <link rel="stylesheet" href="styles.css?v=23">
+    <link rel="stylesheet" href="styles.css?v=24">
 
     <style>
         :root {
@@ -65,7 +65,7 @@
 
         .project-title-large {
             font-family: var(--font-heading);
-            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            font-size: clamp(2.2rem, 5vw, 3.2rem);
             font-weight: 800;
             letter-spacing: -0.02em;
             line-height: 1.15;
@@ -90,22 +90,39 @@
             text-transform: uppercase;
         }
 
-        /* Full Width Top Showcase Gallery */
-        .showcase-container {
+        /* 50/50 Split Interactive Screenshot Row */
+        .screenshot-interactive-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 36px;
+            align-items: stretch;
+            margin-bottom: 44px;
+        }
+
+        @media (max-width: 960px) {
+            .screenshot-interactive-row {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+        }
+
+        /* Left Half: Image Display & Thumbnails */
+        .gallery-half-box {
             background: rgba(15, 23, 42, 0.6);
             backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 24px;
-            padding: 24px;
-            margin-bottom: 44px;
-            box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7);
-            position: relative;
+            padding: 20px;
+            box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.6);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .main-hero-display {
             position: relative;
             width: 100%;
-            height: 520px;
+            height: 380px;
             border-radius: 16px;
             overflow: hidden;
             background: #020617;
@@ -122,13 +139,13 @@
             transition: opacity 0.3s ease, transform 0.4s ease;
         }
 
-        /* Gallery Arrow Buttons */
+        /* Arrow Buttons */
         .gallery-nav-btn {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            width: 44px;
-            height: 44px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             background: rgba(6, 9, 19, 0.75);
             border: 1px solid rgba(255, 255, 255, 0.15);
@@ -136,7 +153,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.1rem;
+            font-size: 1rem;
             cursor: pointer;
             backdrop-filter: blur(10px);
             transition: all 0.25s ease;
@@ -146,67 +163,25 @@
         .gallery-nav-btn:hover {
             background: var(--primary);
             color: #000;
-            box-shadow: 0 0 20px rgba(0, 217, 255, 0.5);
+            box-shadow: 0 0 16px rgba(0, 217, 255, 0.5);
         }
 
-        .gallery-nav-prev { left: 16px; }
-        .gallery-nav-next { right: 16px; }
-
-        /* Screenshot Explanation / Caption Bar */
-        .caption-bar {
-            margin-top: 16px;
-            padding: 14px 20px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-            flex-wrap: wrap;
-        }
-
-        .caption-text-box {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.95rem;
-            color: #f1f5f9;
-            font-weight: 500;
-        }
-
-        .caption-counter {
-            font-size: 0.8rem;
-            color: var(--primary);
-            font-weight: 700;
-            background: rgba(0, 217, 255, 0.1);
-            padding: 3px 10px;
-            border-radius: 12px;
-        }
+        .gallery-nav-prev { left: 12px; }
+        .gallery-nav-next { right: 12px; }
 
         /* Thumbnails Strip */
         .thumbnails-row {
             display: flex;
-            gap: 14px;
-            margin-top: 18px;
+            gap: 12px;
+            margin-top: 16px;
             overflow-x: auto;
-            padding-bottom: 6px;
-            justify-content: center;
-        }
-
-        @media (max-width: 768px) {
-            .thumbnails-row {
-                justify-content: flex-start;
-            }
-            .main-hero-display {
-                height: 320px;
-            }
+            padding-bottom: 4px;
         }
 
         .thumb-item {
-            width: 100px;
-            height: 68px;
-            border-radius: 12px;
+            width: 85px;
+            height: 60px;
+            border-radius: 10px;
             overflow: hidden;
             cursor: pointer;
             border: 2px solid transparent;
@@ -219,7 +194,7 @@
         .thumb-item.active, .thumb-item:hover {
             opacity: 1;
             border-color: var(--primary);
-            box-shadow: 0 0 18px rgba(0, 217, 255, 0.45);
+            box-shadow: 0 0 16px rgba(0, 217, 255, 0.45);
             transform: translateY(-2px);
         }
 
@@ -229,10 +204,59 @@
             object-fit: cover;
         }
 
+        /* Right Half: Explanation Box for Active Screenshot */
+        .explanation-half-box {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.6);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transition: border-color 0.3s ease;
+        }
+
+        .explanation-half-box:hover {
+            border-color: rgba(0, 217, 255, 0.25);
+        }
+
+        .screen-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 217, 255, 0.1);
+            color: var(--primary);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            width: fit-content;
+            margin-bottom: 16px;
+        }
+
+        .screen-title {
+            font-family: var(--font-heading);
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 16px;
+            line-height: 1.3;
+        }
+
+        .screen-desc {
+            color: #cbd5e1;
+            font-size: 1rem;
+            line-height: 1.8;
+            white-space: pre-line;
+        }
+
         /* Bottom Case Study Grid */
         .case-study-details-grid {
             display: grid;
-            grid-template-columns: 1.4fr 1fr;
+            grid-template-columns: 1.3fr 1fr;
             gap: 36px;
         }
 
@@ -375,7 +399,7 @@
             <!-- Loading Placeholder -->
             <div id="project-loading" class="loading-box">
                 <div class="spinner"></div>
-                <p style="color: #64748b; font-size: 0.95rem;">Loading case study showcase...</p>
+                <p style="color: #64748b; font-size: 0.95rem;">Loading case study...</p>
             </div>
 
             <!-- Error Box -->
@@ -398,32 +422,38 @@
                     </p>
                 </div>
 
-                <!-- TOP FULL WIDTH SHOWCASE GALLERY -->
-                <div class="showcase-container">
+                <!-- 50/50 SPLIT INTERACTIVE SCREENSHOT & EXPLANATION ROW -->
+                <div class="screenshot-interactive-row">
                     
-                    <div class="main-hero-display">
-                        <button class="gallery-nav-btn gallery-nav-prev" id="btn-prev-img" title="Previous Image">
-                            <i class="fas fa-chevron-left"></i>
-                        </button>
-                        <img id="det-main-img" src="" alt="Project Preview">
-                        <button class="gallery-nav-btn gallery-nav-next" id="btn-next-img" title="Next Image">
-                            <i class="fas fa-chevron-right"></i>
-                        </button>
-                    </div>
-
-                    <!-- Caption & Explanation Bar -->
-                    <div class="caption-bar">
-                        <div class="caption-text-box">
-                            <i class="fas fa-image" style="color:var(--primary);"></i>
-                            <span id="det-img-caption">Main Interface Overview</span>
+                    <!-- Left 50%: Image Viewer & Thumbnails -->
+                    <div class="gallery-half-box">
+                        <div class="main-hero-display">
+                            <button class="gallery-nav-btn gallery-nav-prev" id="btn-prev-img" title="Previous Screenshot">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <img id="det-main-img" src="" alt="Project Preview">
+                            <button class="gallery-nav-btn gallery-nav-next" id="btn-next-img" title="Next Screenshot">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
                         </div>
-                        <span class="caption-counter" id="det-img-counter">1 of 1</span>
+
+                        <!-- Thumbnails -->
+                        <div class="thumbnails-row" id="det-thumbnails">
+                            <!-- Thumbnail items -->
+                        </div>
                     </div>
 
-                    <!-- Thumbnails -->
-                    <div class="thumbnails-row" id="det-thumbnails">
-                        <!-- Thumbnail items -->
+                    <!-- Right 50%: Active Screenshot Explanation Card -->
+                    <div class="explanation-half-box">
+                        <div class="screen-badge" id="det-screen-badge">
+                            <i class="fas fa-info-circle"></i> <span id="det-screen-counter">SCREENSHOT 1 OF 1</span>
+                        </div>
+                        <h2 class="screen-title" id="det-screen-title">Main Interface Overview</h2>
+                        <div class="screen-desc" id="det-screen-desc">
+                            Click on any thumbnail image to view its specific interface features, UI details, and system functionality.
+                        </div>
                     </div>
+
                 </div>
 
                 <!-- BOTTOM CASE STUDY DETAILS GRID -->
@@ -431,7 +461,7 @@
                     
                     <!-- Left: Full Overview / Explanation -->
                     <div class="detail-card">
-                        <h3><i class="fas fa-file-alt" style="color:var(--primary);"></i> Detailed Overview</h3>
+                        <h3><i class="fas fa-file-alt" style="color:var(--primary);"></i> Project Story & Overview</h3>
                         <div id="det-long-desc" style="color: #cbd5e1; line-height: 1.85; font-size: 0.98rem; white-space: pre-line;">
                             Project overview details...
                         </div>
@@ -500,7 +530,7 @@
         const errorEl = document.getElementById('project-error');
         const contentEl = document.getElementById('project-content');
 
-        let galleryItems = []; // Array of { url, caption }
+        let galleryItems = []; // Array of { url, title, desc }
         let currentIndex = 0;
 
         async function loadProjectDetails() {
@@ -588,36 +618,52 @@
                 // 5. Build Gallery Items Array
                 galleryItems = [];
 
-                // Helper to parse image item (handles string format "url | caption")
-                const parseImgItem = (itemStr, defaultCap) => {
+                // Helper to parse image item (handles string format "URL | Title | Description")
+                const parseImgItem = (itemStr, defaultTitle, defaultDesc) => {
                     if (!itemStr) return;
                     if (typeof itemStr === 'object' && itemStr.url) {
-                        galleryItems.push({ url: itemStr.url, caption: itemStr.caption || defaultCap });
+                        galleryItems.push({
+                            url: itemStr.url,
+                            title: itemStr.title || defaultTitle,
+                            desc: itemStr.desc || defaultDesc
+                        });
                     } else if (typeof itemStr === 'string') {
                         const parts = itemStr.split('|');
                         const url = parts[0].trim();
-                        const caption = parts[1] ? parts[1].trim() : defaultCap;
+                        const title = parts[1] ? parts[1].trim() : defaultTitle;
+                        const desc = parts[2] ? parts[2].trim() : defaultDesc;
                         if (url && !galleryItems.some(g => g.url === url)) {
-                            galleryItems.push({ url, caption });
+                            galleryItems.push({ url, title, desc });
                         }
                     }
                 };
 
-                // Add Cover Image
-                if (data.image) parseImgItem(data.image, `Main Cover - ${data.title}`);
+                // Add Main Cover Image
+                if (data.image) {
+                    parseImgItem(
+                        data.image,
+                        `Main Overview Showcase`,
+                        `Primary user interface screen displaying the core feature set, design theme, and overall responsive layout of ${data.title || 'the application'}.`
+                    );
+                }
 
                 // Add Extra Images
                 if (data.images && Array.isArray(data.images)) {
                     data.images.forEach((img, idx) => {
-                        parseImgItem(img, `Screenshot ${idx + 1}: Feature Showcase`);
+                        parseImgItem(
+                            img,
+                            `Screenshot ${idx + 1} Feature View`,
+                            `Detailed screenshot demonstrating specific component workflows, interactive UI elements, and technical implementation.`
+                        );
                     });
                 }
 
-                // Fallback default
+                // Fallback default image
                 if (galleryItems.length === 0) {
                     galleryItems.push({
                         url: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1000&auto=format&fit=crop&q=80',
-                        caption: 'Main Project Interface Showcase'
+                        title: 'Main Application Interface',
+                        desc: 'Interactive preview highlighting user workflow and component design.'
                     });
                 }
 
@@ -636,8 +682,9 @@
 
         function renderGallery() {
             const mainImg = document.getElementById('det-main-img');
-            const captionText = document.getElementById('det-img-caption');
-            const counterText = document.getElementById('det-img-counter');
+            const counterText = document.getElementById('det-screen-counter');
+            const titleText = document.getElementById('det-screen-title');
+            const descText = document.getElementById('det-screen-desc');
             const thumbsRow = document.getElementById('det-thumbnails');
             const prevBtn = document.getElementById('btn-prev-img');
             const nextBtn = document.getElementById('btn-next-img');
@@ -658,8 +705,9 @@
                     mainImg.style.opacity = '1';
                 }, 150);
 
-                captionText.textContent = item.caption || `Screenshot ${currentIndex + 1}`;
-                counterText.textContent = `${currentIndex + 1} of ${galleryItems.length}`;
+                counterText.textContent = `SCREENSHOT ${currentIndex + 1} OF ${galleryItems.length}`;
+                titleText.textContent = item.title;
+                descText.textContent = item.desc;
 
                 // Update active thumb border
                 document.querySelectorAll('.thumb-item').forEach((t, i) => {
@@ -674,7 +722,7 @@
                 thumbDiv.className = `thumb-item ${idx === 0 ? 'active' : ''}`;
                 const img = document.createElement('img');
                 img.src = item.url;
-                img.alt = item.caption || `Thumbnail ${idx+1}`;
+                img.alt = item.title;
                 img.onerror = () => { img.src = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=300&auto=format&fit=crop&q=80'; };
                 thumbDiv.appendChild(img);
 
