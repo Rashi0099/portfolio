@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Core Styles -->
-    <link rel="stylesheet" href="styles.css?v=29">
+    <link rel="stylesheet" href="styles.css?v=30">
 
     <style>
         :root {
@@ -176,40 +176,11 @@
             transition: opacity 0.2s ease;
         }
 
-        /* Arrow Buttons */
-        .gallery-nav-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: rgba(6, 9, 19, 0.85);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            z-index: 5;
-        }
-
-        .gallery-nav-btn:hover {
-            background: var(--primary);
-            color: #000;
-            box-shadow: 0 0 12px rgba(0, 217, 255, 0.5);
-        }
-
-        .gallery-nav-prev { left: 10px; }
-        .gallery-nav-next { right: 10px; }
-
         /* Thumbnails Strip */
         .thumbnails-row {
             display: flex;
             gap: 10px;
-            margin-top: 12px;
+            margin-top: 14px;
             overflow-x: auto;
             padding-bottom: 2px;
         }
@@ -442,13 +413,7 @@
                     <!-- Left 50%: Image Viewer & Thumbnails -->
                     <div class="gallery-half-box">
                         <div class="main-hero-display">
-                            <button class="gallery-nav-btn gallery-nav-prev" id="btn-prev-img" title="Previous Screenshot">
-                                <i class="fas fa-chevron-left"></i>
-                            </button>
                             <img id="det-main-img" src="" alt="Project Preview">
-                            <button class="gallery-nav-btn gallery-nav-next" id="btn-next-img" title="Next Screenshot">
-                                <i class="fas fa-chevron-right"></i>
-                            </button>
                         </div>
 
                         <!-- Thumbnails -->
@@ -661,8 +626,6 @@
             const titleText = document.getElementById('det-screen-title');
             const descText = document.getElementById('det-screen-desc');
             const thumbsRow = document.getElementById('det-thumbnails');
-            const prevBtn = document.getElementById('btn-prev-img');
-            const nextBtn = document.getElementById('btn-next-img');
 
             thumbsRow.innerHTML = '';
 
@@ -704,19 +667,6 @@
                 thumbDiv.addEventListener('click', () => updateActiveDisplay(idx));
                 thumbsRow.appendChild(thumbDiv);
             });
-
-            // Arrow Listeners
-            prevBtn.onclick = () => {
-                let prevIdx = currentIndex - 1;
-                if (prevIdx < 0) prevIdx = galleryItems.length - 1;
-                updateActiveDisplay(prevIdx);
-            };
-
-            nextBtn.onclick = () => {
-                let nextIdx = currentIndex + 1;
-                if (nextIdx >= galleryItems.length) nextIdx = 0;
-                updateActiveDisplay(nextIdx);
-            };
 
             // Initial load
             updateActiveDisplay(0);
