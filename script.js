@@ -296,65 +296,68 @@ function createConfetti() {
 // 8. SCROLL-SYNCED PROFILE IMAGE ANIMATION
 // ============================================================
 document.addEventListener('DOMContentLoaded', () => {
-    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined' && typeof Flip !== 'undefined') {
-        gsap.registerPlugin(ScrollTrigger, Flip);
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
 
         const heroImg = document.getElementById('main-profile-img');
-        const heroContainer = document.getElementById('hero-img-container');
         const aboutTarget = document.getElementById('about-image-target');
 
-        if (heroImg && heroContainer && aboutTarget) {
+        if (heroImg && aboutTarget) {
             
-            let flipAnim;
+            let anim;
 
-            function createFlip() {
-                // Kill existing animation if recreating on resize
-                if (flipAnim) {
-                    if (flipAnim.scrollTrigger) flipAnim.scrollTrigger.kill();
-                    flipAnim.kill();
+            function createAnimation() {
+                if (anim) {
+                    if (anim.scrollTrigger) anim.scrollTrigger.kill();
+                    anim.kill();
                 }
 
-                // Reset to Hero container to measure initial state
-                heroContainer.appendChild(heroImg);
-                heroImg.style.width = ""; // Let CSS media queries handle width
-                heroImg.style.height = ""; // Let CSS media queries handle height
-                heroImg.style.borderRadius = ""; // Let CSS handle border-radius
+                // Strip transform to measure exact layout geometry
+                const originalTransform = heroImg.style.transform;
+                heroImg.style.transform = 'none';
                 
-                // Get starting state
-                const state = Flip.getState(heroImg, {props: "borderRadius"});
+                const hRect = heroImg.getBoundingClientRect();
+                const aRect = aboutTarget.getBoundingClientRect();
 
-                // Move to About container (end state)
-                aboutTarget.appendChild(heroImg);
-                heroImg.style.width = "100%";
-                heroImg.style.height = "100%";
-                heroImg.style.borderRadius = "16px";
+                // Calculate distances between centers
+                const hCenterX = hRect.left + hRect.width / 2;
+                const hCenterY = hRect.top + hRect.height / 2;
                 
-                // Create flip tween (paused)
-                flipAnim = Flip.from(state, {
-                    absolute: true,
+                const aCenterX = aRect.left + aRect.width / 2;
+                const aCenterY = aRect.top + aRect.height / 2;
+                
+                const deltaX = aCenterX - hCenterX;
+                const deltaY = aCenterY - hCenterY;
+                const scale = aRect.width / hRect.width;
+
+                // Restore transform
+                heroImg.style.transform = originalTransform;
+
+                anim = gsap.to(heroImg, {
+                    x: deltaX,
+                    y: deltaY,
+                    scale: scale,
+                    borderRadius: "16px",
+                    boxShadow: "0 10px 20px -5px rgba(0, 0, 0, 0.5)",
                     ease: "none",
-                    scale: true,
-                    paused: true,
-                });
-
-                // Link to ScrollTrigger
-                ScrollTrigger.create({
-                    trigger: ".hero",
-                    start: "top top",
-                    endTrigger: "#dyn-about-container",
-                    end: "top 25%",
-                    scrub: 0.5, // Smooth interpolation
-                    animation: flipAnim
+                    scrollTrigger: {
+                        trigger: ".hero",
+                        start: "top top",
+                        endTrigger: "#dyn-about-container",
+                        end: "top 25%",
+                        scrub: 0.5,
+                        invalidateOnRefresh: true
+                    }
                 });
             }
 
             // Small delay to ensure CSS has loaded and DOM is fully rendered
-            setTimeout(createFlip, 100);
+            setTimeout(createAnimation, 100);
 
             // Re-create on resize
             window.addEventListener('resize', () => {
-                clearTimeout(window._flipResizeTimer);
-                window._flipResizeTimer = setTimeout(createFlip, 250);
+                clearTimeout(window._animResizeTimer);
+                window._animResizeTimer = setTimeout(createAnimation, 250);
             });
         }
     }
