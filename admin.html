@@ -772,13 +772,12 @@
                                 <input type="text" id="p-tech-stack" placeholder="Python, Django, React, Firebase, HTML5, CSS3">
                             </div>
                             <div class="form-group">
-                                <label>Additional Screenshots (Unlimited - 1 per line)</label>
-                                <textarea id="p-images-extra" rows="4" placeholder="img/screenshot1.png | Homepage Showcase | Main hero section displaying dynamic navigation and call to action.&#10;img/screenshot2.png | Admin Dashboard | Real-time analytics chart displaying active sessions and user signups."></textarea>
-                                <div style="background: rgba(0, 217, 255, 0.06); border: 1px solid rgba(0, 217, 255, 0.2); padding: 10px 12px; border-radius: 8px; margin-top: 8px; font-size: 0.78rem; color: var(--text-muted); line-height: 1.5;">
-                                    <i class="fas fa-lightbulb" style="color: var(--primary);"></i> <strong>Screenshot Format Syntax:</strong><br>
-                                    <code style="color: var(--primary);">Image_URL | Screenshot Title | Full Explanation / Description</code><br>
-                                    Add as many images as you like (one per line). Clicking each thumbnail on the details page will show its custom title and explanation!
-                                </div>
+                                <label><i class="fas fa-images" style="color:var(--primary);"></i> Case Study Interactive Screenshots</label>
+                                <div id="p-screenshots-builder" style="display:flex; flex-direction:column; gap:12px; margin-bottom:12px;"></div>
+                                <button type="button" class="btn btn-secondary" onclick="addScreenshotRow('p-screenshots-builder')" style="font-size:0.82rem; padding:8px 16px; border-radius:18px;">
+                                    <i class="fas fa-plus-circle" style="color:var(--primary);"></i> Add Screenshot Card
+                                </button>
+                                <textarea id="p-images-extra" style="display:none;"></textarea>
                             </div>
                             <div class="form-group">
                                 <label>Live Demo URL</label>
@@ -1076,13 +1075,12 @@
                     <input type="text" id="edit-p-tech-stack">
                 </div>
                 <div class="form-group">
-                    <label>Additional Screenshots (Unlimited - 1 per line)</label>
-                    <textarea id="edit-p-images-extra" rows="4" placeholder="img/screenshot1.png | Homepage Showcase | Main hero section displaying dynamic navigation.&#10;img/screenshot2.png | Admin Dashboard | Real-time analytics chart displaying active sessions."></textarea>
-                    <div style="background: rgba(0, 217, 255, 0.06); border: 1px solid rgba(0, 217, 255, 0.2); padding: 10px 12px; border-radius: 8px; margin-top: 8px; font-size: 0.78rem; color: var(--text-muted); line-height: 1.5;">
-                        <i class="fas fa-lightbulb" style="color: var(--primary);"></i> <strong>Screenshot Format Syntax:</strong><br>
-                        <code style="color: var(--primary);">Image_URL | Screenshot Title | Full Explanation / Description</code><br>
-                        Add as many images as you like (one per line). Clicking each thumbnail on the details page will show its custom title and explanation!
-                    </div>
+                    <label><i class="fas fa-images" style="color:var(--primary);"></i> Case Study Interactive Screenshots</label>
+                    <div id="edit-p-screenshots-builder" style="display:flex; flex-direction:column; gap:12px; margin-bottom:12px;"></div>
+                    <button type="button" class="btn btn-secondary" onclick="addScreenshotRow('edit-p-screenshots-builder')" style="font-size:0.82rem; padding:8px 16px; border-radius:18px;">
+                        <i class="fas fa-plus-circle" style="color:var(--primary);"></i> Add Screenshot Card
+                    </button>
+                    <textarea id="edit-p-images-extra" style="display:none;"></textarea>
                 </div>
                 <div class="form-group">
                     <label>Live Demo URL</label>
@@ -1307,7 +1305,7 @@
 
             const features = featuresStr ? featuresStr.split('\n').map(s => s.trim()).filter(Boolean) : [];
             const techStack = techStackStr ? techStackStr.split(',').map(s => s.trim()).filter(Boolean) : [];
-            const images = extraImagesStr ? extraImagesStr.split('\n').map(s => s.trim()).filter(Boolean) : [];
+            const images = window.getScreenshotsFromBuilder('p-screenshots-builder');
 
             try {
                 await addDoc(collection(db, 'projects'), {
@@ -1324,6 +1322,7 @@
                     createdAt: serverTimestamp()
                 });
                 addProjectForm.reset();
+                window.populateScreenshotsBuilder('p-screenshots-builder', []);
                 alert('Project added successfully!');
             } catch (err) {
                 alert('Error adding project: ' + err.message);
@@ -1808,6 +1807,105 @@
         
 
 
+        // Visual Interactive Screenshot Builder Helpers
+        window.addScreenshotRow = (containerId, url = '', title = '', desc = '') => {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            const card = document.createElement('div');
+            card.className = 'screenshot-row-card';
+            card.style.cssText = 'background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(0, 217, 255, 0.2); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 8px; position: relative;';
+            
+            const esc = (s) => (s || '').replace(/"/g, '&quot;');
+
+            card.innerHTML = `
+                <button type="button" onclick="this.closest('.screenshot-row-card').remove()" style="position: absolute; top: 10px; right: 10px; color: #ef4444; background: none; border: none; font-size: 0.95rem; cursor: pointer; padding: 4px;" title="Remove Screenshot">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+
+                <div style="font-weight:600; font-size:0.8rem; color:var(--primary); margin-bottom:2px; display:flex; align-items:center; gap:6px;">
+                    <i class="fas fa-image"></i> Screenshot Item
+                </div>
+
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <input type="text" class="sc-url-input" placeholder="Image URL or Path (e.g. img/screen1.png)" value="${esc(url)}" style="flex: 1; padding: 7px 10px; font-size: 0.85rem; border-radius: 6px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: #fff;">
+                    <label class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.75rem; margin: 0; cursor: pointer; white-space: nowrap;">
+                        <i class="fas fa-upload"></i> Upload
+                        <input type="file" accept="image/*" onchange="window.uploadRowImage(this)" style="display:none;">
+                    </label>
+                </div>
+
+                <input type="text" class="sc-title-input" placeholder="Screenshot Title (e.g. User Dashboard)" value="${esc(title)}" style="padding: 7px 10px; font-size: 0.85rem; border-radius: 6px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: #fff;">
+
+                <textarea class="sc-desc-input" rows="2" placeholder="Full Explanation / Feature details..." style="padding: 7px 10px; font-size: 0.85rem; border-radius: 6px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: #fff; resize: vertical;">${desc}</textarea>
+            `;
+            container.appendChild(card);
+        };
+
+        window.uploadRowImage = (inputEl) => {
+            if (inputEl.files && inputEl.files[0]) {
+                const file = inputEl.files[0];
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const card = inputEl.closest('.screenshot-row-card');
+                    if (card) {
+                        const urlInput = card.querySelector('.sc-url-input');
+                        if (urlInput) urlInput.value = e.target.result;
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+
+        window.getScreenshotsFromBuilder = (containerId) => {
+            const container = document.getElementById(containerId);
+            if (!container) return [];
+            const rows = container.querySelectorAll('.screenshot-row-card');
+            const result = [];
+            rows.forEach(row => {
+                const urlInput = row.querySelector('.sc-url-input');
+                const titleInput = row.querySelector('.sc-title-input');
+                const descInput = row.querySelector('.sc-desc-input');
+                const url = urlInput ? urlInput.value.trim() : '';
+                const title = titleInput ? titleInput.value.trim() : '';
+                const desc = descInput ? descInput.value.trim() : '';
+                if (url) {
+                    let str = url;
+                    if (title || desc) {
+                        str += ` | ${title || 'Screenshot'}`;
+                    }
+                    if (desc) {
+                        str += ` | ${desc}`;
+                    }
+                    result.push(str);
+                }
+            });
+            return result;
+        };
+
+        window.populateScreenshotsBuilder = (containerId, imagesArray) => {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            container.innerHTML = '';
+            if (Array.isArray(imagesArray) && imagesArray.length > 0) {
+                imagesArray.forEach(itemStr => {
+                    if (typeof itemStr === 'string') {
+                        const parts = itemStr.split('|');
+                        const url = parts[0] ? parts[0].trim() : '';
+                        const title = parts[1] ? parts[1].trim() : '';
+                        const desc = parts[2] ? parts[2].trim() : '';
+                        if (url) window.addScreenshotRow(containerId, url, title, desc);
+                    }
+                });
+            } else {
+                window.addScreenshotRow(containerId);
+            }
+        };
+
+        // Initialize Add Project builder on load
+        document.addEventListener('DOMContentLoaded', () => {
+            window.populateScreenshotsBuilder('p-screenshots-builder', []);
+        });
+
         window.openEditProject = (id) => {
             const data = (window._projectsMap && window._projectsMap[id]) || {};
             document.getElementById('edit-p-id').value = id;
@@ -1818,7 +1916,7 @@
             document.getElementById('edit-p-long-desc').value = data.longDescription || '';
             document.getElementById('edit-p-features').value = Array.isArray(data.features) ? data.features.join('\n') : (data.features || '');
             document.getElementById('edit-p-tech-stack').value = Array.isArray(data.techStack) ? data.techStack.join(', ') : (data.techStack || '');
-            document.getElementById('edit-p-images-extra').value = Array.isArray(data.images) ? data.images.join('\n') : '';
+            window.populateScreenshotsBuilder('edit-p-screenshots-builder', data.images);
             document.getElementById('edit-p-live').value = data.liveUrl || '';
             document.getElementById('edit-p-github').value = data.githubUrl || '';
 
