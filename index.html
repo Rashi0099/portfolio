@@ -13,7 +13,7 @@
         rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css?v=9">
+    <link rel="stylesheet" href="styles.css?v=10">
 </head>
 <body>
     <!-- Scroll Progress Bar -->
@@ -194,17 +194,28 @@
     <section id="life-gallery" style="padding: 60px 0 100px;">
         <div class="container">
             <div class="aesthetic-gallery">
-                <div class="gal-item gal-large">
+                <div class="gal-item gal-large-8" id="gal1-wrapper">
                     <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&auto=format&fit=crop&q=80" alt="Team Discussion">
                 </div>
-                <div class="gal-item gal-tall">
+                <div class="gal-item gal-tall-4" id="gal2-wrapper">
                     <img src="https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=600&auto=format&fit=crop&q=80" alt="Coding">
                 </div>
-                <div class="gal-item gal-square">
+                
+                <div class="gal-item gal-span-4" id="gal3-wrapper">
                     <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?w=600&auto=format&fit=crop&q=80" alt="Working together">
                 </div>
-                <div class="gal-item gal-wide">
-                    <img src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=1000&auto=format&fit=crop&q=80" alt="Meeting">
+                <div class="gal-item gal-span-4" id="gal4-wrapper">
+                    <img src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=600&auto=format&fit=crop&q=80" alt="Meeting">
+                </div>
+                <div class="gal-item gal-span-4" id="gal5-wrapper">
+                    <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&auto=format&fit=crop&q=80" alt="Workspace">
+                </div>
+
+                <div class="gal-item gal-span-6" id="gal6-wrapper">
+                    <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&auto=format&fit=crop&q=80" alt="Programming">
+                </div>
+                <div class="gal-item gal-span-6" id="gal7-wrapper">
+                    <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?w=800&auto=format&fit=crop&q=80" alt="Tech Hub">
                 </div>
             </div>
         </div>
@@ -419,10 +430,13 @@
                         }
                     };
                     
-                    applyImg('#life-gallery .gal-large img', d.bgGal1);
-                    applyImg('#life-gallery .gal-tall img', d.bgGal2);
-                    applyImg('#life-gallery .gal-square img', d.bgGal3);
-                    applyImg('#life-gallery .gal-wide img', d.bgGal4);
+                    applyImg('#gal1-wrapper img', d.bgGal1);
+                    applyImg('#gal2-wrapper img', d.bgGal2);
+                    applyImg('#gal3-wrapper img', d.bgGal3);
+                    applyImg('#gal4-wrapper img', d.bgGal4);
+                    applyImg('#gal5-wrapper img', d.bgGal5);
+                    applyImg('#gal6-wrapper img', d.bgGal6);
+                    applyImg('#gal7-wrapper img', d.bgGal7);
                 }
             });
 

@@ -1245,7 +1245,7 @@
 
                         <!-- Gallery 4 -->
                         <div class="form-group" style="margin:0; background:rgba(0,0,0,0.2); padding:16px; border-radius:12px; border:1px solid rgba(255,255,255,0.05);">
-                            <label>Gallery Image 4 (Wide)</label>
+                            <label>Gallery Image 4 (Square)</label>
                             <img id="bg-gal4-preview" style="width:100%; height:120px; object-fit:cover; border-radius:8px; display:none; margin-bottom:10px; border:1px solid rgba(0,217,255,0.2);">
                             <div id="bg-gal4-dz" onclick="document.getElementById('bg-gal4-file').click()" style="border:2px dashed rgba(0,217,255,0.3); border-radius:8px; padding:12px; text-align:center; cursor:pointer;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='rgba(0,217,255,0.3)'">
                                 <i class="fas fa-cloud-upload-alt" style="font-size:1.2rem; color:var(--primary); opacity:0.7;"></i>
@@ -1255,6 +1255,51 @@
                             <div style="margin-top: 10px; display:flex; gap:8px;">
                                 <input type="text" id="bg-gal4-url" placeholder="Local path (e.g. img/g4.jpg)" style="flex:1; padding:6px 10px; border-radius:4px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.3); color:#fff; font-size:0.8rem;">
                                 <button type="button" class="btn btn-primary" style="padding:6px 12px; border-radius:4px; font-size:0.8rem; width:auto;" onclick="saveLocalBgUrl('gal4')"><i class="fas fa-save"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- Gallery 5 -->
+                        <div class="form-group" style="margin:0; background:rgba(0,0,0,0.2); padding:16px; border-radius:12px; border:1px solid rgba(255,255,255,0.05);">
+                            <label>Gallery Image 5 (Square)</label>
+                            <img id="bg-gal5-preview" style="width:100%; height:120px; object-fit:cover; border-radius:8px; display:none; margin-bottom:10px; border:1px solid rgba(0,217,255,0.2);">
+                            <div id="bg-gal5-dz" onclick="document.getElementById('bg-gal5-file').click()" style="border:2px dashed rgba(0,217,255,0.3); border-radius:8px; padding:12px; text-align:center; cursor:pointer;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='rgba(0,217,255,0.3)'">
+                                <i class="fas fa-cloud-upload-alt" style="font-size:1.2rem; color:var(--primary); opacity:0.7;"></i>
+                                <p style="color:#64748b; margin:4px 0 0; font-size:0.75rem;">Click to upload</p>
+                            </div>
+                            <input type="file" id="bg-gal5-file" accept="image/*" style="display:none;" onchange="uploadSectionBg(this, 'gal5')">
+                            <div style="margin-top: 10px; display:flex; gap:8px;">
+                                <input type="text" id="bg-gal5-url" placeholder="Local path (e.g. img/g5.jpg)" style="flex:1; padding:6px 10px; border-radius:4px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.3); color:#fff; font-size:0.8rem;">
+                                <button type="button" class="btn btn-primary" style="padding:6px 12px; border-radius:4px; font-size:0.8rem; width:auto;" onclick="saveLocalBgUrl('gal5')"><i class="fas fa-save"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- Gallery 6 -->
+                        <div class="form-group" style="margin:0; background:rgba(0,0,0,0.2); padding:16px; border-radius:12px; border:1px solid rgba(255,255,255,0.05);">
+                            <label>Gallery Image 6 (Wide)</label>
+                            <img id="bg-gal6-preview" style="width:100%; height:120px; object-fit:cover; border-radius:8px; display:none; margin-bottom:10px; border:1px solid rgba(0,217,255,0.2);">
+                            <div id="bg-gal6-dz" onclick="document.getElementById('bg-gal6-file').click()" style="border:2px dashed rgba(0,217,255,0.3); border-radius:8px; padding:12px; text-align:center; cursor:pointer;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='rgba(0,217,255,0.3)'">
+                                <i class="fas fa-cloud-upload-alt" style="font-size:1.2rem; color:var(--primary); opacity:0.7;"></i>
+                                <p style="color:#64748b; margin:4px 0 0; font-size:0.75rem;">Click to upload</p>
+                            </div>
+                            <input type="file" id="bg-gal6-file" accept="image/*" style="display:none;" onchange="uploadSectionBg(this, 'gal6')">
+                            <div style="margin-top: 10px; display:flex; gap:8px;">
+                                <input type="text" id="bg-gal6-url" placeholder="Local path (e.g. img/g6.jpg)" style="flex:1; padding:6px 10px; border-radius:4px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.3); color:#fff; font-size:0.8rem;">
+                                <button type="button" class="btn btn-primary" style="padding:6px 12px; border-radius:4px; font-size:0.8rem; width:auto;" onclick="saveLocalBgUrl('gal6')"><i class="fas fa-save"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- Gallery 7 -->
+                        <div class="form-group" style="margin:0; background:rgba(0,0,0,0.2); padding:16px; border-radius:12px; border:1px solid rgba(255,255,255,0.05);">
+                            <label>Gallery Image 7 (Wide)</label>
+                            <img id="bg-gal7-preview" style="width:100%; height:120px; object-fit:cover; border-radius:8px; display:none; margin-bottom:10px; border:1px solid rgba(0,217,255,0.2);">
+                            <div id="bg-gal7-dz" onclick="document.getElementById('bg-gal7-file').click()" style="border:2px dashed rgba(0,217,255,0.3); border-radius:8px; padding:12px; text-align:center; cursor:pointer;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='rgba(0,217,255,0.3)'">
+                                <i class="fas fa-cloud-upload-alt" style="font-size:1.2rem; color:var(--primary); opacity:0.7;"></i>
+                                <p style="color:#64748b; margin:4px 0 0; font-size:0.75rem;">Click to upload</p>
+                            </div>
+                            <input type="file" id="bg-gal7-file" accept="image/*" style="display:none;" onchange="uploadSectionBg(this, 'gal7')">
+                            <div style="margin-top: 10px; display:flex; gap:8px;">
+                                <input type="text" id="bg-gal7-url" placeholder="Local path (e.g. img/g7.jpg)" style="flex:1; padding:6px 10px; border-radius:4px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.3); color:#fff; font-size:0.8rem;">
+                                <button type="button" class="btn btn-primary" style="padding:6px 12px; border-radius:4px; font-size:0.8rem; width:auto;" onclick="saveLocalBgUrl('gal7')"><i class="fas fa-save"></i></button>
                             </div>
                         </div>
                     </div>
