@@ -582,8 +582,8 @@
                 if (data.image) {
                     parseImgItem(
                         data.image,
-                        `Main Overview Showcase`,
-                        `Primary user interface screen displaying the core feature set, design theme, and overall responsive layout of ${data.title || 'the application'}.`
+                        `${data.title || 'Project'} — Overview`,
+                        data.description || data.longDescription || 'Main Cover Image'
                     );
                 }
 
@@ -592,8 +592,8 @@
                     data.images.forEach((img, idx) => {
                         parseImgItem(
                             img,
-                            `Screenshot ${idx + 1} Feature View`,
-                            `Detailed screenshot demonstrating specific component workflows, interactive UI elements, and technical implementation.`
+                            `${data.title || 'Project'} — Screenshot ${idx + 1}`,
+                            ''
                         );
                     });
                 }
@@ -645,7 +645,12 @@
 
                 counterText.textContent = `SCREENSHOT ${currentIndex + 1} OF ${galleryItems.length}`;
                 titleText.textContent = item.title;
-                descText.textContent = item.desc;
+                if (item.desc && item.desc.trim()) {
+                    descText.textContent = item.desc;
+                    descText.style.display = 'block';
+                } else {
+                    descText.style.display = 'none';
+                }
 
                 // Update active thumb border
                 document.querySelectorAll('.thumb-item').forEach((t, i) => {
