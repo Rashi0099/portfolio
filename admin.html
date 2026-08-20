@@ -1039,8 +1039,8 @@
                                 </small>
                             </div>
                             <div class="form-group">
-                                <label>Display Order * (1 = First, 2 = Second...)</label>
-                                <input type="number" id="sk-order" required value="1" min="1" placeholder="e.g. 1">
+                                <label>Display Order (Optional — Leave blank to place at end)</label>
+                                <input type="number" id="sk-order" min="1" placeholder="e.g. 1 (Blank = Last)">
                             </div>
                             <div class="form-group">
                                 <label>Brand Color *</label>
@@ -1453,8 +1453,8 @@
                     <input type="text" id="edit-sk-icon" required oninput="sanitizeIconInput('edit-sk-icon')">
                 </div>
                 <div class="form-group">
-                    <label>Display Order * (1, 2, 3...)</label>
-                    <input type="number" id="edit-sk-order" required min="1" placeholder="e.g. 1">
+                    <label>Display Order (Optional — Leave blank to place at end)</label>
+                    <input type="number" id="edit-sk-order" min="1" placeholder="e.g. 1 (Blank = Last)">
                 </div>
                 <div class="form-group">
                     <label>Brand Color *</label>
@@ -1601,7 +1601,7 @@
                     name: document.getElementById('sk-name').value,
                     icon: sanitizeIcon(document.getElementById('sk-icon').value),
                     color: document.getElementById('sk-color-hex')?.value || document.getElementById('sk-color').value,
-                    order: parseInt(document.getElementById('sk-order').value) || 1,
+                    order: document.getElementById('sk-order').value !== '' ? parseInt(document.getElementById('sk-order').value) : null,
                     createdAt: serverTimestamp()
                 });
                 addSkillForm.reset();
@@ -1871,7 +1871,7 @@
                             name: document.getElementById('edit-sk-name').value,
                             icon: sanitizeIcon(document.getElementById('edit-sk-icon').value),
                             color: document.getElementById('edit-sk-color-hex')?.value || document.getElementById('edit-sk-color').value,
-                            order: parseInt(document.getElementById('edit-sk-order').value) || 1,
+                            order: document.getElementById('edit-sk-order').value !== '' ? parseInt(document.getElementById('edit-sk-order').value) : null,
                             updatedAt: serverTimestamp()
                         });
                         window.closeEditModal();
@@ -2148,7 +2148,11 @@
 
                 const docsList = [];
                 snapshot.forEach(docSnap => docsList.push({ id: docSnap.id, data: docSnap.data() }));
-                docsList.sort((a, b) => (Number(a.data.order) || 99) - (Number(b.data.order) || 99));
+                docsList.sort((a, b) => {
+                    const ordA = (a.data.order !== undefined && a.data.order !== null && a.data.order !== '') ? Number(a.data.order) : 999;
+                    const ordB = (b.data.order !== undefined && b.data.order !== null && b.data.order !== '') ? Number(b.data.order) : 999;
+                    return ordA - ordB;
+                });
 
                 docsList.forEach(({ id, data }) => {
                     const item = document.createElement('div');
@@ -2169,12 +2173,20 @@
 
                     const badge = document.createElement('span');
                     badge.style.fontSize = '0.72rem';
-                    badge.style.background = 'rgba(0,217,255,0.15)';
-                    badge.style.color = 'var(--primary)';
                     badge.style.padding = '2px 8px';
                     badge.style.borderRadius = '12px';
                     badge.style.marginLeft = '10px';
-                    badge.textContent = '#' + (data.order || 1);
+                    
+                    const hasOrder = (data.order !== undefined && data.order !== null && data.order !== '');
+                    if (hasOrder) {
+                        badge.style.background = 'rgba(0,217,255,0.15)';
+                        badge.style.color = 'var(--primary)';
+                        badge.textContent = '#' + data.order;
+                    } else {
+                        badge.style.background = 'rgba(255,255,255,0.08)';
+                        badge.style.color = 'var(--text-muted)';
+                        badge.textContent = 'Unordered (End)';
+                    }
                     h4.appendChild(badge);
 
                     infoDiv.appendChild(h4);
@@ -2667,7 +2679,7 @@
             if (document.getElementById('edit-sk-color-hex')) {
                 document.getElementById('edit-sk-color-hex').value = data.color || '#00d9ff';
             }
-            document.getElementById('edit-sk-order').value = data.order || 1;
+            document.getElementById('edit-sk-order').value = (data.order !== undefined && data.order !== null) ? data.order : '';
 
                         document.getElementById('edit-project-form').style.display = 'none';
             document.getElementById('edit-skill-form').style.display = 'block';

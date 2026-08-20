@@ -448,7 +448,11 @@
                         skillsGrid.innerHTML = '';
                         const skillsList = [];
                         snapshot.forEach((docSnap) => skillsList.push(docSnap.data()));
-                        skillsList.sort((a, b) => (Number(a.order) || 99) - (Number(b.order) || 99));
+                        skillsList.sort((a, b) => {
+                            const ordA = (a.order !== undefined && a.order !== null && a.order !== '') ? Number(a.order) : 999;
+                            const ordB = (b.order !== undefined && b.order !== null && b.order !== '') ? Number(b.order) : 999;
+                            return ordA - ordB;
+                        });
 
                         skillsList.forEach((s) => {
                             const tile = document.createElement('div');
