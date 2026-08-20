@@ -698,6 +698,11 @@
                         </button>
                     </li>
                     <li>
+                        <button class="sidebar-link" onclick="switchTab('backgrounds-tab', this, 'Backgrounds')">
+                            <span><i class="fas fa-image"></i> Backgrounds</span>
+                        </button>
+                    </li>
+                    <li>
                         <button class="sidebar-link" onclick="switchTab('messages-tab', this, 'Contacts')">
                             <span><i class="fas fa-envelope"></i> Contacts</span>
                             <span class="sidebar-badge" id="message-count">0</span>
@@ -1086,6 +1091,82 @@
                         <h3 style="margin-bottom: 18px;"><i class="fas fa-list" style="color: var(--primary);"></i> Existing Services</h3>
                         <div id="services-list-container">
                             <p style="color: var(--text-muted); font-size: 0.9rem;">Loading services...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 6: BACKGROUNDS -->
+            <div id="backgrounds-tab" class="tab-content">
+                <div class="glass-card" style="max-width: 900px;">
+                    <h3 style="margin-bottom: 8px;"><i class="fas fa-image" style="color: var(--primary);"></i> Section Backgrounds</h3>
+                    <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:20px;">Upload parallax background images for each portfolio section. They will automatically compress and save. (Max size ~2MB)</p>
+                    
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
+                        <!-- Hero -->
+                        <div class="form-group" style="margin:0; background:rgba(0,0,0,0.2); padding:16px; border-radius:12px; border:1px solid rgba(255,255,255,0.05);">
+                            <label>Hero Section (Home)</label>
+                            <img id="bg-hero-preview" style="width:100%; height:120px; object-fit:cover; border-radius:8px; display:none; margin-bottom:10px; border:1px solid rgba(0,217,255,0.2);">
+                            <div id="bg-hero-dz" onclick="document.getElementById('bg-hero-file').click()" style="border:2px dashed rgba(0,217,255,0.3); border-radius:8px; padding:12px; text-align:center; cursor:pointer;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='rgba(0,217,255,0.3)'">
+                                <i class="fas fa-cloud-upload-alt" style="font-size:1.2rem; color:var(--primary); opacity:0.7;"></i>
+                                <p style="color:#64748b; margin:4px 0 0; font-size:0.75rem;">Click to upload</p>
+                            </div>
+                            <input type="file" id="bg-hero-file" accept="image/*" style="display:none;" onchange="uploadSectionBg(this, 'hero')">
+                        </div>
+
+                        <!-- About -->
+                        <div class="form-group" style="margin:0; background:rgba(0,0,0,0.2); padding:16px; border-radius:12px; border:1px solid rgba(255,255,255,0.05);">
+                            <label>About Section</label>
+                            <img id="bg-about-preview" style="width:100%; height:120px; object-fit:cover; border-radius:8px; display:none; margin-bottom:10px; border:1px solid rgba(0,217,255,0.2);">
+                            <div id="bg-about-dz" onclick="document.getElementById('bg-about-file').click()" style="border:2px dashed rgba(0,217,255,0.3); border-radius:8px; padding:12px; text-align:center; cursor:pointer;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='rgba(0,217,255,0.3)'">
+                                <i class="fas fa-cloud-upload-alt" style="font-size:1.2rem; color:var(--primary); opacity:0.7;"></i>
+                                <p style="color:#64748b; margin:4px 0 0; font-size:0.75rem;">Click to upload</p>
+                            </div>
+                            <input type="file" id="bg-about-file" accept="image/*" style="display:none;" onchange="uploadSectionBg(this, 'about')">
+                        </div>
+                        
+                        <!-- Skills -->
+                        <div class="form-group" style="margin:0; background:rgba(0,0,0,0.2); padding:16px; border-radius:12px; border:1px solid rgba(255,255,255,0.05);">
+                            <label>Skills Section</label>
+                            <img id="bg-skills-preview" style="width:100%; height:120px; object-fit:cover; border-radius:8px; display:none; margin-bottom:10px; border:1px solid rgba(0,217,255,0.2);">
+                            <div id="bg-skills-dz" onclick="document.getElementById('bg-skills-file').click()" style="border:2px dashed rgba(0,217,255,0.3); border-radius:8px; padding:12px; text-align:center; cursor:pointer;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='rgba(0,217,255,0.3)'">
+                                <i class="fas fa-cloud-upload-alt" style="font-size:1.2rem; color:var(--primary); opacity:0.7;"></i>
+                                <p style="color:#64748b; margin:4px 0 0; font-size:0.75rem;">Click to upload</p>
+                            </div>
+                            <input type="file" id="bg-skills-file" accept="image/*" style="display:none;" onchange="uploadSectionBg(this, 'skills')">
+                        </div>
+
+                        <!-- Services -->
+                        <div class="form-group" style="margin:0; background:rgba(0,0,0,0.2); padding:16px; border-radius:12px; border:1px solid rgba(255,255,255,0.05);">
+                            <label>Services Section</label>
+                            <img id="bg-services-preview" style="width:100%; height:120px; object-fit:cover; border-radius:8px; display:none; margin-bottom:10px; border:1px solid rgba(0,217,255,0.2);">
+                            <div id="bg-services-dz" onclick="document.getElementById('bg-services-file').click()" style="border:2px dashed rgba(0,217,255,0.3); border-radius:8px; padding:12px; text-align:center; cursor:pointer;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='rgba(0,217,255,0.3)'">
+                                <i class="fas fa-cloud-upload-alt" style="font-size:1.2rem; color:var(--primary); opacity:0.7;"></i>
+                                <p style="color:#64748b; margin:4px 0 0; font-size:0.75rem;">Click to upload</p>
+                            </div>
+                            <input type="file" id="bg-services-file" accept="image/*" style="display:none;" onchange="uploadSectionBg(this, 'services')">
+                        </div>
+
+                        <!-- Projects -->
+                        <div class="form-group" style="margin:0; background:rgba(0,0,0,0.2); padding:16px; border-radius:12px; border:1px solid rgba(255,255,255,0.05);">
+                            <label>Projects Section</label>
+                            <img id="bg-projects-preview" style="width:100%; height:120px; object-fit:cover; border-radius:8px; display:none; margin-bottom:10px; border:1px solid rgba(0,217,255,0.2);">
+                            <div id="bg-projects-dz" onclick="document.getElementById('bg-projects-file').click()" style="border:2px dashed rgba(0,217,255,0.3); border-radius:8px; padding:12px; text-align:center; cursor:pointer;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='rgba(0,217,255,0.3)'">
+                                <i class="fas fa-cloud-upload-alt" style="font-size:1.2rem; color:var(--primary); opacity:0.7;"></i>
+                                <p style="color:#64748b; margin:4px 0 0; font-size:0.75rem;">Click to upload</p>
+                            </div>
+                            <input type="file" id="bg-projects-file" accept="image/*" style="display:none;" onchange="uploadSectionBg(this, 'projects')">
+                        </div>
+
+                        <!-- Contact -->
+                        <div class="form-group" style="margin:0; background:rgba(0,0,0,0.2); padding:16px; border-radius:12px; border:1px solid rgba(255,255,255,0.05);">
+                            <label>Contact Section</label>
+                            <img id="bg-contact-preview" style="width:100%; height:120px; object-fit:cover; border-radius:8px; display:none; margin-bottom:10px; border:1px solid rgba(0,217,255,0.2);">
+                            <div id="bg-contact-dz" onclick="document.getElementById('bg-contact-file').click()" style="border:2px dashed rgba(0,217,255,0.3); border-radius:8px; padding:12px; text-align:center; cursor:pointer;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='rgba(0,217,255,0.3)'">
+                                <i class="fas fa-cloud-upload-alt" style="font-size:1.2rem; color:var(--primary); opacity:0.7;"></i>
+                                <p style="color:#64748b; margin:4px 0 0; font-size:0.75rem;">Click to upload</p>
+                            </div>
+                            <input type="file" id="bg-contact-file" accept="image/*" style="display:none;" onchange="uploadSectionBg(this, 'contact')">
                         </div>
                     </div>
                 </div>
@@ -1761,6 +1842,32 @@
             }
         };
 
+        window.uploadSectionBg = async (inputEl, section) => {
+            if (!inputEl.files || !inputEl.files[0]) return;
+            const file = inputEl.files[0];
+            const dz = document.getElementById(`bg-${section}-dz`);
+            const previewImg = document.getElementById(`bg-${section}-preview`);
+
+            if (dz) dz.innerHTML = '<i class="fas fa-spinner fa-spin" style="font-size:1.2rem; color:var(--primary);"></i><p style="color:var(--primary); margin:4px 0 0; font-size:0.75rem;">Uploading...</p>';
+
+            try {
+                const compressedUrl = await window.compressImageFile(file, 1600, 0.85);
+                const fieldName = `bg${section.charAt(0).toUpperCase() + section.slice(1)}`;
+                await updateDoc(doc(db, 'settings', 'general'), {
+                    [fieldName]: compressedUrl
+                });
+
+                if (previewImg) {
+                    previewImg.src = compressedUrl;
+                    previewImg.style.display = 'block';
+                }
+                if (dz) dz.innerHTML = `<i class="fas fa-check-circle" style="font-size:1.2rem; color:#22c55e;"></i><p style="color:#22c55e; margin:4px 0 0; font-size:0.75rem;">Update Image</p>`;
+            } catch(err) {
+                if (dz) dz.innerHTML = '<i class="fas fa-cloud-upload-alt" style="font-size:1.2rem; color:var(--primary); opacity:0.7;"></i><p style="color:#ef4444; margin:4px 0 0; font-size:0.75rem;">Failed</p>';
+                alert('Upload error: ' + err.message);
+            }
+        };
+
         // Realtime Settings (Auto-seed default values if empty)
             onSnapshot(doc(db, 'settings', 'general'), async (docSnap) => {
                 if (docSnap.exists()) {
@@ -1776,6 +1883,19 @@
                     document.getElementById('s-location').value = d.location || '';
                     document.getElementById('s-freelance-state').value = d.freelanceState || 'available';
                     document.getElementById('s-resume').value = d.resumeUrl || '';
+                    
+                    // Background Previews
+                    const sections = ['hero', 'about', 'skills', 'services', 'projects', 'contact'];
+                    sections.forEach(sec => {
+                        const bgField = 'bg' + sec.charAt(0).toUpperCase() + sec.slice(1);
+                        const previewEl = document.getElementById(`bg-${sec}-preview`);
+                        const dz = document.getElementById(`bg-${sec}-dz`);
+                        if (d[bgField] && previewEl) {
+                            previewEl.src = d[bgField];
+                            previewEl.style.display = 'block';
+                            if (dz) dz.innerHTML = `<i class="fas fa-check-circle" style="font-size:1.2rem; color:#22c55e;"></i><p style="color:#22c55e; margin:4px 0 0; font-size:0.75rem;">Update Image</p>`;
+                        }
+                    });
                 } else {
                     // Seed defaults if empty
                     const defaultSettings = {

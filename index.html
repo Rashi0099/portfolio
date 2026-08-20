@@ -368,7 +368,25 @@
                                 freelanceText.textContent = "Available for freelance work";
                             }
                         }
+                        }
                     }
+                    
+                    // Apply dynamic background images
+                    const applyBg = (selector, url) => {
+                        if (url) {
+                            const el = document.querySelector(selector);
+                            if (el) {
+                                el.style.backgroundImage = `url('${url}')`;
+                            }
+                        }
+                    };
+                    
+                    applyBg('.hero', d.bgHero);
+                    applyBg('.about', d.bgAbout);
+                    applyBg('.skills', d.bgSkills);
+                    applyBg('#services', d.bgServices);
+                    applyBg('#projects', d.bgProjects);
+                    applyBg('#contact', d.bgContact);
                 }
             });
 
