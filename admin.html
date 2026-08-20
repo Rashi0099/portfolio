@@ -1851,7 +1851,7 @@
             if (dz) dz.innerHTML = '<i class="fas fa-spinner fa-spin" style="font-size:1.2rem; color:var(--primary);"></i><p style="color:var(--primary); margin:4px 0 0; font-size:0.75rem;">Uploading...</p>';
 
             try {
-                const compressedUrl = await window.compressImageFile(file, 1600, 0.85);
+                const compressedUrl = await window.compressImageFile(file, 1920, 0.90);
                 const fieldName = `bg${section.charAt(0).toUpperCase() + section.slice(1)}`;
                 await updateDoc(doc(db, 'settings', 'general'), {
                     [fieldName]: compressedUrl
@@ -2096,7 +2096,7 @@
         window._currentAddProjectId = null;
 
         // ── Client-Side Image Compression Helper ──
-        window.compressImageFile = (file, maxDim = 1000, quality = 0.82) => {
+        window.compressImageFile = (file, maxDim = 1920, quality = 0.90) => {
             return new Promise((resolve, reject) => {
                 if (!file.type || !file.type.startsWith('image/')) {
                     const reader = new FileReader();
@@ -2149,7 +2149,7 @@
             if (dz) dz.innerHTML = '<i class="fas fa-spinner fa-spin" style="font-size:1.6rem; color:var(--primary);"></i><p style="color:var(--primary); margin:6px 0 0; font-size:0.84rem;">Optimizing image...</p>';
 
             try {
-                const compressedUrl = await window.compressImageFile(file, 1000, 0.82);
+                const compressedUrl = await window.compressImageFile(file, 1920, 0.90);
                 if (urlInput) urlInput.value = compressedUrl;
                 if (previewImg) previewImg.src = compressedUrl;
                 if (previewBox) previewBox.style.display = 'block';
@@ -2292,7 +2292,7 @@
             if (uploadLabel) uploadLabel.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ...';
 
             try {
-                const compressedUrl = await window.compressImageFile(file, 1000, 0.82);
+                const compressedUrl = await window.compressImageFile(file, 1920, 0.90);
                 if (urlInput) urlInput.value = compressedUrl;
                 if (uploadLabel) uploadLabel.innerHTML = '<i class="fas fa-check-circle" style="color:#22c55e;"></i> Done';
                 
@@ -2377,7 +2377,7 @@
             if (dz) dz.innerHTML = '<i class="fas fa-spinner fa-spin" style="font-size:1.2rem; color:var(--primary);"></i><p style="color:var(--primary); margin:4px 0 0; font-size:0.8rem;">Optimizing image...</p>';
 
             try {
-                const compressedUrl = await window.compressImageFile(file, 1000, 0.82);
+                const compressedUrl = await window.compressImageFile(file, 1920, 0.90);
                 if (urlInput) { urlInput.value = compressedUrl; }
                 if (previewImg) previewImg.src = compressedUrl;
                 if (previewBox) previewBox.style.display = 'block';
