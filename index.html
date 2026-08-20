@@ -310,10 +310,27 @@
                             card.className = 'project-card';
                             card.setAttribute('data-category', p.category || 'fullstack');
                             
+                            const detailUrl = `project-details.html?id=${docSnap.id}`;
                             const liveBtn = p.liveUrl ? `<a href="${p.liveUrl}" target="_blank" class="project-link" title="Live Demo"><i class="fas fa-external-link-alt"></i></a>` : '';
                             const ghBtn = p.githubUrl ? `<a href="${p.githubUrl}" target="_blank" class="project-link" title="GitHub"><i class="fab fa-github"></i></a>` : '';
+                            const detailsBtn = `<a href="${detailUrl}" class="project-link" title="View Details"><i class="fas fa-info-circle"></i></a>`;
 
-                            card.innerHTML = `<div class="project-img"><img src="${p.image || 'img/project1.png'}" alt="${p.title}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&auto=format&fit=crop&q=80';"><div class="project-overlay">${liveBtn}${ghBtn}</div></div><div class="project-info"><span class="project-tag">${p.category ? p.category.toUpperCase() : 'PROJECT'}</span><h3>${p.title}</h3><p>${p.description}</p></div>`;
+                            card.innerHTML = `
+                                <div class="project-img">
+                                    <a href="${detailUrl}">
+                                        <img src="${p.image || 'img/project1.png'}" alt="${p.title}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&auto=format&fit=crop&q=80';">
+                                    </a>
+                                    <div class="project-overlay">${detailsBtn}${liveBtn}${ghBtn}</div>
+                                </div>
+                                <div class="project-info">
+                                    <span class="project-tag">${p.category ? p.category.toUpperCase() : 'PROJECT'}</span>
+                                    <h3><a href="${detailUrl}" style="color:inherit;">${p.title}</a></h3>
+                                    <p>${p.description}</p>
+                                    <a href="${detailUrl}" class="btn-details-link" style="display:inline-flex; align-items:center; gap:6px; margin-top:12px; font-size:0.85rem; color:var(--primary); font-weight:600;">
+                                        View Details <i class="fas fa-arrow-right" style="font-size:0.75rem;"></i>
+                                    </a>
+                                </div>
+                            `;
                             projectsGrid.appendChild(card);
                         });
                     }

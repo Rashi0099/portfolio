@@ -760,6 +760,22 @@
                                 <input type="file" accept="image/*" onchange="handleFileUpload(this, 'p-image')" style="background: var(--bg); border: 1px dashed var(--border); padding: 8px; border-radius: 8px; width: 100%;">
                             </div>
                             <div class="form-group">
+                                <label>Detailed Overview (Full Paragraph)</label>
+                                <textarea id="p-long-desc" rows="4" placeholder="Detailed story of the project, architecture, problem solved, etc."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Key Features & Highlights (1 feature per line)</label>
+                                <textarea id="p-features" rows="3" placeholder="User Authentication & Profile Roles&#10;Realtime Firestore Synchronization&#10;Dark Mode Glassmorphism Interface"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Tech Stack Tags (comma-separated)</label>
+                                <input type="text" id="p-tech-stack" placeholder="Python, Django, React, Firebase, HTML5, CSS3">
+                            </div>
+                            <div class="form-group">
+                                <label>Additional Screenshots (4-5 Image URLs, 1 per line)</label>
+                                <textarea id="p-images-extra" rows="3" placeholder="img/screenshot1.png&#10;img/screenshot2.png&#10;img/screenshot3.png"></textarea>
+                            </div>
+                            <div class="form-group">
                                 <label>Live Demo URL</label>
                                 <input type="url" id="p-live" placeholder="https://myproject.com">
                             </div>
@@ -1043,6 +1059,22 @@
                     <input type="file" accept="image/*" onchange="handleFileUpload(this, 'edit-p-image')" style="background: var(--bg); border: 1px dashed var(--border); padding: 8px; border-radius: 8px; width: 100%;">
                 </div>
                 <div class="form-group">
+                    <label>Detailed Overview (Full Paragraph)</label>
+                    <textarea id="edit-p-long-desc" rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Key Features & Highlights (1 feature per line)</label>
+                    <textarea id="edit-p-features" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Tech Stack Tags (comma-separated)</label>
+                    <input type="text" id="edit-p-tech-stack">
+                </div>
+                <div class="form-group">
+                    <label>Additional Screenshots (4-5 Image URLs, 1 per line)</label>
+                    <textarea id="edit-p-images-extra" rows="3"></textarea>
+                </div>
+                <div class="form-group">
                     <label>Live Demo URL</label>
                     <input type="url" id="edit-p-live">
                 </div>
@@ -1256,8 +1288,16 @@
             const category = document.getElementById('p-category').value;
             const description = document.getElementById('p-desc').value.trim();
             const image = document.getElementById('p-image').value.trim();
+            const longDescription = document.getElementById('p-long-desc').value.trim();
+            const featuresStr = document.getElementById('p-features').value.trim();
+            const techStackStr = document.getElementById('p-tech-stack').value.trim();
+            const extraImagesStr = document.getElementById('p-images-extra').value.trim();
             const liveUrl = document.getElementById('p-live').value.trim();
             const githubUrl = document.getElementById('p-github').value.trim();
+
+            const features = featuresStr ? featuresStr.split('\n').map(s => s.trim()).filter(Boolean) : [];
+            const techStack = techStackStr ? techStackStr.split(',').map(s => s.trim()).filter(Boolean) : [];
+            const images = extraImagesStr ? extraImagesStr.split('\n').map(s => s.trim()).filter(Boolean) : [];
 
             try {
                 await addDoc(collection(db, 'projects'), {
@@ -1265,6 +1305,10 @@
                     category,
                     description,
                     image,
+                    longDescription,
+                    features,
+                    techStack,
+                    images,
                     liveUrl,
                     githubUrl,
                     createdAt: serverTimestamp()
@@ -1360,12 +1404,24 @@
                 editProjForm.addEventListener('submit', async (e) => {
                     e.preventDefault();
                     const id = document.getElementById('edit-p-id').value;
+                    const featuresStr = document.getElementById('edit-p-features').value.trim();
+                    const techStackStr = document.getElementById('edit-p-tech-stack').value.trim();
+                    const extraImagesStr = document.getElementById('edit-p-images-extra').value.trim();
+
+                    const features = featuresStr ? featuresStr.split('\n').map(s => s.trim()).filter(Boolean) : [];
+                    const techStack = techStackStr ? techStackStr.split(',').map(s => s.trim()).filter(Boolean) : [];
+                    const images = extraImagesStr ? extraImagesStr.split('\n').map(s => s.trim()).filter(Boolean) : [];
+
                     try {
                         await updateDoc(doc(db, 'projects', id), {
                             title: document.getElementById('edit-p-title').value,
                             category: document.getElementById('edit-p-category').value,
                             description: document.getElementById('edit-p-desc').value,
                             image: document.getElementById('edit-p-image').value,
+                            longDescription: document.getElementById('edit-p-long-desc').value,
+                            features,
+                            techStack,
+                            images,
                             liveUrl: document.getElementById('edit-p-live').value,
                             githubUrl: document.getElementById('edit-p-github').value,
                             updatedAt: serverTimestamp()
@@ -1749,10 +1805,14 @@
             document.getElementById('edit-p-category').value = data.category || 'fullstack';
             document.getElementById('edit-p-desc').value = data.description || '';
             document.getElementById('edit-p-image').value = data.image || '';
+            document.getElementById('edit-p-long-desc').value = data.longDescription || '';
+            document.getElementById('edit-p-features').value = Array.isArray(data.features) ? data.features.join('\n') : (data.features || '');
+            document.getElementById('edit-p-tech-stack').value = Array.isArray(data.techStack) ? data.techStack.join(', ') : (data.techStack || '');
+            document.getElementById('edit-p-images-extra').value = Array.isArray(data.images) ? data.images.join('\n') : '';
             document.getElementById('edit-p-live').value = data.liveUrl || '';
             document.getElementById('edit-p-github').value = data.githubUrl || '';
 
-                        document.getElementById('edit-project-form').style.display = 'block';
+            document.getElementById('edit-project-form').style.display = 'block';
             document.getElementById('edit-skill-form').style.display = 'none';
             document.getElementById('edit-service-form').style.display = 'none';
             document.getElementById('modal-title').innerHTML = '<i class="fas fa-edit" style="color:var(--primary);"></i> Edit Project';

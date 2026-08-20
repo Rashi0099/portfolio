@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Details | Abdul Rasheed YP</title>
+    <meta name="description" content="Detailed overview, screenshots, features, and technical stack of the project.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Core Styles -->
+    <link rel="stylesheet" href="styles.css?v=20">
+
+    <style>
+        /* Case Study / Details Custom Styles */
+        .details-wrapper {
+            padding: 120px 0 80px;
+            min-height: 100vh;
+        }
+
+        .back-nav {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+            padding: 8px 16px;
+            background: rgba(0, 217, 255, 0.08);
+            border: 1px solid rgba(0, 217, 255, 0.2);
+            border-radius: var(--radius-sm);
+            transition: all 0.3s ease;
+        }
+
+        .back-nav:hover {
+            background: rgba(0, 217, 255, 0.2);
+            transform: translateX(-4px);
+        }
+
+        .project-header-meta {
+            margin-bottom: 30px;
+        }
+
+        .project-title-large {
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 800;
+            margin: 12px 0;
+            background: linear-gradient(135deg, #ffffff 0%, var(--primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .project-tag-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.2), rgba(123, 47, 255, 0.3));
+            color: var(--primary);
+            border: 1px solid rgba(0, 217, 255, 0.3);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Gallery Showcase */
+        .gallery-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow);
+        }
+
+        .main-hero-img-box {
+            position: relative;
+            width: 100%;
+            height: 480px;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background: rgba(10, 15, 30, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .main-hero-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.3s ease;
+        }
+
+        .thumbnails-row {
+            display: flex;
+            gap: 14px;
+            margin-top: 16px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+        }
+
+        .thumb-item {
+            width: 100px;
+            height: 70px;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid transparent;
+            opacity: 0.6;
+            transition: all 0.25s ease;
+            flex-shrink: 0;
+            background: #000;
+        }
+
+        .thumb-item.active, .thumb-item:hover {
+            opacity: 1;
+            border-color: var(--primary);
+            box-shadow: 0 0 12px rgba(0, 217, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .thumb-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Content Layout Grid */
+        .case-study-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 32px;
+        }
+
+        @media (max-width: 900px) {
+            .case-study-grid {
+                grid-template-columns: 1fr;
+            }
+            .main-hero-img-box {
+                height: 300px;
+            }
+        }
+
+        .detail-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 28px;
+            margin-bottom: 24px;
+        }
+
+        .detail-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 16px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .features-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .features-list li {
+            position: relative;
+            padding-left: 28px;
+            margin-bottom: 12px;
+            color: var(--text);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .features-list li::before {
+            content: "\f058";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            top: 2px;
+            color: var(--primary);
+        }
+
+        .tech-pill {
+            display: inline-block;
+            background: rgba(123, 47, 255, 0.15);
+            border: 1px solid rgba(123, 47, 255, 0.3);
+            color: #d8b4fe;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin: 4px;
+        }
+
+        .action-links-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .action-links-group .btn {
+            justify-content: center;
+            width: 100%;
+        }
+
+        /* Loading Spinner */
+        .loading-box {
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(0, 217, 255, 0.1);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Scroll Progress Bar -->
+    <div id="scroll-progress"></div>
+
+    <!-- Navigation Header -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="nav-logo">
+                <span class="logo-text">Abdul <span class="highlight">Rasheed</span></span>
+            </a>
+            <div class="nav-actions">
+                <a href="index.html#projects" class="btn btn-outlined">
+                    <i class="fas fa-arrow-left"></i> All Projects
+                </a>
+                <a href="index.html#contact" class="btn btn-filled">Contact Me</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Details Container -->
+    <main class="details-wrapper">
+        <div class="container">
+            
+            <a href="index.html#projects" class="back-nav">
+                <i class="fas fa-arrow-left"></i> Back to Projects
+            </a>
+
+            <!-- Loading Placeholder -->
+            <div id="project-loading" class="loading-box">
+                <div class="spinner"></div>
+                <p style="color: var(--text-muted);">Loading project details...</p>
+            </div>
+
+            <!-- Error Box -->
+            <div id="project-error" class="detail-card" style="display:none; text-align:center; padding: 50px 20px;">
+                <i class="fas fa-exclamation-triangle" style="font-size:3rem; color:var(--accent); margin-bottom:16px;"></i>
+                <h2>Project Not Found</h2>
+                <p style="color:var(--text-muted); margin-bottom:20px;">The requested project details could not be loaded or may have been removed.</p>
+                <a href="index.html#projects" class="btn btn-filled">Return to Portfolio</a>
+            </div>
+
+            <!-- Dynamic Project View -->
+            <div id="project-content" style="display:none;">
+                
+                <!-- Title & Meta Header -->
+                <div class="project-header-meta">
+                    <span class="project-tag-badge" id="det-category">Fullstack</span>
+                    <h1 class="project-title-large" id="det-title">Project Title</h1>
+                    <p style="font-size: 1.1rem; color: var(--text-muted); max-width: 800px;" id="det-short-desc">
+                        Short description overview of the project.
+                    </p>
+                </div>
+
+                <!-- Screenshot Showcase Gallery -->
+                <div class="gallery-container">
+                    <div class="main-hero-img-box">
+                        <img id="det-main-img" src="" alt="Project Preview">
+                    </div>
+                    <div class="thumbnails-row" id="det-thumbnails">
+                        <!-- Dynamic thumbnail image items inserted here -->
+                    </div>
+                </div>
+
+                <!-- Case Study Content Grid -->
+                <div class="case-study-grid">
+                    
+                    <!-- Left: Description & Features -->
+                    <div>
+                        <div class="detail-card">
+                            <h3><i class="fas fa-file-alt" style="color:var(--primary);"></i> Project Overview</h3>
+                            <div id="det-long-desc" style="color: var(--text); line-height: 1.8; font-size: 1rem; white-space: pre-line;">
+                                Project overview details...
+                            </div>
+                        </div>
+
+                        <div class="detail-card" id="features-card" style="display:none;">
+                            <h3><i class="fas fa-star" style="color:var(--primary);"></i> Key Features & Highlights</h3>
+                            <ul class="features-list" id="det-features">
+                                <!-- Features list items -->
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Right: Info Card & Tech Stack -->
+                    <div>
+                        <div class="detail-card">
+                            <h3><i class="fas fa-info-circle" style="color:var(--primary);"></i> Project Info</h3>
+                            
+                            <div style="margin-bottom: 20px;">
+                                <strong style="color:var(--text-muted); font-size:0.85rem; display:block; text-transform:uppercase; letter-spacing:0.5px;">Category</strong>
+                                <span id="det-info-category" style="color:#fff; font-weight:600; font-size:1rem;">Web Development</span>
+                            </div>
+
+                            <div style="margin-bottom: 20px;">
+                                <strong style="color:var(--text-muted); font-size:0.85rem; display:block; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Tech Stack</strong>
+                                <div id="det-tech-stack">
+                                    <!-- Tech pills inserted here -->
+                                </div>
+                            </div>
+
+                            <div class="action-links-group">
+                                <a id="det-live-btn" href="#" target="_blank" class="btn btn-filled" style="display:none;">
+                                    <i class="fas fa-external-link-alt"></i> Live Demo Preview
+                                </a>
+                                <a id="det-github-btn" href="#" target="_blank" class="btn btn-outlined" style="display:none;">
+                                    <i class="fab fa-github"></i> View GitHub Source
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-container">
+            <p>&copy; 2026 Abdul Rasheed YP. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Firebase SDK Modules -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { firebaseConfig } from "./firebase-config.js";
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Fetch Project ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const projectId = urlParams.get('id');
+
+        const loadingEl = document.getElementById('project-loading');
+        const errorEl = document.getElementById('project-error');
+        const contentEl = document.getElementById('project-content');
+
+        async function loadProjectDetails() {
+            if (!projectId) {
+                showError();
+                return;
+            }
+
+            try {
+                const docRef = doc(db, 'projects', projectId);
+                const docSnap = await getDoc(docRef);
+
+                if (!docSnap.exists()) {
+                    showError();
+                    return;
+                }
+
+                const data = docSnap.data();
+
+                // 1. Meta & Header Info
+                document.getElementById('det-category').textContent = (data.category || 'PROJECT').toUpperCase();
+                document.getElementById('det-info-category').textContent = data.category || 'Full-Stack';
+                document.getElementById('det-title').textContent = data.title || 'Untitled Project';
+                document.getElementById('det-short-desc').textContent = data.description || '';
+                document.title = `${data.title || 'Project'} | Abdul Rasheed YP`;
+
+                // 2. Main Description & Features
+                const longDesc = data.longDescription || data.description || 'No detailed description available for this project yet.';
+                document.getElementById('det-long-desc').textContent = longDesc;
+
+                if (data.features && Array.isArray(data.features) && data.features.length > 0) {
+                    const featCard = document.getElementById('features-card');
+                    const featList = document.getElementById('det-features');
+                    featList.innerHTML = '';
+                    data.features.forEach(f => {
+                        if (f && f.trim()) {
+                            const li = document.createElement('li');
+                            li.textContent = f.trim();
+                            featList.appendChild(li);
+                        }
+                    });
+                    featCard.style.display = 'block';
+                } else if (data.features && typeof data.features === 'string') {
+                    const featCard = document.getElementById('features-card');
+                    const featList = document.getElementById('det-features');
+                    featList.innerHTML = '';
+                    data.features.split('\n').forEach(f => {
+                        if (f && f.trim()) {
+                            const li = document.createElement('li');
+                            li.textContent = f.trim().replace(/^[-*•]\s*/, '');
+                            featList.appendChild(li);
+                        }
+                    });
+                    featCard.style.display = 'block';
+                }
+
+                // 3. Tech Stack Pills
+                const techContainer = document.getElementById('det-tech-stack');
+                techContainer.innerHTML = '';
+                const techList = Array.isArray(data.techStack) ? data.techStack : (data.techStack ? data.techStack.split(',') : []);
+                if (techList.length > 0) {
+                    techList.forEach(t => {
+                        if (t && t.trim()) {
+                            const pill = document.createElement('span');
+                            pill.className = 'tech-pill';
+                            pill.textContent = t.trim();
+                            techContainer.appendChild(pill);
+                        }
+                    });
+                } else {
+                    techContainer.innerHTML = '<span class="tech-pill">HTML / CSS</span><span class="tech-pill">JavaScript</span>';
+                }
+
+                // 4. Action Buttons
+                if (data.liveUrl) {
+                    const btn = document.getElementById('det-live-btn');
+                    btn.href = data.liveUrl;
+                    btn.style.display = 'inline-flex';
+                }
+                if (data.githubUrl) {
+                    const btn = document.getElementById('det-github-btn');
+                    btn.href = data.githubUrl;
+                    btn.style.display = 'inline-flex';
+                }
+
+                // 5. Gallery Images Setup
+                const mainImg = document.getElementById('det-main-img');
+                const thumbsRow = document.getElementById('det-thumbnails');
+                thumbsRow.innerHTML = '';
+
+                // Build array of all images
+                let allImages = [];
+                if (data.image) allImages.push(data.image);
+                if (data.images && Array.isArray(data.images)) {
+                    data.images.forEach(img => { if (img && !allImages.includes(img)) allImages.push(img); });
+                }
+
+                // Fallback default image if none available
+                if (allImages.length === 0) {
+                    allImages.push('https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1000&auto=format&fit=crop&q=80');
+                }
+
+                // Set initial hero main image
+                mainImg.src = allImages[0];
+                mainImg.onerror = () => {
+                    mainImg.src = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1000&auto=format&fit=crop&q=80';
+                };
+
+                // Render thumbnails if more than 1 image
+                allImages.forEach((imgUrl, idx) => {
+                    const thumbDiv = document.createElement('div');
+                    thumbDiv.className = `thumb-item ${idx === 0 ? 'active' : ''}`;
+                    const img = document.createElement('img');
+                    img.src = imgUrl;
+                    img.onerror = () => { img.src = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=300&auto=format&fit=crop&q=80'; };
+                    thumbDiv.appendChild(img);
+
+                    thumbDiv.addEventListener('click', () => {
+                        document.querySelectorAll('.thumb-item').forEach(t => t.classList.remove('active'));
+                        thumbDiv.classList.add('active');
+                        mainImg.style.opacity = '0.3';
+                        setTimeout(() => {
+                            mainImg.src = imgUrl;
+                            mainImg.style.opacity = '1';
+                        }, 150);
+                    });
+
+                    thumbsRow.appendChild(thumbDiv);
+                });
+
+                // Display content
+                loadingEl.style.display = 'none';
+                contentEl.style.display = 'block';
+
+            } catch (err) {
+                console.error("Error fetching project details:", err);
+                showError();
+            }
+        }
+
+        function showError() {
+            loadingEl.style.display = 'none';
+            errorEl.style.display = 'block';
+        }
+
+        loadProjectDetails();
+    </script>
+</body>
+</html>
