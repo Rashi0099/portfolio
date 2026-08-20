@@ -422,6 +422,10 @@
                         <div class="main-hero-display">
                             <img id="det-main-img" src="" alt="Project Preview">
                         </div>
+                        <div id="det-img-caption" style="font-size:0.76rem; color:#64748b; margin-top:8px; font-style:italic; display:flex; align-items:center; gap:6px;">
+                            <i class="fas fa-camera" style="font-size:0.7rem; color:var(--primary);"></i>
+                            <span id="det-img-caption-text">Fig 1.1 — Overview</span>
+                        </div>
 
                         <!-- Thumbnails -->
                         <div class="thumbnails-row" id="det-thumbnails">
@@ -627,12 +631,61 @@
             }
         }
 
+        // Helper to format screenshot explanation into clean bullet/numbered breakdown list
+        function formatScreenDesc(text) {
+            if (!text || !text.trim()) return '';
+            const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+            
+            // Check if input contains list items like (1), 1., -, or ' — '
+            const hasListFormat = lines.some(l => /^(\(\d+\)|\d+[\.\)]|[-•*])\s+/.test(l) || l.includes(' — ') || l.includes(' - '));
+
+            if (hasListFormat) {
+                let html = '<div style="display:flex; flex-direction:column; gap:8px; margin-top:8px; width:100%;">';
+                lines.forEach(line => {
+                    const match = line.match(/^(\(\d+\)|\d+[\.\)]|[-•*])?\s*(.*)$/);
+                    const prefix = match && match[1] ? match[1] : '';
+                    const rest = match && match[2] ? match[2] : line;
+
+                    let itemTitle = rest;
+                    let itemDesc = '';
+                    if (rest.includes(' — ')) {
+                        const parts = rest.split(' — ');
+                        itemTitle = parts[0];
+                        itemDesc = parts.slice(1).join(' — ');
+                    } else if (rest.includes(' - ')) {
+                        const parts = rest.split(' - ');
+                        itemTitle = parts[0];
+                        itemDesc = parts.slice(1).join(' - ');
+                    } else if (rest.includes(': ')) {
+                        const parts = rest.split(': ');
+                        itemTitle = parts[0];
+                        itemDesc = parts.slice(1).join(': ');
+                    }
+
+                    html += `
+                        <div style="display:flex; align-items:flex-start; gap:8px; font-size:0.86rem; line-height:1.6; background:rgba(255,255,255,0.02); padding:7px 11px; border-radius:8px; border:1px solid rgba(255,255,255,0.04);">
+                            ${prefix ? `<span style="color:#ef4444; font-weight:700; font-family:monospace; font-size:0.84rem; flex-shrink:0;">${prefix}</span>` : '<i class="fas fa-chevron-right" style="color:var(--primary); font-size:0.65rem; margin-top:6px; flex-shrink:0;"></i>'}
+                            <div>
+                                <strong style="color:#ffffff; font-weight:600;">${itemTitle}</strong>
+                                ${itemDesc ? `<span style="color:#94a3b8;"> — ${itemDesc}</span>` : ''}
+                            </div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+                return html;
+            }
+
+            return `<p style="margin:0; color:#cbd5e1; line-height:1.7;">${text.replace(/\n/g, '<br>')}</p>`;
+        }
+
         function renderGallery() {
             const mainImg = document.getElementById('det-main-img');
             const counterText = document.getElementById('det-screen-counter');
             const titleText = document.getElementById('det-screen-title');
             const descText = document.getElementById('det-screen-desc');
             const thumbsRow = document.getElementById('det-thumbnails');
+            const captionText = document.getElementById('det-img-caption-text');
 
             thumbsRow.innerHTML = '';
 
@@ -650,10 +703,14 @@
                     mainImg.style.opacity = '1';
                 }, 80);
 
+                if (captionText) {
+                    captionText.textContent = `Fig 1.${currentIndex + 1} — ${item.title || 'Project Showcase'}`;
+                }
+
                 counterText.textContent = `SCREENSHOT ${currentIndex + 1} OF ${galleryItems.length}`;
                 titleText.textContent = item.title;
                 if (item.desc && item.desc.trim()) {
-                    descText.textContent = item.desc;
+                    descText.innerHTML = formatScreenDesc(item.desc);
                     descText.style.display = 'block';
                 } else {
                     descText.style.display = 'none';
