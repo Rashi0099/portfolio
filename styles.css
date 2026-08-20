@@ -284,6 +284,8 @@ p  { font-size: 0.97rem; color: var(--text); }
     align-items: center;
     padding-top: 90px;
     position: relative;
+    background: url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat fixed;
+    z-index: 1;
 }
 
 /* Subtle static background grid */
@@ -291,12 +293,13 @@ p  { font-size: 0.97rem; color: var(--text); }
     content: '';
     position: absolute;
     inset: 0;
-    background-image:
+    background: 
         linear-gradient(rgba(0, 217, 255, 0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 217, 255, 0.025) 1px, transparent 1px);
-    background-size: 55px 55px;
+        linear-gradient(90deg, rgba(0, 217, 255, 0.025) 1px, transparent 1px),
+        rgba(10, 15, 30, 0.88);
+    background-size: 55px 55px, 55px 55px, auto;
     pointer-events: none;
-    z-index: 0;
+    z-index: -1;
 }
 
 .hero-content {
@@ -407,6 +410,19 @@ p  { font-size: 0.97rem; color: var(--text); }
 /* ============================================================
    6. ABOUT SECTION
 ============================================================ */
+.about {
+    position: relative;
+    background: url('https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat fixed;
+    z-index: 1;
+}
+.about::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 15, 30, 0.90);
+    z-index: -1;
+}
+
 .about-wrapper {
     display: grid;
     grid-template-columns: 1.1fr 0.9fr;
@@ -486,6 +502,19 @@ p  { font-size: 0.97rem; color: var(--text); }
 /* ============================================================
    7. SKILLS SECTION
 ============================================================ */
+.skills {
+    position: relative;
+    background: url('https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat fixed;
+    z-index: 1;
+}
+.skills::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 15, 30, 0.92);
+    z-index: -1;
+}
+
 .skills-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
@@ -537,6 +566,19 @@ p  { font-size: 0.97rem; color: var(--text); }
 /* ============================================================
    8. SERVICES SECTION (NO HOVER EFFECT)
 ============================================================ */
+#services {
+    position: relative;
+    background: url('https://images.unsplash.com/photo-1475721028070-2051d52a224d?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat fixed;
+    z-index: 1;
+}
+#services::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 41, 0.94);
+    z-index: -1;
+}
+
 .services-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -582,6 +624,19 @@ p  { font-size: 0.97rem; color: var(--text); }
 /* ============================================================
    9. PROJECTS SECTION — Horizontal Carousel
 ============================================================ */
+
+#projects {
+    position: relative;
+    background: url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat fixed;
+    z-index: 1;
+}
+#projects::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 15, 30, 0.92);
+    z-index: -1;
+}
 
 /* Filter pills */
 .project-filter {
@@ -766,6 +821,19 @@ p  { font-size: 0.97rem; color: var(--text); }
 /* ============================================================
    10. CONTACT SECTION
 ============================================================ */
+#contact {
+    position: relative;
+    background: url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat fixed;
+    z-index: 1;
+}
+#contact::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 41, 0.94);
+    z-index: -1;
+}
+
 .contact-container {
     display: grid;
     grid-template-columns: 1fr 1.4fr;
