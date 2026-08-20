@@ -15,10 +15,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Core Styles -->
-    <link rel="stylesheet" href="styles.css?v=20">
+    <link rel="stylesheet" href="styles.css?v=21">
 
     <style>
-        /* Case Study / Details Custom Styles */
         .details-wrapper {
             padding: 120px 0 80px;
             min-height: 100vh;
@@ -31,8 +30,8 @@
             color: var(--primary);
             font-weight: 600;
             font-size: 0.95rem;
-            margin-bottom: 24px;
-            padding: 8px 16px;
+            margin-bottom: 28px;
+            padding: 8px 18px;
             background: rgba(0, 217, 255, 0.08);
             border: 1px solid rgba(0, 217, 255, 0.2);
             border-radius: var(--radius-sm);
@@ -44,14 +43,25 @@
             transform: translateX(-4px);
         }
 
-        .project-header-meta {
-            margin-bottom: 30px;
+        /* Split Side-by-Side Grid */
+        .case-study-split-grid {
+            display: grid;
+            grid-template-columns: 1.15fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        @media (max-width: 992px) {
+            .case-study-split-grid {
+                grid-template-columns: 1fr;
+                gap: 28px;
+            }
         }
 
         .project-title-large {
-            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
             font-weight: 800;
-            margin: 12px 0;
+            margin: 10px 0;
             background: linear-gradient(135deg, #ffffff 0%, var(--primary) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -64,26 +74,27 @@
             border: 1px solid rgba(0, 217, 255, 0.3);
             padding: 4px 14px;
             border-radius: 20px;
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             font-weight: 600;
             letter-spacing: 1px;
             text-transform: uppercase;
         }
 
-        /* Gallery Showcase */
-        .gallery-container {
+        /* Left Side: Sticky Gallery Container */
+        .gallery-sticky-box {
+            position: sticky;
+            top: 100px;
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: var(--radius-lg);
             padding: 20px;
-            margin-bottom: 40px;
             box-shadow: var(--shadow);
         }
 
         .main-hero-img-box {
             position: relative;
             width: 100%;
-            height: 480px;
+            height: 440px;
             border-radius: var(--radius-md);
             overflow: hidden;
             background: rgba(10, 15, 30, 0.6);
@@ -102,15 +113,15 @@
 
         .thumbnails-row {
             display: flex;
-            gap: 14px;
+            gap: 12px;
             margin-top: 16px;
             overflow-x: auto;
-            padding-bottom: 8px;
+            padding-bottom: 6px;
         }
 
         .thumb-item {
-            width: 100px;
-            height: 70px;
+            width: 90px;
+            height: 65px;
             border-radius: var(--radius-sm);
             overflow: hidden;
             cursor: pointer;
@@ -134,33 +145,18 @@
             object-fit: cover;
         }
 
-        /* Content Layout Grid */
-        .case-study-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 32px;
-        }
-
-        @media (max-width: 900px) {
-            .case-study-grid {
-                grid-template-columns: 1fr;
-            }
-            .main-hero-img-box {
-                height: 300px;
-            }
-        }
-
+        /* Right Side Details Cards */
         .detail-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: var(--radius-md);
-            padding: 28px;
+            padding: 24px;
             margin-bottom: 24px;
         }
 
         .detail-card h3 {
-            font-size: 1.3rem;
-            margin-bottom: 16px;
+            font-size: 1.2rem;
+            margin-bottom: 14px;
             color: #fff;
             display: flex;
             align-items: center;
@@ -205,14 +201,9 @@
 
         .action-links-group {
             display: flex;
-            flex-direction: column;
+            flex-wrap: wrap;
             gap: 12px;
             margin-top: 20px;
-        }
-
-        .action-links-group .btn {
-            justify-content: center;
-            width: 100%;
         }
 
         /* Loading Spinner */
@@ -233,6 +224,16 @@
 
         @keyframes spin {
             to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .gallery-sticky-box {
+                position: relative;
+                top: 0;
+            }
+            .main-hero-img-box {
+                height: 280px;
+            }
         }
     </style>
 </head>
@@ -278,74 +279,69 @@
                 <a href="index.html#projects" class="btn btn-filled">Return to Portfolio</a>
             </div>
 
-            <!-- Dynamic Project View -->
+            <!-- Dynamic Project Side-by-Side View -->
             <div id="project-content" style="display:none;">
                 
-                <!-- Title & Meta Header -->
-                <div class="project-header-meta">
-                    <span class="project-tag-badge" id="det-category">Fullstack</span>
-                    <h1 class="project-title-large" id="det-title">Project Title</h1>
-                    <p style="font-size: 1.1rem; color: var(--text-muted); max-width: 800px;" id="det-short-desc">
-                        Short description overview of the project.
-                    </p>
-                </div>
-
-                <!-- Screenshot Showcase Gallery -->
-                <div class="gallery-container">
-                    <div class="main-hero-img-box">
-                        <img id="det-main-img" src="" alt="Project Preview">
-                    </div>
-                    <div class="thumbnails-row" id="det-thumbnails">
-                        <!-- Dynamic thumbnail image items inserted here -->
-                    </div>
-                </div>
-
-                <!-- Case Study Content Grid -->
-                <div class="case-study-grid">
+                <div class="case-study-split-grid">
                     
-                    <!-- Left: Description & Features -->
+                    <!-- LEFT COLUMN: Image Gallery & Screenshots -->
+                    <div class="gallery-sticky-box">
+                        <div class="main-hero-img-box">
+                            <img id="det-main-img" src="" alt="Project Preview">
+                        </div>
+                        <div class="thumbnails-row" id="det-thumbnails">
+                            <!-- Dynamic thumbnail image items inserted here -->
+                        </div>
+                    </div>
+
+                    <!-- RIGHT COLUMN: Title, Overview, Key Features & Tech Stack -->
                     <div>
+                        
+                        <!-- Title & Category Header -->
+                        <div style="margin-bottom: 24px;">
+                            <span class="project-tag-badge" id="det-category">Fullstack</span>
+                            <h1 class="project-title-large" id="det-title">Project Title</h1>
+                            <p style="font-size: 1.05rem; color: var(--text-muted);" id="det-short-desc">
+                                Short description overview of the project.
+                            </p>
+                        </div>
+
+                        <!-- Project Overview / Explanation -->
                         <div class="detail-card">
                             <h3><i class="fas fa-file-alt" style="color:var(--primary);"></i> Project Overview</h3>
-                            <div id="det-long-desc" style="color: var(--text); line-height: 1.8; font-size: 1rem; white-space: pre-line;">
+                            <div id="det-long-desc" style="color: var(--text); line-height: 1.8; font-size: 0.98rem; white-space: pre-line;">
                                 Project overview details...
                             </div>
                         </div>
 
+                        <!-- Key Features & Highlights -->
                         <div class="detail-card" id="features-card" style="display:none;">
                             <h3><i class="fas fa-star" style="color:var(--primary);"></i> Key Features & Highlights</h3>
                             <ul class="features-list" id="det-features">
                                 <!-- Features list items -->
                             </ul>
                         </div>
-                    </div>
 
-                    <!-- Right: Info Card & Tech Stack -->
-                    <div>
+                        <!-- Tech Stack & Action Links -->
                         <div class="detail-card">
-                            <h3><i class="fas fa-info-circle" style="color:var(--primary);"></i> Project Info</h3>
+                            <h3><i class="fas fa-code" style="color:var(--primary);"></i> Tech Stack & Links</h3>
                             
                             <div style="margin-bottom: 20px;">
-                                <strong style="color:var(--text-muted); font-size:0.85rem; display:block; text-transform:uppercase; letter-spacing:0.5px;">Category</strong>
-                                <span id="det-info-category" style="color:#fff; font-weight:600; font-size:1rem;">Web Development</span>
-                            </div>
-
-                            <div style="margin-bottom: 20px;">
-                                <strong style="color:var(--text-muted); font-size:0.85rem; display:block; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Tech Stack</strong>
                                 <div id="det-tech-stack">
                                     <!-- Tech pills inserted here -->
                                 </div>
                             </div>
 
                             <div class="action-links-group">
-                                <a id="det-live-btn" href="#" target="_blank" class="btn btn-filled" style="display:none;">
-                                    <i class="fas fa-external-link-alt"></i> Live Demo Preview
+                                <a id="det-live-btn" href="#" target="_blank" class="btn btn-filled" style="display:none; flex:1; min-width:150px; justify-content:center;">
+                                    <i class="fas fa-external-link-alt"></i> Live Demo
                                 </a>
-                                <a id="det-github-btn" href="#" target="_blank" class="btn btn-outlined" style="display:none;">
-                                    <i class="fab fa-github"></i> View GitHub Source
+                                <a id="det-github-btn" href="#" target="_blank" class="btn btn-outlined" style="display:none; flex:1; min-width:150px; justify-content:center;">
+                                    <i class="fab fa-github"></i> GitHub Code
                                 </a>
                             </div>
                         </div>
+
                     </div>
 
                 </div>
@@ -399,7 +395,6 @@
 
                 // 1. Meta & Header Info
                 document.getElementById('det-category').textContent = (data.category || 'PROJECT').toUpperCase();
-                document.getElementById('det-info-category').textContent = data.category || 'Full-Stack';
                 document.getElementById('det-title').textContent = data.title || 'Untitled Project';
                 document.getElementById('det-short-desc').textContent = data.description || '';
                 document.title = `${data.title || 'Project'} | Abdul Rasheed YP`;
