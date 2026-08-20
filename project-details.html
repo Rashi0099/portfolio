@@ -9,37 +9,52 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Core Styles -->
-    <link rel="stylesheet" href="styles.css?v=21">
+    <link rel="stylesheet" href="styles.css?v=22">
 
     <style>
+        :root {
+            --font-main: 'Inter', sans-serif;
+            --font-heading: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background: #060913;
+            color: #cbd5e1;
+            font-family: var(--font-main);
+        }
+
         .details-wrapper {
-            padding: 120px 0 80px;
+            padding: 110px 0 80px;
             min-height: 100vh;
         }
 
+        /* Minimal Back Link */
         .back-nav {
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            color: var(--primary);
-            font-weight: 600;
-            font-size: 0.95rem;
-            margin-bottom: 28px;
+            color: #94a3b8;
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin-bottom: 32px;
             padding: 8px 18px;
-            background: rgba(0, 217, 255, 0.08);
-            border: 1px solid rgba(0, 217, 255, 0.2);
-            border-radius: var(--radius-sm);
-            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .back-nav:hover {
-            background: rgba(0, 217, 255, 0.2);
+            color: var(--primary);
+            background: rgba(0, 217, 255, 0.08);
+            border-color: rgba(0, 217, 255, 0.3);
             transform: translateX(-4px);
         }
 
@@ -47,58 +62,69 @@
         .case-study-split-grid {
             display: grid;
             grid-template-columns: 1.15fr 1fr;
-            gap: 40px;
+            gap: 44px;
             align-items: start;
         }
 
         @media (max-width: 992px) {
             .case-study-split-grid {
                 grid-template-columns: 1fr;
-                gap: 28px;
+                gap: 32px;
             }
         }
 
         .project-title-large {
-            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-family: var(--font-heading);
+            font-size: clamp(2rem, 4.5vw, 3.2rem);
             font-weight: 800;
-            margin: 10px 0;
-            background: linear-gradient(135deg, #ffffff 0%, var(--primary) 100%);
+            letter-spacing: -0.02em;
+            line-height: 1.15;
+            margin: 12px 0 16px;
+            background: linear-gradient(135deg, #ffffff 30%, #94a3b8 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .project-tag-badge {
-            display: inline-block;
-            background: linear-gradient(135deg, rgba(0, 217, 255, 0.2), rgba(123, 47, 255, 0.3));
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(0, 217, 255, 0.08);
             color: var(--primary);
-            border: 1px solid rgba(0, 217, 255, 0.3);
+            border: 1px solid rgba(0, 217, 255, 0.25);
             padding: 4px 14px;
             border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            letter-spacing: 1px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1.2px;
             text-transform: uppercase;
         }
 
         /* Left Side: Sticky Gallery Container */
         .gallery-sticky-box {
             position: sticky;
-            top: 100px;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
+            top: 110px;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
             padding: 20px;
-            box-shadow: var(--shadow);
+            box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.6);
+            transition: border-color 0.3s ease;
+        }
+
+        .gallery-sticky-box:hover {
+            border-color: rgba(0, 217, 255, 0.25);
         }
 
         .main-hero-img-box {
             position: relative;
             width: 100%;
             height: 440px;
-            border-radius: var(--radius-md);
+            border-radius: 14px;
             overflow: hidden;
-            background: rgba(10, 15, 30, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: #020617;
+            border: 1px solid rgba(255, 255, 255, 0.05);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -108,7 +134,11 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: opacity 0.3s ease;
+            transition: transform 0.5s ease, opacity 0.3s ease;
+        }
+
+        .main-hero-img-box:hover img {
+            transform: scale(1.02);
         }
 
         .thumbnails-row {
@@ -117,17 +147,19 @@
             margin-top: 16px;
             overflow-x: auto;
             padding-bottom: 6px;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255,255,255,0.2) transparent;
         }
 
         .thumb-item {
             width: 90px;
-            height: 65px;
-            border-radius: var(--radius-sm);
+            height: 64px;
+            border-radius: 10px;
             overflow: hidden;
             cursor: pointer;
             border: 2px solid transparent;
-            opacity: 0.6;
-            transition: all 0.25s ease;
+            opacity: 0.5;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
             flex-shrink: 0;
             background: #000;
         }
@@ -135,7 +167,7 @@
         .thumb-item.active, .thumb-item:hover {
             opacity: 1;
             border-color: var(--primary);
-            box-shadow: 0 0 12px rgba(0, 217, 255, 0.4);
+            box-shadow: 0 0 16px rgba(0, 217, 255, 0.4);
             transform: translateY(-2px);
         }
 
@@ -147,32 +179,43 @@
 
         /* Right Side Details Cards */
         .detail-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            padding: 24px;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            padding: 28px;
             margin-bottom: 24px;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .detail-card:hover {
+            border-color: rgba(255, 255, 255, 0.15);
         }
 
         .detail-card h3 {
-            font-size: 1.2rem;
-            margin-bottom: 14px;
-            color: #fff;
+            font-family: var(--font-heading);
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #f8fafc;
             display: flex;
             align-items: center;
             gap: 10px;
+            letter-spacing: -0.01em;
         }
 
         .features-list {
             list-style: none;
             padding: 0;
+            margin: 0;
         }
 
         .features-list li {
             position: relative;
             padding-left: 28px;
-            margin-bottom: 12px;
-            color: var(--text);
+            margin-bottom: 14px;
+            color: #cbd5e1;
             font-size: 0.95rem;
             line-height: 1.6;
         }
@@ -185,40 +228,73 @@
             left: 0;
             top: 2px;
             color: var(--primary);
+            font-size: 0.95rem;
         }
 
         .tech-pill {
-            display: inline-block;
-            background: rgba(123, 47, 255, 0.15);
-            border: 1px solid rgba(123, 47, 255, 0.3);
-            color: #d8b4fe;
-            padding: 6px 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #e2e8f0;
+            padding: 6px 16px;
             border-radius: 20px;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             font-weight: 500;
             margin: 4px;
+            transition: all 0.25s ease;
+        }
+
+        .tech-pill:hover {
+            background: rgba(0, 217, 255, 0.1);
+            border-color: rgba(0, 217, 255, 0.3);
+            color: var(--primary);
         }
 
         .action-links-group {
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
-            margin-top: 20px;
+            gap: 14px;
+            margin-top: 24px;
         }
 
-        /* Loading Spinner */
+        .action-links-group .btn {
+            border-radius: 12px;
+            padding: 12px 24px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 0.2px;
+        }
+
+        /* Loading & Animations */
+        .fade-in-up {
+            animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .loading-box {
             text-align: center;
-            padding: 80px 20px;
+            padding: 100px 20px;
         }
 
         .spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid rgba(0, 217, 255, 0.1);
+            width: 44px;
+            height: 44px;
+            border: 3px solid rgba(0, 217, 255, 0.1);
             border-top-color: var(--primary);
             border-radius: 50%;
-            animation: spin 1s linear infinite;
+            animation: spin 0.8s linear infinite;
             margin: 0 auto 20px;
         }
 
@@ -233,6 +309,9 @@
             }
             .main-hero-img-box {
                 height: 280px;
+            }
+            .detail-card {
+                padding: 20px;
             }
         }
     </style>
@@ -249,10 +328,10 @@
                 <span class="logo-text">Abdul <span class="highlight">Rasheed</span></span>
             </a>
             <div class="nav-actions">
-                <a href="index.html#projects" class="btn btn-outlined">
+                <a href="index.html#projects" class="btn btn-outlined" style="border-radius:20px; font-size:0.85rem;">
                     <i class="fas fa-arrow-left"></i> All Projects
                 </a>
-                <a href="index.html#contact" class="btn btn-filled">Contact Me</a>
+                <a href="index.html#contact" class="btn btn-filled" style="border-radius:20px; font-size:0.85rem;">Contact Me</a>
             </div>
         </div>
     </nav>
@@ -262,25 +341,25 @@
         <div class="container">
             
             <a href="index.html#projects" class="back-nav">
-                <i class="fas fa-arrow-left"></i> Back to Projects
+                <i class="fas fa-arrow-left"></i> Back to Portfolio
             </a>
 
             <!-- Loading Placeholder -->
             <div id="project-loading" class="loading-box">
                 <div class="spinner"></div>
-                <p style="color: var(--text-muted);">Loading project details...</p>
+                <p style="color: #64748b; font-size: 0.95rem;">Loading case study...</p>
             </div>
 
             <!-- Error Box -->
-            <div id="project-error" class="detail-card" style="display:none; text-align:center; padding: 50px 20px;">
-                <i class="fas fa-exclamation-triangle" style="font-size:3rem; color:var(--accent); margin-bottom:16px;"></i>
+            <div id="project-error" class="detail-card" style="display:none; text-align:center; padding: 60px 20px;">
+                <i class="fas fa-exclamation-triangle" style="font-size:2.8rem; color:var(--accent); margin-bottom:16px;"></i>
                 <h2>Project Not Found</h2>
-                <p style="color:var(--text-muted); margin-bottom:20px;">The requested project details could not be loaded or may have been removed.</p>
+                <p style="color:#64748b; margin-bottom:24px;">The requested project details could not be loaded or may have been removed.</p>
                 <a href="index.html#projects" class="btn btn-filled">Return to Portfolio</a>
             </div>
 
             <!-- Dynamic Project Side-by-Side View -->
-            <div id="project-content" style="display:none;">
+            <div id="project-content" class="fade-in-up" style="display:none;">
                 
                 <div class="case-study-split-grid">
                     
@@ -298,25 +377,25 @@
                     <div>
                         
                         <!-- Title & Category Header -->
-                        <div style="margin-bottom: 24px;">
-                            <span class="project-tag-badge" id="det-category">Fullstack</span>
+                        <div style="margin-bottom: 28px;">
+                            <span class="project-tag-badge" id="det-category"><i class="fas fa-layer-group"></i> Fullstack</span>
                             <h1 class="project-title-large" id="det-title">Project Title</h1>
-                            <p style="font-size: 1.05rem; color: var(--text-muted);" id="det-short-desc">
+                            <p style="font-size: 1.05rem; color: #94a3b8; line-height:1.6;" id="det-short-desc">
                                 Short description overview of the project.
                             </p>
                         </div>
 
                         <!-- Project Overview / Explanation -->
                         <div class="detail-card">
-                            <h3><i class="fas fa-file-alt" style="color:var(--primary);"></i> Project Overview</h3>
-                            <div id="det-long-desc" style="color: var(--text); line-height: 1.8; font-size: 0.98rem; white-space: pre-line;">
+                            <h3><i class="fas fa-align-left" style="color:var(--primary);"></i> Project Overview</h3>
+                            <div id="det-long-desc" style="color: #cbd5e1; line-height: 1.85; font-size: 0.96rem; white-space: pre-line;">
                                 Project overview details...
                             </div>
                         </div>
 
                         <!-- Key Features & Highlights -->
                         <div class="detail-card" id="features-card" style="display:none;">
-                            <h3><i class="fas fa-star" style="color:var(--primary);"></i> Key Features & Highlights</h3>
+                            <h3><i class="fas fa-check-double" style="color:var(--primary);"></i> Key Features & Highlights</h3>
                             <ul class="features-list" id="det-features">
                                 <!-- Features list items -->
                             </ul>
@@ -324,7 +403,7 @@
 
                         <!-- Tech Stack & Action Links -->
                         <div class="detail-card">
-                            <h3><i class="fas fa-code" style="color:var(--primary);"></i> Tech Stack & Links</h3>
+                            <h3><i class="fas fa-code" style="color:var(--primary);"></i> Tech Stack & Launch</h3>
                             
                             <div style="margin-bottom: 20px;">
                                 <div id="det-tech-stack">
@@ -352,9 +431,9 @@
     </main>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer class="footer" style="background:#040711; border-top:1px solid rgba(255,255,255,0.05); padding:30px 0;">
         <div class="container footer-container">
-            <p>&copy; 2026 Abdul Rasheed YP. All rights reserved.</p>
+            <p style="color:#64748b; font-size:0.88rem;">&copy; 2026 Abdul Rasheed YP. All rights reserved.</p>
         </div>
     </footer>
 
@@ -394,10 +473,10 @@
                 const data = docSnap.data();
 
                 // 1. Meta & Header Info
-                document.getElementById('det-category').textContent = (data.category || 'PROJECT').toUpperCase();
+                document.getElementById('det-category').innerHTML = `<i class="fas fa-layer-group"></i> ${(data.category || 'PROJECT').toUpperCase()}`;
                 document.getElementById('det-title').textContent = data.title || 'Untitled Project';
                 document.getElementById('det-short-desc').textContent = data.description || '';
-                document.title = `${data.title || 'Project'} | Abdul Rasheed YP`;
+                document.title = `${data.title || 'Project'} | Case Study`;
 
                 // 2. Main Description & Features
                 const longDesc = data.longDescription || data.description || 'No detailed description available for this project yet.';
@@ -438,12 +517,12 @@
                         if (t && t.trim()) {
                             const pill = document.createElement('span');
                             pill.className = 'tech-pill';
-                            pill.textContent = t.trim();
+                            pill.innerHTML = `<i class="fas fa-microchip" style="font-size:0.75rem; color:var(--primary);"></i> ${t.trim()}`;
                             techContainer.appendChild(pill);
                         }
                     });
                 } else {
-                    techContainer.innerHTML = '<span class="tech-pill">HTML / CSS</span><span class="tech-pill">JavaScript</span>';
+                    techContainer.innerHTML = '<span class="tech-pill"><i class="fas fa-microchip" style="font-size:0.75rem; color:var(--primary);"></i> Web Development</span>';
                 }
 
                 // 4. Action Buttons
