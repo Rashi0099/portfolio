@@ -1112,6 +1112,10 @@
                                 <p style="color:#64748b; margin:4px 0 0; font-size:0.75rem;">Click to upload</p>
                             </div>
                             <input type="file" id="bg-hero-file" accept="image/*" style="display:none;" onchange="uploadSectionBg(this, 'hero')">
+                            <div style="margin-top: 10px; display:flex; gap:8px;">
+                                <input type="text" id="bg-hero-url" placeholder="Local path (e.g. img/bg.jpg)" style="flex:1; padding:6px 10px; border-radius:4px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.3); color:#fff; font-size:0.8rem;">
+                                <button type="button" class="btn btn-primary" style="padding:6px 12px; border-radius:4px; font-size:0.8rem; width:auto;" onclick="saveLocalBgUrl('hero')"><i class="fas fa-save"></i></button>
+                            </div>
                         </div>
 
                         <!-- About -->
@@ -1123,6 +1127,10 @@
                                 <p style="color:#64748b; margin:4px 0 0; font-size:0.75rem;">Click to upload</p>
                             </div>
                             <input type="file" id="bg-about-file" accept="image/*" style="display:none;" onchange="uploadSectionBg(this, 'about')">
+                            <div style="margin-top: 10px; display:flex; gap:8px;">
+                                <input type="text" id="bg-about-url" placeholder="Local path (e.g. img/bg.jpg)" style="flex:1; padding:6px 10px; border-radius:4px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.3); color:#fff; font-size:0.8rem;">
+                                <button type="button" class="btn btn-primary" style="padding:6px 12px; border-radius:4px; font-size:0.8rem; width:auto;" onclick="saveLocalBgUrl('about')"><i class="fas fa-save"></i></button>
+                            </div>
                         </div>
                         
                         <!-- Skills -->
@@ -1134,6 +1142,10 @@
                                 <p style="color:#64748b; margin:4px 0 0; font-size:0.75rem;">Click to upload</p>
                             </div>
                             <input type="file" id="bg-skills-file" accept="image/*" style="display:none;" onchange="uploadSectionBg(this, 'skills')">
+                            <div style="margin-top: 10px; display:flex; gap:8px;">
+                                <input type="text" id="bg-skills-url" placeholder="Local path (e.g. img/bg.jpg)" style="flex:1; padding:6px 10px; border-radius:4px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.3); color:#fff; font-size:0.8rem;">
+                                <button type="button" class="btn btn-primary" style="padding:6px 12px; border-radius:4px; font-size:0.8rem; width:auto;" onclick="saveLocalBgUrl('skills')"><i class="fas fa-save"></i></button>
+                            </div>
                         </div>
 
                         <!-- Services -->
@@ -1145,6 +1157,10 @@
                                 <p style="color:#64748b; margin:4px 0 0; font-size:0.75rem;">Click to upload</p>
                             </div>
                             <input type="file" id="bg-services-file" accept="image/*" style="display:none;" onchange="uploadSectionBg(this, 'services')">
+                            <div style="margin-top: 10px; display:flex; gap:8px;">
+                                <input type="text" id="bg-services-url" placeholder="Local path (e.g. img/bg.jpg)" style="flex:1; padding:6px 10px; border-radius:4px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.3); color:#fff; font-size:0.8rem;">
+                                <button type="button" class="btn btn-primary" style="padding:6px 12px; border-radius:4px; font-size:0.8rem; width:auto;" onclick="saveLocalBgUrl('services')"><i class="fas fa-save"></i></button>
+                            </div>
                         </div>
 
                         <!-- Projects -->
@@ -1156,6 +1172,10 @@
                                 <p style="color:#64748b; margin:4px 0 0; font-size:0.75rem;">Click to upload</p>
                             </div>
                             <input type="file" id="bg-projects-file" accept="image/*" style="display:none;" onchange="uploadSectionBg(this, 'projects')">
+                            <div style="margin-top: 10px; display:flex; gap:8px;">
+                                <input type="text" id="bg-projects-url" placeholder="Local path (e.g. img/bg.jpg)" style="flex:1; padding:6px 10px; border-radius:4px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.3); color:#fff; font-size:0.8rem;">
+                                <button type="button" class="btn btn-primary" style="padding:6px 12px; border-radius:4px; font-size:0.8rem; width:auto;" onclick="saveLocalBgUrl('projects')"><i class="fas fa-save"></i></button>
+                            </div>
                         </div>
 
                         <!-- Contact -->
@@ -1167,6 +1187,10 @@
                                 <p style="color:#64748b; margin:4px 0 0; font-size:0.75rem;">Click to upload</p>
                             </div>
                             <input type="file" id="bg-contact-file" accept="image/*" style="display:none;" onchange="uploadSectionBg(this, 'contact')">
+                            <div style="margin-top: 10px; display:flex; gap:8px;">
+                                <input type="text" id="bg-contact-url" placeholder="Local path (e.g. img/bg.jpg)" style="flex:1; padding:6px 10px; border-radius:4px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.3); color:#fff; font-size:0.8rem;">
+                                <button type="button" class="btn btn-primary" style="padding:6px 12px; border-radius:4px; font-size:0.8rem; width:auto;" onclick="saveLocalBgUrl('contact')"><i class="fas fa-save"></i></button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1868,6 +1892,32 @@
             }
         };
 
+        window.saveLocalBgUrl = async (section) => {
+            const input = document.getElementById(`bg-${section}-url`);
+            if(!input) return;
+            const url = input.value.trim();
+            if(!url) { alert('Please enter a valid path/URL'); return; }
+            
+            const dz = document.getElementById(`bg-${section}-dz`);
+            const previewImg = document.getElementById(`bg-${section}-preview`);
+            if(dz) dz.innerHTML = '<i class="fas fa-spinner fa-spin" style="font-size:1.2rem; color:var(--primary);"></i><p style="color:var(--primary); margin:4px 0 0; font-size:0.75rem;">Saving...</p>';
+            
+            try {
+                const fieldName = `bg${section.charAt(0).toUpperCase() + section.slice(1)}`;
+                await updateDoc(doc(db, 'settings', 'general'), {
+                    [fieldName]: url
+                });
+                if(previewImg) {
+                    previewImg.src = url;
+                    previewImg.style.display = 'block';
+                }
+                if(dz) dz.innerHTML = `<i class="fas fa-check-circle" style="font-size:1.2rem; color:#22c55e;"></i><p style="color:#22c55e; margin:4px 0 0; font-size:0.75rem;">Path Saved ✓</p>`;
+            } catch(err) {
+                if (dz) dz.innerHTML = '<i class="fas fa-cloud-upload-alt" style="font-size:1.2rem; color:var(--primary); opacity:0.7;"></i><p style="color:#ef4444; margin:4px 0 0; font-size:0.75rem;">Failed</p>';
+                alert('Save error: ' + err.message);
+            }
+        };
+
         // Realtime Settings (Auto-seed default values if empty)
             onSnapshot(doc(db, 'settings', 'general'), async (docSnap) => {
                 if (docSnap.exists()) {
@@ -1890,10 +1940,14 @@
                         const bgField = 'bg' + sec.charAt(0).toUpperCase() + sec.slice(1);
                         const previewEl = document.getElementById(`bg-${sec}-preview`);
                         const dz = document.getElementById(`bg-${sec}-dz`);
-                        if (d[bgField] && previewEl) {
-                            previewEl.src = d[bgField];
-                            previewEl.style.display = 'block';
-                            if (dz) dz.innerHTML = `<i class="fas fa-check-circle" style="font-size:1.2rem; color:#22c55e;"></i><p style="color:#22c55e; margin:4px 0 0; font-size:0.75rem;">Update Image</p>`;
+                        const urlInput = document.getElementById(`bg-${sec}-url`);
+                        if (d[bgField]) {
+                            if(previewEl) {
+                                previewEl.src = d[bgField];
+                                previewEl.style.display = 'block';
+                            }
+                            if(urlInput) urlInput.value = d[bgField];
+                            if(dz) dz.innerHTML = `<i class="fas fa-check-circle" style="font-size:1.2rem; color:#22c55e;"></i><p style="color:#22c55e; margin:4px 0 0; font-size:0.75rem;">Update Image</p>`;
                         }
                     });
                 } else {
