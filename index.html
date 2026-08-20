@@ -409,6 +409,20 @@
                     applyBg('#services', d.bgServices);
                     applyBg('#projects', d.bgProjects);
                     applyBg('#contact', d.bgContact);
+                    
+                    const applyImg = (selector, url) => {
+                        if (url) {
+                            const el = document.querySelector(selector);
+                            if (el) {
+                                el.src = url;
+                            }
+                        }
+                    };
+                    
+                    applyImg('#life-gallery .gal-large img', d.bgGal1);
+                    applyImg('#life-gallery .gal-tall img', d.bgGal2);
+                    applyImg('#life-gallery .gal-square img', d.bgGal3);
+                    applyImg('#life-gallery .gal-wide img', d.bgGal4);
                 }
             });
 
