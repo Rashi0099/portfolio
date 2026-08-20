@@ -1185,7 +1185,8 @@ footer {
     }
 
     .blob-shape-small {
-        margin: 0 auto 24px auto;
+        margin: 0 auto 24px auto !important;
+        display: block !important;
     }
 
     .about-text .about-buttons { justify-content: center; }
