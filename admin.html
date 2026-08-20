@@ -44,6 +44,9 @@
             border: 1px solid var(--border);
             border-radius: var(--radius-lg);
             padding: 24px;
+            box-sizing: border-box;
+            max-width: 100%;
+            overflow: hidden;
         }
 
         /* Login Screen */
@@ -273,6 +276,9 @@
                 padding: 16px;
             }
             main {
+                padding: 16px 12px;
+            }
+            .glass-card {
                 padding: 16px;
             }
         }
@@ -286,17 +292,31 @@
             border-radius: var(--radius-md);
             padding: 16px;
             margin-bottom: 12px;
+            width: 100%;
+            box-sizing: border-box;
+            gap: 12px;
+            overflow: hidden;
+        }
+
+        .project-info {
+            flex: 1;
+            min-width: 0;
+            overflow: hidden;
         }
 
         .project-info h4 {
             font-size: 1rem;
             color: #fff;
             margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .project-info p {
             font-size: 0.82rem;
             color: var(--text-muted);
+            word-break: break-word;
         }
 
         .project-tag {
@@ -315,6 +335,9 @@
             border-radius: var(--radius-md);
             padding: 20px;
             margin-bottom: 16px;
+            width: 100%;
+            box-sizing: border-box;
+            overflow: hidden;
         }
 
         .message-header {
@@ -322,6 +345,8 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 8px;
         }
 
         .sender-name {
@@ -332,6 +357,7 @@
         .sender-email {
             font-size: 0.85rem;
             color: var(--primary);
+            word-break: break-all;
         }
 
         .message-date {
@@ -346,6 +372,8 @@
             background: rgba(10, 15, 30, 0.5);
             padding: 12px;
             border-radius: 8px;
+            word-break: break-word;
+            overflow-wrap: anywhere;
         }
     
         /* =========================================================
@@ -815,7 +843,7 @@
                 <!-- Existing Social Links -->
                 <div class="glass-card" style="margin-bottom:28px;">
                     <h3 style="margin-bottom: 18px;"><i class="fas fa-link" style="color: var(--primary);"></i> Social Menu Links</h3>
-                    <div id="socials-list-container" style="display:flex; flex-wrap:wrap; gap:16px;">
+                    <div id="socials-list-container" style="display:flex; flex-direction:column; gap:12px; width:100%; box-sizing:border-box;">
                         <p style="color: var(--text-muted); font-size: 0.9rem;">Loading social links...</p>
                     </div>
                 </div>
@@ -1453,14 +1481,14 @@
                     const data = docSnap.data();
                     const id = docSnap.id;
                     const item = document.createElement('div');
-                    item.style.cssText = 'background:var(--bg-light); border:1px solid var(--border); border-radius:8px; padding:12px 16px; display:flex; align-items:center; gap:12px;';
+                    item.style.cssText = 'background:var(--bg-light); border:1px solid var(--border); border-radius:8px; padding:12px 16px; display:flex; align-items:center; gap:12px; width:100%; max-width:100%; box-sizing:border-box; overflow:hidden;';
                     item.innerHTML = `
-                        <i class="${data.icon}" style="font-size:1.5rem; color:var(--primary);"></i>
-                        <div style="flex:1;">
-                            <strong style="display:block; font-size:0.95rem;">${data.name}</strong>
-                            <a href="${data.url}" target="_blank" style="color:var(--text-muted); font-size:0.8rem; text-decoration:none;">${data.url}</a>
+                        <i class="${data.icon || 'fas fa-link'}" style="font-size:1.5rem; color:var(--primary); flex-shrink:0;"></i>
+                        <div style="flex:1; min-width:0; overflow:hidden;">
+                            <strong style="display:block; font-size:0.95rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:#fff;">${data.name || ''}</strong>
+                            <a href="${data.url || '#'}" target="_blank" style="color:var(--text-muted); font-size:0.8rem; text-decoration:none; display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; word-break:break-all;">${data.url || ''}</a>
                         </div>
-                        <button class="btn btn-danger" style="padding:6px 10px;" onclick="deleteSocial('${id}')">
+                        <button class="btn btn-danger" style="padding:6px 10px; flex-shrink:0;" onclick="deleteSocial('${id}')">
                             <i class="fas fa-trash"></i>
                         </button>
                     `;
