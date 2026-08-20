@@ -1108,59 +1108,101 @@
             <!-- EDIT PROJECT FORM -->
             <form id="edit-project-form" style="display:none;">
                 <input type="hidden" id="edit-p-id">
-                <div class="form-group">
-                    <label>Project Title *</label>
-                    <input type="text" id="edit-p-title" required>
+
+                <!-- Basic Info Grid -->
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                    <div class="form-group" style="margin:0;">
+                        <label>Project Title *</label>
+                        <input type="text" id="edit-p-title" required placeholder="e.g. E-Commerce Platform">
+                    </div>
+                    <div class="form-group" style="margin:0;">
+                        <label>Category</label>
+                        <select id="edit-p-category">
+                            <option value="fullstack">Full-Stack</option>
+                            <option value="python">Python / Django</option>
+                            <option value="frontend">Frontend</option>
+                            <option value="web">Web Apps</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Category Tag *</label>
-                    <select id="edit-p-category">
-                        <option value="fullstack">Full-Stack</option>
-                        <option value="python">Python / Django</option>
-                        <option value="frontend">Frontend</option>
-                        <option value="web">Web Apps</option>
-                    </select>
+
+                <div class="form-group" style="margin-top:12px;">
+                    <label>Short Description * <span style="color:#64748b; font-size:0.78rem;">(homepage card)</span></label>
+                    <textarea id="edit-p-desc" rows="2" required placeholder="Brief summary shown on the portfolio card..."></textarea>
                 </div>
+
                 <div class="form-group">
-                    <label>Description *</label>
-                    <textarea id="edit-p-desc" rows="3" required></textarea>
+                    <label>Detailed Overview <span style="color:#64748b; font-size:0.78rem;">(project details page)</span></label>
+                    <textarea id="edit-p-long-desc" rows="3" placeholder="Full story: architecture, problem solved, approach..."></textarea>
                 </div>
-                <div class="form-group">
-                    <label>Image URL or Path *</label>
-                    <input type="text" id="edit-p-image" required>
-                    <label style="margin-top: 8px; font-size: 0.85rem; color: var(--primary); display: block; cursor: pointer;">
-                        📁 Or Upload New Image
-                    </label>
-                    <input type="file" accept="image/*" onchange="handleFileUpload(this, 'edit-p-image')" style="background: var(--bg); border: 1px dashed var(--border); padding: 8px; border-radius: 8px; width: 100%;">
+
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                    <div class="form-group" style="margin:0;">
+                        <label>Key Features <span style="color:#64748b; font-size:0.78rem;">(one per line)</span></label>
+                        <textarea id="edit-p-features" rows="3" placeholder="User Auth&#10;Realtime sync&#10;Dark Mode"></textarea>
+                    </div>
+                    <div class="form-group" style="margin:0;">
+                        <label>Tech Stack <span style="color:#64748b; font-size:0.78rem;">(comma separated)</span></label>
+                        <textarea id="edit-p-tech-stack-ta" rows="3" placeholder="Python, Django, React, Firebase"></textarea>
+                        <input type="hidden" id="edit-p-tech-stack">
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Detailed Overview (Full Paragraph)</label>
-                    <textarea id="edit-p-long-desc" rows="4"></textarea>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:4px;">
+                    <div class="form-group" style="margin:0;">
+                        <label>Live Demo URL</label>
+                        <input type="url" id="edit-p-live" placeholder="https://myproject.com">
+                    </div>
+                    <div class="form-group" style="margin:0;">
+                        <label>GitHub Repo URL</label>
+                        <input type="url" id="edit-p-github" placeholder="https://github.com/...">
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Key Features & Highlights (1 feature per line)</label>
-                    <textarea id="edit-p-features" rows="3"></textarea>
+
+                <!-- Cover Image Section -->
+                <div style="margin-top:16px; background:rgba(0,217,255,0.04); border:1px solid rgba(0,217,255,0.2); border-radius:12px; padding:14px;">
+                    <div style="font-weight:700; font-size:0.85rem; color:var(--primary); margin-bottom:10px; display:flex; align-items:center; gap:8px;">
+                        <i class="fas fa-image"></i> Cover Image <span style="color:#64748b; font-size:0.75rem; font-weight:400;">(main homepage image)</span>
+                    </div>
+
+                    <div id="edit-cover-drop-zone" onclick="document.getElementById('edit-cover-file').click()" style="border:2px dashed rgba(0,217,255,0.3); border-radius:8px; padding:14px; text-align:center; cursor:pointer; transition:all 0.2s; margin-bottom:10px;" onmouseover="this.style.borderColor='var(--primary)'; this.style.background='rgba(0,217,255,0.06)'" onmouseout="this.style.borderColor='rgba(0,217,255,0.3)'; this.style.background='transparent'">
+                        <i class="fas fa-cloud-upload-alt" style="font-size:1.4rem; color:var(--primary); opacity:0.7;"></i>
+                        <p style="color:#64748b; margin:4px 0 0; font-size:0.8rem;">Click to upload new cover image</p>
+                    </div>
+                    <input type="file" id="edit-cover-file" accept="image/*" style="display:none;" onchange="previewEditCoverImage(this)">
+
+                    <div style="display:flex; align-items:center; gap:6px; margin-bottom:8px;">
+                        <div style="flex:1; height:1px; background:rgba(255,255,255,0.07);"></div>
+                        <span style="color:#475569; font-size:0.75rem;">or paste URL</span>
+                        <div style="flex:1; height:1px; background:rgba(255,255,255,0.07);"></div>
+                    </div>
+
+                    <input type="text" id="edit-p-image" required placeholder="img/project.png or https://..." oninput="previewEditCoverFromUrl(this.value)" style="width:100%; padding:8px 12px; border-radius:8px; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.1); color:#fff; font-size:0.84rem; box-sizing:border-box;">
+
+                    <!-- Live Preview -->
+                    <div id="edit-cover-preview-box" style="display:none; margin-top:10px; border-radius:8px; overflow:hidden; border:1px solid rgba(255,255,255,0.1);">
+                        <img id="edit-cover-preview-img" src="" alt="Preview" style="width:100%; max-height:160px; object-fit:cover;">
+                        <div style="background:rgba(0,0,0,0.4); padding:5px 10px; font-size:0.75rem; color:#94a3b8; display:flex; align-items:center; gap:5px;">
+                            <i class="fas fa-check-circle" style="color:#22c55e;"></i> Cover image preview
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Tech Stack Tags (comma-separated)</label>
-                    <input type="text" id="edit-p-tech-stack">
-                </div>
-                <div class="form-group">
-                    <label><i class="fas fa-images" style="color:var(--primary);"></i> Case Study Interactive Screenshots</label>
-                    <div id="edit-p-screenshots-builder" style="display:flex; flex-direction:column; gap:12px; margin-bottom:12px;"></div>
-                    <button type="button" class="btn btn-secondary" onclick="addScreenshotRow('edit-p-screenshots-builder')" style="font-size:0.82rem; padding:8px 16px; border-radius:18px;">
-                        <i class="fas fa-plus-circle" style="color:var(--primary);"></i> Add Screenshot Card
+
+                <!-- Screenshot Builder -->
+                <div style="margin-top:16px;">
+                    <div style="font-weight:700; font-size:0.85rem; color:var(--primary); margin-bottom:10px; display:flex; align-items:center; gap:8px;">
+                        <i class="fas fa-images"></i> Case Study Screenshots
+                    </div>
+
+                    <div id="edit-p-screenshots-builder" style="display:flex; flex-direction:column; gap:10px; max-height:360px; overflow-y:auto; padding-right:4px; scrollbar-width:thin; scrollbar-color:rgba(0,217,255,0.3) transparent;"></div>
+
+                    <button type="button" onclick="addScreenshotRow('edit-p-screenshots-builder')" style="display:flex; align-items:center; gap:8px; margin-top:10px; padding:9px 16px; border-radius:10px; border:2px dashed rgba(0,217,255,0.3); background:rgba(0,217,255,0.04); color:var(--primary); font-weight:600; font-size:0.82rem; cursor:pointer; width:100%; justify-content:center; transition:all 0.2s;" onmouseover="this.style.borderColor='var(--primary)'; this.style.background='rgba(0,217,255,0.1)'" onmouseout="this.style.borderColor='rgba(0,217,255,0.3)'; this.style.background='rgba(0,217,255,0.04)'">
+                        <i class="fas fa-plus-circle"></i> Add Screenshot
                     </button>
                     <textarea id="edit-p-images-extra" style="display:none;"></textarea>
                 </div>
-                <div class="form-group">
-                    <label>Live Demo URL</label>
-                    <input type="url" id="edit-p-live">
-                </div>
-                <div class="form-group">
-                    <label>GitHub Repo URL</label>
-                    <input type="url" id="edit-p-github">
-                </div>
+
+                <!-- Action Buttons -->
                 <div style="display:flex; gap:10px; margin-top:20px;">
                     <button type="submit" class="btn btn-primary" style="flex:1;"><i class="fas fa-save"></i> Save Changes</button>
                     <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Cancel</button>
@@ -1501,14 +1543,20 @@
             if (editProjForm) {
                 editProjForm.addEventListener('submit', async (e) => {
                     e.preventDefault();
+                    const submitBtn = editProjForm.querySelector('button[type=submit]');
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+
                     const id = document.getElementById('edit-p-id').value;
                     const featuresStr = document.getElementById('edit-p-features').value.trim();
-                    const techStackStr = document.getElementById('edit-p-tech-stack').value.trim();
-                    const extraImagesStr = document.getElementById('edit-p-images-extra').value.trim();
+
+                    // Read tech stack from textarea (visible) or hidden fallback
+                    const techTA = document.getElementById('edit-p-tech-stack-ta');
+                    const techStackStr = (techTA ? techTA.value : document.getElementById('edit-p-tech-stack').value).trim();
 
                     const features = featuresStr ? featuresStr.split('\n').map(s => s.trim()).filter(Boolean) : [];
                     const techStack = techStackStr ? techStackStr.split(',').map(s => s.trim()).filter(Boolean) : [];
-                    const images = extraImagesStr ? extraImagesStr.split('\n').map(s => s.trim()).filter(Boolean) : [];
+                    const images = window.getScreenshotsFromBuilder('edit-p-screenshots-builder');
 
                     try {
                         await updateDoc(doc(db, 'projects', id), {
@@ -1524,9 +1572,15 @@
                             githubUrl: document.getElementById('edit-p-github').value,
                             updatedAt: serverTimestamp()
                         });
-                        window.closeEditModal();
-                        alert('✅ Project updated successfully!');
+                        submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> Saved!';
+                        setTimeout(() => {
+                            window.closeEditModal();
+                            submitBtn.disabled = false;
+                            submitBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+                        }, 800);
                     } catch(err) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
                         alert('Error updating project: ' + err.message);
                     }
                 });
@@ -2092,26 +2146,78 @@
             window.populateScreenshotsBuilder('p-screenshots-builder', []);
         });
 
+        // Edit Modal — Cover Image Preview Helpers
+        window.previewEditCoverImage = (inputEl) => {
+            if (inputEl.files && inputEl.files[0]) {
+                const file = inputEl.files[0];
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const urlInput = document.getElementById('edit-p-image');
+                    if (urlInput) { urlInput.value = e.target.result; }
+                    const previewBox = document.getElementById('edit-cover-preview-box');
+                    const previewImg = document.getElementById('edit-cover-preview-img');
+                    if (previewBox && previewImg) { previewImg.src = e.target.result; previewBox.style.display = 'block'; }
+                    const dz = document.getElementById('edit-cover-drop-zone');
+                    if (dz) dz.innerHTML = `<i class="fas fa-check-circle" style="font-size:1.2rem; color:#22c55e;"></i><p style="color:#22c55e; margin:4px 0 0; font-size:0.8rem;">${file.name} selected</p>`;
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+
+        window.previewEditCoverFromUrl = (url) => {
+            const previewBox = document.getElementById('edit-cover-preview-box');
+            const previewImg = document.getElementById('edit-cover-preview-img');
+            if (previewBox && previewImg && url && url.length > 5) {
+                previewImg.src = url;
+                previewImg.onerror = () => { previewBox.style.display = 'none'; };
+                previewImg.onload = () => { previewBox.style.display = 'block'; };
+            } else if (previewBox) {
+                previewBox.style.display = 'none';
+            }
+        };
+
         window.openEditProject = (id) => {
             const data = (window._projectsMap && window._projectsMap[id]) || {};
             document.getElementById('edit-p-id').value = id;
             document.getElementById('edit-p-title').value = data.title || '';
             document.getElementById('edit-p-category').value = data.category || 'fullstack';
             document.getElementById('edit-p-desc').value = data.description || '';
-            document.getElementById('edit-p-image').value = data.image || '';
             document.getElementById('edit-p-long-desc').value = data.longDescription || '';
             document.getElementById('edit-p-features').value = Array.isArray(data.features) ? data.features.join('\n') : (data.features || '');
-            document.getElementById('edit-p-tech-stack').value = Array.isArray(data.techStack) ? data.techStack.join(', ') : (data.techStack || '');
-            window.populateScreenshotsBuilder('edit-p-screenshots-builder', data.images);
+
+            // Tech stack — populate both hidden input and visible textarea
+            const techStackStr = Array.isArray(data.techStack) ? data.techStack.join(', ') : (data.techStack || '');
+            document.getElementById('edit-p-tech-stack').value = techStackStr;
+            const techTA = document.getElementById('edit-p-tech-stack-ta');
+            if (techTA) techTA.value = techStackStr;
+
             document.getElementById('edit-p-live').value = data.liveUrl || '';
             document.getElementById('edit-p-github').value = data.githubUrl || '';
+
+            // Cover image + preview
+            const imgUrl = data.image || '';
+            document.getElementById('edit-p-image').value = imgUrl;
+            const previewBox = document.getElementById('edit-cover-preview-box');
+            const previewImg = document.getElementById('edit-cover-preview-img');
+            const dz = document.getElementById('edit-cover-drop-zone');
+            if (imgUrl && previewBox && previewImg) {
+                previewImg.src = imgUrl;
+                previewBox.style.display = 'block';
+            } else if (previewBox) {
+                previewBox.style.display = 'none';
+            }
+            if (dz) dz.innerHTML = '<i class="fas fa-cloud-upload-alt" style="font-size:1.4rem; color:var(--primary); opacity:0.7;"></i><p style="color:#64748b; margin:4px 0 0; font-size:0.8rem;">Click to upload new cover image</p>';
+
+            // Screenshots builder
+            window.populateScreenshotsBuilder('edit-p-screenshots-builder', data.images);
 
             document.getElementById('edit-project-form').style.display = 'block';
             document.getElementById('edit-skill-form').style.display = 'none';
             document.getElementById('edit-service-form').style.display = 'none';
-            document.getElementById('modal-title').innerHTML = '<i class="fas fa-edit" style="color:var(--primary);"></i> Edit Project';
+            document.getElementById('modal-title').innerHTML = '<i class="fas fa-edit" style="color:var(--primary);"></i> Edit Project — ' + (data.title || '');
             document.getElementById('edit-modal').classList.add('active');
         };
+
 
         window.openEditSkill = (id) => {
             const data = (window._skillsMap && window._skillsMap[id]) || {};
