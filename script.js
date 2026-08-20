@@ -293,20 +293,54 @@ function createConfetti() {
 
 
 // ============================================================
-// 8. ABOUT SECTION PROFILE ANIMATION
+// 8. SCROLL-SYNCED PROFILE IMAGE ANIMATION
 // ============================================================
-const aboutProfileAnim = document.querySelector('.about-profile-anim');
-if (aboutProfileAnim) {
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('show-img');
-            } else {
-                // Optional: remove class if you want it to animate every time you scroll past
-                // entry.target.classList.remove('show-img'); 
+document.addEventListener('DOMContentLoaded', () => {
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+
+        const heroImg = document.getElementById('main-profile-img');
+        const aboutTarget = document.getElementById('about-image-target');
+
+        if (heroImg && aboutTarget) {
+            let deltaX = 0;
+            let deltaY = 0;
+
+            function calculateDeltas() {
+                const state = heroImg.style.transform;
+                heroImg.style.transform = 'none';
+                
+                const hRect = heroImg.getBoundingClientRect();
+                const aRect = aboutTarget.getBoundingClientRect();
+                
+                deltaX = aRect.left - hRect.left;
+                deltaY = aRect.top - hRect.top;
+                
+                heroImg.style.transform = state;
             }
-        });
-    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-    
-    observer.observe(aboutProfileAnim);
-}
+
+            // Calculate initially
+            calculateDeltas();
+
+            // Create the ScrollTrigger animation
+            gsap.to(heroImg, {
+                x: () => deltaX,
+                y: () => deltaY,
+                width: "140px",
+                height: "140px",
+                borderRadius: "16px",
+                boxShadow: "0 10px 20px -5px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1)",
+                ease: "none",
+                scrollTrigger: {
+                    trigger: ".hero",
+                    start: "top top", 
+                    endTrigger: "#dyn-about-container",
+                    end: "top 25%", 
+                    scrub: 1, 
+                    invalidateOnRefresh: true,
+                    onRefresh: calculateDeltas
+                }
+            });
+        }
+    }
+});
