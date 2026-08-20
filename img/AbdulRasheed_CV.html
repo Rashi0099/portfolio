@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abdul Rasheed YP — Python Full-Stack Developer</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+            color: #1a1a2e;
+            background: #fff;
+            font-size: 10.5pt;
+            line-height: 1.55;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        .cv-page {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 36px 44px;
+        }
+
+        /* ── Header ── */
+        .cv-header {
+            text-align: center;
+            padding-bottom: 16px;
+            border-bottom: 2.5px solid #0f172a;
+            margin-bottom: 20px;
+        }
+        .cv-header h1 {
+            font-size: 22pt;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #0f172a;
+            margin-bottom: 2px;
+        }
+        .cv-header .subtitle {
+            font-size: 11.5pt;
+            font-weight: 500;
+            color: #334155;
+            margin-bottom: 8px;
+        }
+        .cv-header .contact-row {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 6px 18px;
+            font-size: 9.5pt;
+            color: #475569;
+        }
+        .cv-header .contact-row a {
+            color: #1d4ed8;
+            text-decoration: none;
+        }
+
+        /* ── Sections ── */
+        .section-title {
+            font-size: 11.5pt;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: #0f172a;
+            border-bottom: 1.5px solid #cbd5e1;
+            padding-bottom: 4px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        /* ── Summary ── */
+        .summary {
+            font-size: 10.5pt;
+            color: #334155;
+            line-height: 1.65;
+        }
+
+        /* ── Skills Grid ── */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px 32px;
+        }
+        .skill-row {
+            display: flex;
+            gap: 8px;
+            font-size: 10pt;
+        }
+        .skill-label {
+            font-weight: 600;
+            color: #0f172a;
+            min-width: 110px;
+        }
+        .skill-value {
+            color: #334155;
+        }
+
+        /* ── Projects ── */
+        .project-block {
+            margin-bottom: 14px;
+        }
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+        .project-name {
+            font-size: 11pt;
+            font-weight: 600;
+            color: #0f172a;
+        }
+        .project-tech {
+            font-size: 9pt;
+            color: #64748b;
+            font-style: italic;
+        }
+        .project-block ul {
+            margin-left: 18px;
+            margin-top: 3px;
+        }
+        .project-block li {
+            font-size: 10pt;
+            color: #334155;
+            margin-bottom: 2px;
+        }
+        .project-links {
+            margin-top: 3px;
+            font-size: 9pt;
+        }
+        .project-links a {
+            color: #1d4ed8;
+            text-decoration: none;
+            margin-right: 14px;
+        }
+
+        /* ── Education ── */
+        .edu-block {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+        .edu-name {
+            font-weight: 600;
+            font-size: 10.5pt;
+            color: #0f172a;
+        }
+        .edu-detail {
+            font-size: 10pt;
+            color: #475569;
+        }
+
+        /* ── Strengths ── */
+        .strengths-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3px 24px;
+        }
+        .strengths-grid li {
+            font-size: 10pt;
+            color: #334155;
+        }
+
+        /* ── Print ── */
+        @media print {
+            body { font-size: 10pt; }
+            .cv-page { padding: 24px 32px; }
+            .no-print { display: none !important; }
+        }
+
+        /* ── Save Button ── */
+        .save-btn {
+            display: block;
+            margin: 24px auto;
+            padding: 12px 32px;
+            background: #0f172a;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 11pt;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .save-btn:hover { background: #1e293b; }
+    </style>
+</head>
+<body>
+
+<div class="cv-page">
+
+    <!-- Header -->
+    <div class="cv-header">
+        <h1>Abdul Rasheed YP</h1>
+        <div class="subtitle">Python Full-Stack Developer</div>
+        <div class="contact-row">
+            <span>📍 Kerala, India</span>
+            <span>📞 +91 9778106863</span>
+            <span>✉️ <a href="mailto:abdulrasheed5140@gmail.com">abdulrasheed5140@gmail.com</a></span>
+            <span>🔗 <a href="https://linkedin.com/in/abdul-rasheed5140/" target="_blank">LinkedIn</a></span>
+            <span>💻 <a href="https://github.com/Rashi0099" target="_blank">GitHub</a></span>
+            <span>🌐 <a href="https://rashi0099.github.io/portfolio/" target="_blank">Portfolio</a></span>
+        </div>
+    </div>
+
+    <!-- Professional Summary -->
+    <div class="section-title">Professional Summary</div>
+    <div class="summary">
+        Results-oriented Python Full-Stack Developer with hands-on experience building and deploying production-ready web applications using Django, Django REST Framework, PostgreSQL, and modern frontend technologies. Proficient in RESTful API design, database architecture, cloud deployment (AWS EC2, Nginx, Gunicorn), and Firebase integration. Trained at Brototype with a 100% project-driven approach, delivering real-world solutions including e-commerce platforms, business management systems, and dynamic portfolio websites.
+    </div>
+
+    <!-- Technical Skills -->
+    <div class="section-title">Technical Skills</div>
+    <div class="skills-grid">
+        <div class="skill-row">
+            <span class="skill-label">Languages</span>
+            <span class="skill-value">Python, JavaScript, HTML5, CSS3, SQL</span>
+        </div>
+        <div class="skill-row">
+            <span class="skill-label">Backend</span>
+            <span class="skill-value">Django, Django REST Framework</span>
+        </div>
+        <div class="skill-row">
+            <span class="skill-label">Frontend</span>
+            <span class="skill-value">React, Bootstrap, Tailwind CSS</span>
+        </div>
+        <div class="skill-row">
+            <span class="skill-label">Databases</span>
+            <span class="skill-value">PostgreSQL, MySQL, SQLite, Firebase</span>
+        </div>
+        <div class="skill-row">
+            <span class="skill-label">DevOps & Cloud</span>
+            <span class="skill-value">AWS EC2, Nginx, Gunicorn, Git</span>
+        </div>
+        <div class="skill-row">
+            <span class="skill-label">Tools & APIs</span>
+            <span class="skill-value">Postman, VS Code, Linux/Bash</span>
+        </div>
+    </div>
+
+    <!-- Projects -->
+    <div class="section-title">Projects</div>
+
+    <div class="project-block">
+        <div class="project-header">
+            <span class="project-name">Shoedrop — E-Commerce Platform</span>
+            <span class="project-tech">Django · DRF · PostgreSQL · Tailwind · AWS</span>
+        </div>
+        <ul>
+            <li>Built a full-featured online store with product catalog, shopping cart, order management, and admin dashboard.</li>
+            <li>Implemented user wallet system with payment gateway integration, order cancellation, and refund logic.</li>
+            <li>Designed RESTful API endpoints with JWT authentication for secure user and admin operations.</li>
+            <li>Deployed on AWS EC2 with Nginx reverse proxy, Gunicorn WSGI, and SSL configuration.</li>
+        </ul>
+        <div class="project-links">
+            <a href="https://github.com/Rashi0099/">GitHub</a>
+        </div>
+    </div>
+
+    <div class="project-block">
+        <div class="project-header">
+            <span class="project-name">Catering Management System</span>
+            <span class="project-tech">Django · PostgreSQL · Bootstrap · PWA</span>
+        </div>
+        <ul>
+            <li>Developed a comprehensive business management tool for catering operations with staff, order, and menu management.</li>
+            <li>Built staff management module with role-based access control and administrative CRUD operations.</li>
+            <li>Implemented Progressive Web App (PWA) features with offline support and installable download page.</li>
+        </ul>
+    </div>
+
+    <div class="project-block">
+        <div class="project-header">
+            <span class="project-name">Developer Portfolio Website</span>
+            <span class="project-tech">HTML5 · CSS3 · JavaScript · Firebase · Vercel</span>
+        </div>
+        <ul>
+            <li>Designed and developed a dynamic portfolio with Firebase-powered CMS admin panel for real-time content management.</li>
+            <li>Built custom admin dashboard with project CRUD, skill ordering, color selection, and image upload capabilities.</li>
+            <li>Implemented smooth scroll animations, responsive layouts, and gallery showcase with modern dark theme.</li>
+        </ul>
+        <div class="project-links">
+            <a href="https://rashi0099.github.io/portfolio/" target="_blank">Live Site</a>
+            <a href="https://github.com/Rashi0099/portfolio" target="_blank">GitHub</a>
+        </div>
+    </div>
+
+    <div class="project-block">
+        <div class="project-header">
+            <span class="project-name">Lumen Films — Creative Agency Website</span>
+            <span class="project-tech">React · Vite · Django · DRF · Docker</span>
+        </div>
+        <ul>
+            <li>Built a modern agency landing page with GSAP scroll animations, cinematic hero sections, and responsive design.</li>
+            <li>Developed Django REST Framework backend for portfolio, team, and service data management.</li>
+            <li>Configured Docker Compose for containerized full-stack development environment.</li>
+        </ul>
+    </div>
+
+    <!-- Education -->
+    <div class="section-title">Education</div>
+    <div class="edu-block" style="margin-bottom: 6px;">
+        <div>
+            <span class="edu-name">Full-Stack Python Development (Self-Paced Training)</span><br>
+            <span class="edu-detail">Brototype, Kerala — Project-Driven Industry Training</span>
+        </div>
+        <span class="edu-detail">2025 – Present</span>
+    </div>
+    <div class="edu-block">
+        <div>
+            <span class="edu-name">Bachelor of Commerce (B.Com)</span><br>
+            <span class="edu-detail">Sullamussalam Science College, Kerala</span>
+        </div>
+        <span class="edu-detail">Graduated</span>
+    </div>
+
+    <!-- Key Strengths -->
+    <div class="section-title">Key Strengths</div>
+    <ul class="strengths-grid" style="list-style: disc; padding-left: 18px;">
+        <li>Backend-first architecture and API design thinking</li>
+        <li>Strong problem-solving and debugging skills</li>
+        <li>Self-learner — explores tools and frameworks independently</li>
+        <li>Clean, maintainable, and well-documented code</li>
+        <li>Experience with production deployment pipelines</li>
+        <li>Collaborative and adaptable team contributor</li>
+    </ul>
+
+</div>
+
+<!-- Print / Save Button -->
+<button class="save-btn no-print" onclick="window.print()">📄 Save as PDF (Ctrl+P)</button>
+
+</body>
+</html>
