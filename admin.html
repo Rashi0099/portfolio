@@ -1040,7 +1040,20 @@
                             </div>
                             <div class="form-group">
                                 <label>Brand Color *</label>
-                                <input type="color" id="sk-color" required value="#3776AB" style="height: 45px; padding: 5px; width:100%;" oninput="updateSkillPreview()">
+                                <div style="display:flex; gap:10px; align-items:center;">
+                                    <input type="color" id="sk-color" required value="#3776AB" style="height: 42px; width:50px; padding: 2px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); cursor:pointer; background:none;" oninput="document.getElementById('sk-color-hex').value = this.value; updateSkillPreview();">
+                                    <input type="text" id="sk-color-hex" value="#3776AB" placeholder="#3776AB" style="flex:1; padding:8px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.3); color:#fff; font-family:monospace;" oninput="if(this.value.startsWith('#') || this.value.length>=3) { document.getElementById('sk-color').value = this.value; } updateSkillPreview();">
+                                </div>
+                                <div style="display:flex; gap:8px; margin-top:10px; align-items:center; flex-wrap:wrap;">
+                                    <span style="font-size:0.75rem; color:var(--text-muted);">Quick Presets:</span>
+                                    <button type="button" onclick="setPresetColor('#ef4444')" style="width:22px; height:22px; border-radius:50%; background:#ef4444; border:none; cursor:pointer;" title="Red"></button>
+                                    <button type="button" onclick="setPresetColor('#3b82f6')" style="width:22px; height:22px; border-radius:50%; background:#3b82f6; border:none; cursor:pointer;" title="Blue"></button>
+                                    <button type="button" onclick="setPresetColor('#00d9ff')" style="width:22px; height:22px; border-radius:50%; background:#00d9ff; border:none; cursor:pointer;" title="Cyan"></button>
+                                    <button type="button" onclick="setPresetColor('#10b981')" style="width:22px; height:22px; border-radius:50%; background:#10b981; border:none; cursor:pointer;" title="Green"></button>
+                                    <button type="button" onclick="setPresetColor('#f59e0b')" style="width:22px; height:22px; border-radius:50%; background:#f59e0b; border:none; cursor:pointer;" title="Yellow"></button>
+                                    <button type="button" onclick="setPresetColor('#8b5cf6')" style="width:22px; height:22px; border-radius:50%; background:#8b5cf6; border:none; cursor:pointer;" title="Purple"></button>
+                                    <button type="button" onclick="setPresetColor('#ffffff')" style="width:22px; height:22px; border-radius:50%; background:#ffffff; border:none; cursor:pointer;" title="White"></button>
+                                </div>
                             </div>
                             <!-- Live Preview -->
                             <div id="skill-preview" style="display:flex;align-items:center;gap:14px;background:var(--bg-light);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:16px;">
@@ -1566,7 +1579,7 @@
                 await addDoc(collection(db, 'skills'), {
                     name: document.getElementById('sk-name').value,
                     icon: sanitizeIcon(document.getElementById('sk-icon').value),
-                    color: document.getElementById('sk-color').value,
+                    color: document.getElementById('sk-color-hex')?.value || document.getElementById('sk-color').value,
                     createdAt: serverTimestamp()
                 });
                 addSkillForm.reset();
@@ -2739,10 +2752,18 @@
             }
         }
 
+        function setPresetColor(hex) {
+            const colorEl = document.getElementById('sk-color');
+            const hexEl = document.getElementById('sk-color-hex');
+            if (colorEl) colorEl.value = hex;
+            if (hexEl) hexEl.value = hex;
+            updateSkillPreview();
+        }
+
         function updateSkillPreview() {
             const icon  = sanitizeIcon(document.getElementById('sk-icon')?.value || 'fab fa-python');
             const name  = document.getElementById('sk-name')?.value.trim() || 'Skill Name';
-            const color = document.getElementById('sk-color')?.value || '#00d9ff';
+            const color = document.getElementById('sk-color-hex')?.value || document.getElementById('sk-color')?.value || '#00d9ff';
             const previewIcon = document.getElementById('preview-icon');
             const previewName = document.getElementById('preview-name');
             if (previewIcon) { previewIcon.className = icon; previewIcon.style.color = color; }
