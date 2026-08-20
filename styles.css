@@ -284,7 +284,10 @@ p  { font-size: 0.97rem; color: var(--text); }
     align-items: center;
     padding-top: 90px;
     position: relative;
-    background: url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat fixed;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     z-index: 1;
 }
 
@@ -412,7 +415,10 @@ p  { font-size: 0.97rem; color: var(--text); }
 ============================================================ */
 .about {
     position: relative;
-    background: url('https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat fixed;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     z-index: 1;
 }
 .about::before {
@@ -504,7 +510,10 @@ p  { font-size: 0.97rem; color: var(--text); }
 ============================================================ */
 .skills {
     position: relative;
-    background: url('https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat fixed;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     z-index: 1;
 }
 .skills::before {
@@ -568,7 +577,10 @@ p  { font-size: 0.97rem; color: var(--text); }
 ============================================================ */
 #services {
     position: relative;
-    background: url('https://images.unsplash.com/photo-1475721028070-2051d52a224d?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat fixed;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     z-index: 1;
 }
 #services::before {
@@ -627,7 +639,10 @@ p  { font-size: 0.97rem; color: var(--text); }
 
 #projects {
     position: relative;
-    background: url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat fixed;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     z-index: 1;
 }
 #projects::before {
@@ -823,7 +838,10 @@ p  { font-size: 0.97rem; color: var(--text); }
 ============================================================ */
 #contact {
     position: relative;
-    background: url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat fixed;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     z-index: 1;
 }
 #contact::before {
