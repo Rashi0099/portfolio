@@ -392,11 +392,31 @@ p  { font-size: 0.97rem; color: var(--text); }
 .blob-shape {
     width: 320px;
     height: 320px;
-    border-radius: 50%;
-    border: 2px solid var(--border);
+    border-radius: 24px;
     overflow: hidden;
     position: relative;
     background: var(--bg-card);
+    
+    /* 3D Premium Shadow */
+    box-shadow: 
+        0 25px 50px -12px rgba(0, 0, 0, 0.6),
+        0 0 0 1px rgba(255, 255, 255, 0.08),
+        inset 0 1px 1px rgba(255, 255, 255, 0.2),
+        0 10px 25px rgba(0, 217, 255, 0.15);
+    border: none;
+    
+    /* Subtle 3D tilt */
+    transform: perspective(1000px) rotateY(-8deg) rotateX(5deg);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.blob-shape:hover {
+    transform: perspective(1000px) rotateY(0deg) rotateX(0deg) translateY(-12px);
+    box-shadow: 
+        0 35px 60px -15px rgba(0, 0, 0, 0.7),
+        0 0 0 1px rgba(255, 255, 255, 0.12),
+        inset 0 1px 1px rgba(255, 255, 255, 0.2),
+        0 15px 35px rgba(0, 217, 255, 0.25);
 }
 
 .profile-img {
