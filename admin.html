@@ -2170,17 +2170,17 @@
                     btnGroup.className = 'action-btns-group';
 
                     if (!window._skillsMap) window._skillsMap = {};
-                    window._skillsMap[docSnap.id] = data;
+                    window._skillsMap[id] = data;
 
                     const editBtn = document.createElement('button');
                     editBtn.className = 'btn btn-secondary';
                     editBtn.innerHTML = '<i class="fas fa-edit"></i>';
-                    editBtn.onclick = () => window.openEditSkill(docSnap.id);
+                    editBtn.onclick = () => window.openEditSkill(id);
 
                     const delBtn = document.createElement('button');
                     delBtn.className = 'btn btn-danger';
                     delBtn.innerHTML = '<i class="fas fa-trash"></i>';
-                    delBtn.onclick = () => window.deleteSkill(docSnap.id);
+                    delBtn.onclick = () => window.deleteSkill(id);
 
                     btnGroup.appendChild(editBtn);
                     btnGroup.appendChild(delBtn);
