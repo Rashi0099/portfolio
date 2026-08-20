@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Core Styles -->
-    <link rel="stylesheet" href="styles.css?v=25">
+    <link rel="stylesheet" href="styles.css?v=26">
 
     <style>
         :root {
@@ -60,7 +60,7 @@
 
         /* Top Header Meta */
         .header-meta-box {
-            margin-bottom: 28px;
+            margin-bottom: 32px;
         }
 
         .project-title-large {
@@ -69,7 +69,7 @@
             font-weight: 800;
             letter-spacing: -0.02em;
             line-height: 1.15;
-            margin: 12px 0 16px;
+            margin: 12px 0;
             background: linear-gradient(135deg, #ffffff 30%, #94a3b8 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -88,6 +88,43 @@
             font-weight: 700;
             letter-spacing: 1.2px;
             text-transform: uppercase;
+        }
+
+        /* Minimal Tech Stack Strip */
+        .minimal-tech-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 18px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .tech-pill-minimal {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #e2e8f0;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: all 0.25s ease;
+        }
+
+        .tech-pill-minimal:hover {
+            background: rgba(0, 217, 255, 0.08);
+            border-color: rgba(0, 217, 255, 0.25);
+            color: var(--primary);
+        }
+
+        .top-action-links {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
         /* Generic Glass Card */
@@ -280,33 +317,25 @@
             white-space: pre-line;
         }
 
-        /* Bottom Grid: Features & Tech Stack */
-        .case-study-bottom-grid {
-            display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            gap: 32px;
-        }
-
-        @media (max-width: 900px) {
-            .case-study-bottom-grid {
-                grid-template-columns: 1fr;
-                gap: 24px;
-            }
-        }
-
         .features-list {
             list-style: none;
             padding: 0;
             margin: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 14px;
         }
 
         .features-list li {
             position: relative;
             padding-left: 28px;
-            margin-bottom: 14px;
             color: #cbd5e1;
             font-size: 0.95rem;
             line-height: 1.6;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 12px 16px 12px 34px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .features-list li::before {
@@ -314,37 +343,9 @@
             font-family: "Font Awesome 6 Free";
             font-weight: 900;
             position: absolute;
-            left: 0;
-            top: 2px;
+            left: 12px;
+            top: 13px;
             color: var(--primary);
-        }
-
-        .tech-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #e2e8f0;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 0.82rem;
-            font-weight: 500;
-            margin: 4px;
-        }
-
-        .action-links-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 14px;
-            margin-top: 24px;
-        }
-
-        .action-links-group .btn {
-            border-radius: 12px;
-            padding: 12px 24px;
-            font-weight: 600;
-            font-size: 0.9rem;
         }
 
         .fade-in-up {
@@ -419,16 +420,36 @@
             <!-- Dynamic Case Study View -->
             <div id="project-content" class="fade-in-up" style="display:none;">
                 
-                <!-- 1. Header Meta -->
+                <!-- 1. Header Meta with Minimal Top Tech Bar -->
                 <div class="header-meta-box">
-                    <span class="project-tag-badge" id="det-category"><i class="fas fa-layer-group"></i> Fullstack</span>
+                    <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px;">
+                        <span class="project-tag-badge" id="det-category"><i class="fas fa-layer-group"></i> Fullstack</span>
+                        
+                        <div class="top-action-links">
+                            <a id="det-live-btn" href="#" target="_blank" class="btn btn-filled" style="display:none; padding:8px 20px; font-size:0.85rem; border-radius:20px;">
+                                <i class="fas fa-external-link-alt"></i> Live Demo
+                            </a>
+                            <a id="det-github-btn" href="#" target="_blank" class="btn btn-outlined" style="display:none; padding:8px 20px; font-size:0.85rem; border-radius:20px;">
+                                <i class="fab fa-github"></i> GitHub Code
+                            </a>
+                        </div>
+                    </div>
+
                     <h1 class="project-title-large" id="det-title">Project Title</h1>
                     <p style="font-size: 1.1rem; color: #94a3b8; line-height:1.6; max-width:850px;" id="det-short-desc">
                         Short description overview of the project.
                     </p>
+
+                    <!-- Minimal Tech Stack Strip (No heavy box!) -->
+                    <div class="minimal-tech-bar">
+                        <span style="font-size:0.78rem; color:#64748b; font-weight:700; text-transform:uppercase; letter-spacing:1.2px;">Tech Stack:</span>
+                        <div id="det-tech-stack" style="display:inline-flex; flex-wrap:wrap; gap:8px; align-items:center;">
+                            <!-- Tech pills inserted dynamically here -->
+                        </div>
+                    </div>
                 </div>
 
-                <!-- 2. FULL WIDTH PROJECT OVERVIEW BOX (ABOVE IMAGES) -->
+                <!-- 2. FULL WIDTH PROJECT OVERVIEW BOX -->
                 <div class="detail-card">
                     <h3><i class="fas fa-file-alt" style="color:var(--primary);"></i> Project Overview</h3>
                     <div id="det-long-desc" style="color: #cbd5e1; line-height: 1.85; font-size: 1.02rem; white-space: pre-line;">
@@ -470,37 +491,12 @@
 
                 </div>
 
-                <!-- 4. BOTTOM GRID: FEATURES & TECH STACK -->
-                <div class="case-study-bottom-grid">
-                    
-                    <!-- Features Card -->
-                    <div class="detail-card" id="features-card" style="display:none;">
-                        <h3><i class="fas fa-star" style="color:var(--primary);"></i> Key Features & Highlights</h3>
-                        <ul class="features-list" id="det-features">
-                            <!-- Features list items -->
-                        </ul>
-                    </div>
-
-                    <!-- Tech Stack & Links -->
-                    <div class="detail-card">
-                        <h3><i class="fas fa-code" style="color:var(--primary);"></i> Tech Stack & Links</h3>
-                        
-                        <div style="margin-bottom: 20px;">
-                            <div id="det-tech-stack">
-                                <!-- Tech pills inserted here -->
-                            </div>
-                        </div>
-
-                        <div class="action-links-group">
-                            <a id="det-live-btn" href="#" target="_blank" class="btn btn-filled" style="display:none; flex:1; min-width:150px; justify-content:center;">
-                                <i class="fas fa-external-link-alt"></i> Live Demo
-                            </a>
-                            <a id="det-github-btn" href="#" target="_blank" class="btn btn-outlined" style="display:none; flex:1; min-width:150px; justify-content:center;">
-                                <i class="fab fa-github"></i> GitHub Code
-                            </a>
-                        </div>
-                    </div>
-
+                <!-- 4. KEY FEATURES FULL WIDTH CARD -->
+                <div class="detail-card" id="features-card" style="display:none;">
+                    <h3><i class="fas fa-star" style="color:var(--primary);"></i> Key Features & Highlights</h3>
+                    <ul class="features-list" id="det-features">
+                        <!-- Features list items -->
+                    </ul>
                 </div>
 
             </div>
@@ -553,17 +549,45 @@
 
                 const data = docSnap.data();
 
-                // 1. Meta Header
+                // 1. Meta Header & Live Links
                 document.getElementById('det-category').innerHTML = `<i class="fas fa-layer-group"></i> ${(data.category || 'PROJECT').toUpperCase()}`;
                 document.getElementById('det-title').textContent = data.title || 'Untitled Project';
                 document.getElementById('det-short-desc').textContent = data.description || '';
                 document.title = `${data.title || 'Project'} | Case Study`;
 
-                // 2. Full Width Overview Section (Above Image Showcase)
+                if (data.liveUrl) {
+                    const btn = document.getElementById('det-live-btn');
+                    btn.href = data.liveUrl;
+                    btn.style.display = 'inline-flex';
+                }
+                if (data.githubUrl) {
+                    const btn = document.getElementById('det-github-btn');
+                    btn.href = data.githubUrl;
+                    btn.style.display = 'inline-flex';
+                }
+
+                // 2. Minimal Tech Stack Strip (Placed cleanly under title)
+                const techContainer = document.getElementById('det-tech-stack');
+                techContainer.innerHTML = '';
+                const techList = Array.isArray(data.techStack) ? data.techStack : (data.techStack ? data.techStack.split(',') : []);
+                if (techList.length > 0) {
+                    techList.forEach(t => {
+                        if (t && t.trim()) {
+                            const pill = document.createElement('span');
+                            pill.className = 'tech-pill-minimal';
+                            pill.innerHTML = `<i class="fas fa-code-branch" style="font-size:0.7rem; color:var(--primary);"></i> ${t.trim()}`;
+                            techContainer.appendChild(pill);
+                        }
+                    });
+                } else {
+                    techContainer.innerHTML = '<span class="tech-pill-minimal"><i class="fas fa-code-branch" style="font-size:0.7rem; color:var(--primary);"></i> Web Development</span>';
+                }
+
+                // 3. Full Width Overview Section
                 const longDesc = data.longDescription || data.description || 'No detailed overview available for this project yet.';
                 document.getElementById('det-long-desc').textContent = longDesc;
 
-                // 3. Features List
+                // 4. Features List
                 if (data.features && Array.isArray(data.features) && data.features.length > 0) {
                     const featCard = document.getElementById('features-card');
                     const featList = document.getElementById('det-features');
@@ -590,36 +614,7 @@
                     featCard.style.display = 'block';
                 }
 
-                // 4. Tech Stack Pills
-                const techContainer = document.getElementById('det-tech-stack');
-                techContainer.innerHTML = '';
-                const techList = Array.isArray(data.techStack) ? data.techStack : (data.techStack ? data.techStack.split(',') : []);
-                if (techList.length > 0) {
-                    techList.forEach(t => {
-                        if (t && t.trim()) {
-                            const pill = document.createElement('span');
-                            pill.className = 'tech-pill';
-                            pill.innerHTML = `<i class="fas fa-microchip" style="font-size:0.75rem; color:var(--primary);"></i> ${t.trim()}`;
-                            techContainer.appendChild(pill);
-                        }
-                    });
-                } else {
-                    techContainer.innerHTML = '<span class="tech-pill"><i class="fas fa-microchip" style="font-size:0.75rem; color:var(--primary);"></i> Web Development</span>';
-                }
-
-                // 5. Action Buttons
-                if (data.liveUrl) {
-                    const btn = document.getElementById('det-live-btn');
-                    btn.href = data.liveUrl;
-                    btn.style.display = 'inline-flex';
-                }
-                if (data.githubUrl) {
-                    const btn = document.getElementById('det-github-btn');
-                    btn.href = data.githubUrl;
-                    btn.style.display = 'inline-flex';
-                }
-
-                // 6. Build Gallery Items Array
+                // 5. Build Gallery Items Array
                 galleryItems = [];
 
                 // Helper to parse image item (handles string format "URL | Title | Description")
