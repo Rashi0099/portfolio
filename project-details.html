@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project Details | Abdul Rasheed YP</title>
+    <title>Project Details | Case Study</title>
     <meta name="description" content="Detailed overview, screenshots, features, and technical stack of the project.">
     
     <!-- Google Fonts -->
@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Core Styles -->
-    <link rel="stylesheet" href="styles.css?v=22">
+    <link rel="stylesheet" href="styles.css?v=23">
 
     <style>
         :root {
@@ -42,7 +42,7 @@
             color: #94a3b8;
             font-weight: 500;
             font-size: 0.9rem;
-            margin-bottom: 32px;
+            margin-bottom: 28px;
             padding: 8px 18px;
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -58,24 +58,14 @@
             transform: translateX(-4px);
         }
 
-        /* Split Side-by-Side Grid */
-        .case-study-split-grid {
-            display: grid;
-            grid-template-columns: 1.15fr 1fr;
-            gap: 44px;
-            align-items: start;
-        }
-
-        @media (max-width: 992px) {
-            .case-study-split-grid {
-                grid-template-columns: 1fr;
-                gap: 32px;
-            }
+        /* Top Header Meta */
+        .header-meta-box {
+            margin-bottom: 32px;
         }
 
         .project-title-large {
             font-family: var(--font-heading);
-            font-size: clamp(2rem, 4.5vw, 3.2rem);
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
             font-weight: 800;
             letter-spacing: -0.02em;
             line-height: 1.15;
@@ -100,66 +90,128 @@
             text-transform: uppercase;
         }
 
-        /* Left Side: Sticky Gallery Container */
-        .gallery-sticky-box {
-            position: sticky;
-            top: 110px;
+        /* Full Width Top Showcase Gallery */
+        .showcase-container {
             background: rgba(15, 23, 42, 0.6);
             backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.6);
-            transition: border-color 0.3s ease;
+            border-radius: 24px;
+            padding: 24px;
+            margin-bottom: 44px;
+            box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7);
+            position: relative;
         }
 
-        .gallery-sticky-box:hover {
-            border-color: rgba(0, 217, 255, 0.25);
-        }
-
-        .main-hero-img-box {
+        .main-hero-display {
             position: relative;
             width: 100%;
-            height: 440px;
-            border-radius: 14px;
+            height: 520px;
+            border-radius: 16px;
             overflow: hidden;
             background: #020617;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .main-hero-img-box img {
+        .main-hero-display img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.5s ease, opacity 0.3s ease;
+            transition: opacity 0.3s ease, transform 0.4s ease;
         }
 
-        .main-hero-img-box:hover img {
-            transform: scale(1.02);
+        /* Gallery Arrow Buttons */
+        .gallery-nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(6, 9, 19, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: all 0.25s ease;
+            z-index: 5;
         }
 
+        .gallery-nav-btn:hover {
+            background: var(--primary);
+            color: #000;
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.5);
+        }
+
+        .gallery-nav-prev { left: 16px; }
+        .gallery-nav-next { right: 16px; }
+
+        /* Screenshot Explanation / Caption Bar */
+        .caption-bar {
+            margin-top: 16px;
+            padding: 14px 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .caption-text-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+            color: #f1f5f9;
+            font-weight: 500;
+        }
+
+        .caption-counter {
+            font-size: 0.8rem;
+            color: var(--primary);
+            font-weight: 700;
+            background: rgba(0, 217, 255, 0.1);
+            padding: 3px 10px;
+            border-radius: 12px;
+        }
+
+        /* Thumbnails Strip */
         .thumbnails-row {
             display: flex;
-            gap: 12px;
-            margin-top: 16px;
+            gap: 14px;
+            margin-top: 18px;
             overflow-x: auto;
             padding-bottom: 6px;
-            scrollbar-width: thin;
-            scrollbar-color: rgba(255,255,255,0.2) transparent;
+            justify-content: center;
+        }
+
+        @media (max-width: 768px) {
+            .thumbnails-row {
+                justify-content: flex-start;
+            }
+            .main-hero-display {
+                height: 320px;
+            }
         }
 
         .thumb-item {
-            width: 90px;
-            height: 64px;
-            border-radius: 10px;
+            width: 100px;
+            height: 68px;
+            border-radius: 12px;
             overflow: hidden;
             cursor: pointer;
             border: 2px solid transparent;
             opacity: 0.5;
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.25s ease;
             flex-shrink: 0;
             background: #000;
         }
@@ -167,7 +219,7 @@
         .thumb-item.active, .thumb-item:hover {
             opacity: 1;
             border-color: var(--primary);
-            box-shadow: 0 0 16px rgba(0, 217, 255, 0.4);
+            box-shadow: 0 0 18px rgba(0, 217, 255, 0.45);
             transform: translateY(-2px);
         }
 
@@ -177,32 +229,39 @@
             object-fit: cover;
         }
 
-        /* Right Side Details Cards */
+        /* Bottom Case Study Grid */
+        .case-study-details-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 36px;
+        }
+
+        @media (max-width: 900px) {
+            .case-study-details-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+        }
+
         .detail-card {
             background: rgba(15, 23, 42, 0.6);
             backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 18px;
+            border-radius: 20px;
             padding: 28px;
             margin-bottom: 24px;
             box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.4);
-            transition: all 0.3s ease;
-        }
-
-        .detail-card:hover {
-            border-color: rgba(255, 255, 255, 0.15);
         }
 
         .detail-card h3 {
             font-family: var(--font-heading);
-            font-size: 1.15rem;
+            font-size: 1.2rem;
             font-weight: 700;
-            margin-bottom: 16px;
+            margin-bottom: 18px;
             color: #f8fafc;
             display: flex;
             align-items: center;
             gap: 10px;
-            letter-spacing: -0.01em;
         }
 
         .features-list {
@@ -228,7 +287,6 @@
             left: 0;
             top: 2px;
             color: var(--primary);
-            font-size: 0.95rem;
         }
 
         .tech-pill {
@@ -243,13 +301,6 @@
             font-size: 0.82rem;
             font-weight: 500;
             margin: 4px;
-            transition: all 0.25s ease;
-        }
-
-        .tech-pill:hover {
-            background: rgba(0, 217, 255, 0.1);
-            border-color: rgba(0, 217, 255, 0.3);
-            color: var(--primary);
         }
 
         .action-links-group {
@@ -264,23 +315,15 @@
             padding: 12px 24px;
             font-weight: 600;
             font-size: 0.9rem;
-            letter-spacing: 0.2px;
         }
 
-        /* Loading & Animations */
         .fade-in-up {
             animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .loading-box {
@@ -298,22 +341,7 @@
             margin: 0 auto 20px;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        @media (max-width: 768px) {
-            .gallery-sticky-box {
-                position: relative;
-                top: 0;
-            }
-            .main-hero-img-box {
-                height: 280px;
-            }
-            .detail-card {
-                padding: 20px;
-            }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
@@ -347,7 +375,7 @@
             <!-- Loading Placeholder -->
             <div id="project-loading" class="loading-box">
                 <div class="spinner"></div>
-                <p style="color: #64748b; font-size: 0.95rem;">Loading case study...</p>
+                <p style="color: #64748b; font-size: 0.95rem;">Loading case study showcase...</p>
             </div>
 
             <!-- Error Box -->
@@ -358,52 +386,70 @@
                 <a href="index.html#projects" class="btn btn-filled">Return to Portfolio</a>
             </div>
 
-            <!-- Dynamic Project Side-by-Side View -->
+            <!-- Dynamic Case Study View -->
             <div id="project-content" class="fade-in-up" style="display:none;">
                 
-                <div class="case-study-split-grid">
+                <!-- Header Meta -->
+                <div class="header-meta-box">
+                    <span class="project-tag-badge" id="det-category"><i class="fas fa-layer-group"></i> Fullstack</span>
+                    <h1 class="project-title-large" id="det-title">Project Title</h1>
+                    <p style="font-size: 1.1rem; color: #94a3b8; line-height:1.6; max-width:850px;" id="det-short-desc">
+                        Short description overview of the project.
+                    </p>
+                </div>
+
+                <!-- TOP FULL WIDTH SHOWCASE GALLERY -->
+                <div class="showcase-container">
                     
-                    <!-- LEFT COLUMN: Image Gallery & Screenshots -->
-                    <div class="gallery-sticky-box">
-                        <div class="main-hero-img-box">
-                            <img id="det-main-img" src="" alt="Project Preview">
+                    <div class="main-hero-display">
+                        <button class="gallery-nav-btn gallery-nav-prev" id="btn-prev-img" title="Previous Image">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <img id="det-main-img" src="" alt="Project Preview">
+                        <button class="gallery-nav-btn gallery-nav-next" id="btn-next-img" title="Next Image">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+
+                    <!-- Caption & Explanation Bar -->
+                    <div class="caption-bar">
+                        <div class="caption-text-box">
+                            <i class="fas fa-image" style="color:var(--primary);"></i>
+                            <span id="det-img-caption">Main Interface Overview</span>
                         </div>
-                        <div class="thumbnails-row" id="det-thumbnails">
-                            <!-- Dynamic thumbnail image items inserted here -->
+                        <span class="caption-counter" id="det-img-counter">1 of 1</span>
+                    </div>
+
+                    <!-- Thumbnails -->
+                    <div class="thumbnails-row" id="det-thumbnails">
+                        <!-- Thumbnail items -->
+                    </div>
+                </div>
+
+                <!-- BOTTOM CASE STUDY DETAILS GRID -->
+                <div class="case-study-details-grid">
+                    
+                    <!-- Left: Full Overview / Explanation -->
+                    <div class="detail-card">
+                        <h3><i class="fas fa-file-alt" style="color:var(--primary);"></i> Detailed Overview</h3>
+                        <div id="det-long-desc" style="color: #cbd5e1; line-height: 1.85; font-size: 0.98rem; white-space: pre-line;">
+                            Project overview details...
                         </div>
                     </div>
 
-                    <!-- RIGHT COLUMN: Title, Overview, Key Features & Tech Stack -->
+                    <!-- Right: Features & Tech Stack -->
                     <div>
-                        
-                        <!-- Title & Category Header -->
-                        <div style="margin-bottom: 28px;">
-                            <span class="project-tag-badge" id="det-category"><i class="fas fa-layer-group"></i> Fullstack</span>
-                            <h1 class="project-title-large" id="det-title">Project Title</h1>
-                            <p style="font-size: 1.05rem; color: #94a3b8; line-height:1.6;" id="det-short-desc">
-                                Short description overview of the project.
-                            </p>
-                        </div>
-
-                        <!-- Project Overview / Explanation -->
-                        <div class="detail-card">
-                            <h3><i class="fas fa-align-left" style="color:var(--primary);"></i> Project Overview</h3>
-                            <div id="det-long-desc" style="color: #cbd5e1; line-height: 1.85; font-size: 0.96rem; white-space: pre-line;">
-                                Project overview details...
-                            </div>
-                        </div>
-
-                        <!-- Key Features & Highlights -->
+                        <!-- Features -->
                         <div class="detail-card" id="features-card" style="display:none;">
-                            <h3><i class="fas fa-check-double" style="color:var(--primary);"></i> Key Features & Highlights</h3>
+                            <h3><i class="fas fa-star" style="color:var(--primary);"></i> Key Features & Highlights</h3>
                             <ul class="features-list" id="det-features">
                                 <!-- Features list items -->
                             </ul>
                         </div>
 
-                        <!-- Tech Stack & Action Links -->
+                        <!-- Tech Stack & Links -->
                         <div class="detail-card">
-                            <h3><i class="fas fa-code" style="color:var(--primary);"></i> Tech Stack & Launch</h3>
+                            <h3><i class="fas fa-code" style="color:var(--primary);"></i> Tech Stack & Links</h3>
                             
                             <div style="margin-bottom: 20px;">
                                 <div id="det-tech-stack">
@@ -420,7 +466,6 @@
                                 </a>
                             </div>
                         </div>
-
                     </div>
 
                 </div>
@@ -455,6 +500,9 @@
         const errorEl = document.getElementById('project-error');
         const contentEl = document.getElementById('project-content');
 
+        let galleryItems = []; // Array of { url, caption }
+        let currentIndex = 0;
+
         async function loadProjectDetails() {
             if (!projectId) {
                 showError();
@@ -472,14 +520,14 @@
 
                 const data = docSnap.data();
 
-                // 1. Meta & Header Info
+                // 1. Meta Header
                 document.getElementById('det-category').innerHTML = `<i class="fas fa-layer-group"></i> ${(data.category || 'PROJECT').toUpperCase()}`;
                 document.getElementById('det-title').textContent = data.title || 'Untitled Project';
                 document.getElementById('det-short-desc').textContent = data.description || '';
                 document.title = `${data.title || 'Project'} | Case Study`;
 
-                // 2. Main Description & Features
-                const longDesc = data.longDescription || data.description || 'No detailed description available for this project yet.';
+                // 2. Detailed Description & Features
+                const longDesc = data.longDescription || data.description || 'No detailed overview available for this project yet.';
                 document.getElementById('det-long-desc').textContent = longDesc;
 
                 if (data.features && Array.isArray(data.features) && data.features.length > 0) {
@@ -537,52 +585,46 @@
                     btn.style.display = 'inline-flex';
                 }
 
-                // 5. Gallery Images Setup
-                const mainImg = document.getElementById('det-main-img');
-                const thumbsRow = document.getElementById('det-thumbnails');
-                thumbsRow.innerHTML = '';
+                // 5. Build Gallery Items Array
+                galleryItems = [];
 
-                // Build array of all images
-                let allImages = [];
-                if (data.image) allImages.push(data.image);
-                if (data.images && Array.isArray(data.images)) {
-                    data.images.forEach(img => { if (img && !allImages.includes(img)) allImages.push(img); });
-                }
-
-                // Fallback default image if none available
-                if (allImages.length === 0) {
-                    allImages.push('https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1000&auto=format&fit=crop&q=80');
-                }
-
-                // Set initial hero main image
-                mainImg.src = allImages[0];
-                mainImg.onerror = () => {
-                    mainImg.src = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1000&auto=format&fit=crop&q=80';
+                // Helper to parse image item (handles string format "url | caption")
+                const parseImgItem = (itemStr, defaultCap) => {
+                    if (!itemStr) return;
+                    if (typeof itemStr === 'object' && itemStr.url) {
+                        galleryItems.push({ url: itemStr.url, caption: itemStr.caption || defaultCap });
+                    } else if (typeof itemStr === 'string') {
+                        const parts = itemStr.split('|');
+                        const url = parts[0].trim();
+                        const caption = parts[1] ? parts[1].trim() : defaultCap;
+                        if (url && !galleryItems.some(g => g.url === url)) {
+                            galleryItems.push({ url, caption });
+                        }
+                    }
                 };
 
-                // Render thumbnails if more than 1 image
-                allImages.forEach((imgUrl, idx) => {
-                    const thumbDiv = document.createElement('div');
-                    thumbDiv.className = `thumb-item ${idx === 0 ? 'active' : ''}`;
-                    const img = document.createElement('img');
-                    img.src = imgUrl;
-                    img.onerror = () => { img.src = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=300&auto=format&fit=crop&q=80'; };
-                    thumbDiv.appendChild(img);
+                // Add Cover Image
+                if (data.image) parseImgItem(data.image, `Main Cover - ${data.title}`);
 
-                    thumbDiv.addEventListener('click', () => {
-                        document.querySelectorAll('.thumb-item').forEach(t => t.classList.remove('active'));
-                        thumbDiv.classList.add('active');
-                        mainImg.style.opacity = '0.3';
-                        setTimeout(() => {
-                            mainImg.src = imgUrl;
-                            mainImg.style.opacity = '1';
-                        }, 150);
+                // Add Extra Images
+                if (data.images && Array.isArray(data.images)) {
+                    data.images.forEach((img, idx) => {
+                        parseImgItem(img, `Screenshot ${idx + 1}: Feature Showcase`);
                     });
+                }
 
-                    thumbsRow.appendChild(thumbDiv);
-                });
+                // Fallback default
+                if (galleryItems.length === 0) {
+                    galleryItems.push({
+                        url: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1000&auto=format&fit=crop&q=80',
+                        caption: 'Main Project Interface Showcase'
+                    });
+                }
 
-                // Display content
+                // Render Showcase Gallery
+                renderGallery();
+
+                // Display Content
                 loadingEl.style.display = 'none';
                 contentEl.style.display = 'block';
 
@@ -590,6 +632,71 @@
                 console.error("Error fetching project details:", err);
                 showError();
             }
+        }
+
+        function renderGallery() {
+            const mainImg = document.getElementById('det-main-img');
+            const captionText = document.getElementById('det-img-caption');
+            const counterText = document.getElementById('det-img-counter');
+            const thumbsRow = document.getElementById('det-thumbnails');
+            const prevBtn = document.getElementById('btn-prev-img');
+            const nextBtn = document.getElementById('btn-next-img');
+
+            thumbsRow.innerHTML = '';
+
+            // Update Active Display
+            const updateActiveDisplay = (idx) => {
+                currentIndex = idx;
+                const item = galleryItems[currentIndex];
+                
+                mainImg.style.opacity = '0.2';
+                setTimeout(() => {
+                    mainImg.src = item.url;
+                    mainImg.onerror = () => {
+                        mainImg.src = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1000&auto=format&fit=crop&q=80';
+                    };
+                    mainImg.style.opacity = '1';
+                }, 150);
+
+                captionText.textContent = item.caption || `Screenshot ${currentIndex + 1}`;
+                counterText.textContent = `${currentIndex + 1} of ${galleryItems.length}`;
+
+                // Update active thumb border
+                document.querySelectorAll('.thumb-item').forEach((t, i) => {
+                    if (i === currentIndex) t.classList.add('active');
+                    else t.classList.remove('active');
+                });
+            };
+
+            // Render Thumbnails
+            galleryItems.forEach((item, idx) => {
+                const thumbDiv = document.createElement('div');
+                thumbDiv.className = `thumb-item ${idx === 0 ? 'active' : ''}`;
+                const img = document.createElement('img');
+                img.src = item.url;
+                img.alt = item.caption || `Thumbnail ${idx+1}`;
+                img.onerror = () => { img.src = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=300&auto=format&fit=crop&q=80'; };
+                thumbDiv.appendChild(img);
+
+                thumbDiv.addEventListener('click', () => updateActiveDisplay(idx));
+                thumbsRow.appendChild(thumbDiv);
+            });
+
+            // Arrow Listeners
+            prevBtn.onclick = () => {
+                let prevIdx = currentIndex - 1;
+                if (prevIdx < 0) prevIdx = galleryItems.length - 1;
+                updateActiveDisplay(prevIdx);
+            };
+
+            nextBtn.onclick = () => {
+                let nextIdx = currentIndex + 1;
+                if (nextIdx >= galleryItems.length) nextIdx = 0;
+                updateActiveDisplay(nextIdx);
+            };
+
+            // Initial load
+            updateActiveDisplay(0);
         }
 
         function showError() {
