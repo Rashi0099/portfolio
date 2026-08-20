@@ -2025,24 +2025,40 @@
         window.saveProjectScreenshots = async () => {
             const id = window._currentAddProjectId;
             if (!id) { alert('No project found. Please complete Step 1 first.'); return; }
+
+            const saveBtn = document.querySelector('#project-step-2 .btn-primary');
+            if (saveBtn) { saveBtn.disabled = true; saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...'; }
+
             const images = window.getScreenshotsFromBuilder('p-screenshots-builder');
             try {
-                const { updateDoc, doc } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
+                // Use already-imported db + updateDoc (no re-import needed)
                 await updateDoc(doc(db, 'projects', id), { images });
+                if (saveBtn) { saveBtn.innerHTML = '<i class="fas fa-check-circle"></i> Saved!'; }
                 const banner = document.getElementById('step2-success-banner');
-                if (banner) { banner.style.display = 'flex'; setTimeout(() => banner.style.display = 'none', 4000); }
-                // Reset for next project
+                if (banner) { banner.style.display = 'flex'; setTimeout(() => { banner.style.display = 'none'; }, 4000); }
+                // Reset for next project after delay
                 window._currentAddProjectId = null;
                 setTimeout(() => {
-                    window.goToStep(1);
-                    document.getElementById('add-project-form').reset();
-                    document.getElementById('p-cover-preview-box').style.display = 'none';
-                    document.getElementById('p-screenshots-builder').innerHTML = '';
+                    if (saveBtn) { saveBtn.disabled = false; saveBtn.innerHTML = '<i class="fas fa-check-circle"></i> Save Screenshots & Finish'; }
+                    const btn1 = document.getElementById('step-btn-1');
+                    const btn2 = document.getElementById('step-btn-2');
+                    if (btn1) { btn1.style.background = 'var(--primary)'; btn1.style.color = '#000'; }
+                    if (btn2) { btn2.style.background = 'transparent'; btn2.style.color = '#64748b'; }
+                    const step1 = document.getElementById('project-step-1');
+                    const step2 = document.getElementById('project-step-2');
+                    if (step1) step1.style.display = 'block';
+                    if (step2) step2.style.display = 'none';
+                    const form = document.getElementById('add-project-form');
+                    if (form) form.reset();
+                    const pb = document.getElementById('p-cover-preview-box');
+                    if (pb) pb.style.display = 'none';
+                    const builder = document.getElementById('p-screenshots-builder');
+                    if (builder) builder.innerHTML = '';
                     const dz = document.getElementById('p-cover-drop-zone');
                     if (dz) dz.innerHTML = '<i class="fas fa-cloud-upload-alt" style="font-size:1.8rem; color:var(--primary); opacity:0.7;"></i><p style="color:#64748b; margin:6px 0 0; font-size:0.84rem;">Click or drag image here to upload</p>';
-                    btn1.style.background = 'var(--primary)'; btn1.style.color = '#000';
                 }, 3500);
             } catch(err) {
+                if (saveBtn) { saveBtn.disabled = false; saveBtn.innerHTML = '<i class="fas fa-check-circle"></i> Save Screenshots & Finish'; }
                 alert('Error saving screenshots: ' + err.message);
             }
         };
@@ -2087,9 +2103,28 @@
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     const card = inputEl.closest('.screenshot-row-card');
-                    if (card) {
-                        const urlInput = card.querySelector('.sc-url-input');
-                        if (urlInput) urlInput.value = e.target.result;
+                    if (!card) return;
+                    const urlInput = card.querySelector('.sc-url-input');
+
+                    // Show local preview thumbnail in the card
+                    let previewEl = card.querySelector('.sc-local-preview');
+                    if (!previewEl) {
+                        previewEl = document.createElement('div');
+                        previewEl.className = 'sc-local-preview';
+                        previewEl.style.cssText = 'margin-top:6px; border-radius:8px; overflow:hidden; border:1px solid rgba(255,255,255,0.1);';
+                        card.appendChild(previewEl);
+                    }
+                    previewEl.innerHTML = `
+                        <img src="${e.target.result}" style="width:100%; max-height:120px; object-fit:cover;">
+                        <div style="background:rgba(0,0,0,0.5); padding:5px 10px; font-size:0.75rem; color:#fbbf24; display:flex; align-items:center; gap:5px;">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            Local preview only — paste a hosted URL above for saving to Firestore (e.g. upload to imgbb.com or your server first)
+                        </div>
+                    `;
+
+                    // Only set URL if it's a short path, not a giant base64 blob
+                    if (urlInput && !urlInput.value.trim()) {
+                        urlInput.placeholder = 'Paste a hosted URL here (base64 too large for Firestore)';
                     }
                 };
                 reader.readAsDataURL(file);
