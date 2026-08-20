@@ -296,7 +296,7 @@ p  { font-size: 0.97rem; color: var(--text); }
     background: 
         linear-gradient(rgba(0, 217, 255, 0.025) 1px, transparent 1px),
         linear-gradient(90deg, rgba(0, 217, 255, 0.025) 1px, transparent 1px),
-        rgba(10, 15, 30, 0.88);
+        rgba(10, 15, 30, 0.65);
     background-size: 55px 55px, 55px 55px, auto;
     pointer-events: none;
     z-index: -1;
@@ -419,7 +419,7 @@ p  { font-size: 0.97rem; color: var(--text); }
     content: '';
     position: absolute;
     inset: 0;
-    background: rgba(10, 15, 30, 0.90);
+    background: rgba(10, 15, 30, 0.70);
     z-index: -1;
 }
 
@@ -511,7 +511,7 @@ p  { font-size: 0.97rem; color: var(--text); }
     content: '';
     position: absolute;
     inset: 0;
-    background: rgba(10, 15, 30, 0.92);
+    background: rgba(10, 15, 30, 0.75);
     z-index: -1;
 }
 
@@ -575,7 +575,7 @@ p  { font-size: 0.97rem; color: var(--text); }
     content: '';
     position: absolute;
     inset: 0;
-    background: rgba(15, 23, 41, 0.94);
+    background: rgba(15, 23, 41, 0.80);
     z-index: -1;
 }
 
@@ -634,7 +634,7 @@ p  { font-size: 0.97rem; color: var(--text); }
     content: '';
     position: absolute;
     inset: 0;
-    background: rgba(10, 15, 30, 0.92);
+    background: rgba(10, 15, 30, 0.75);
     z-index: -1;
 }
 
@@ -830,7 +830,7 @@ p  { font-size: 0.97rem; color: var(--text); }
     content: '';
     position: absolute;
     inset: 0;
-    background: rgba(15, 23, 41, 0.94);
+    background: rgba(15, 23, 41, 0.80);
     z-index: -1;
 }
 
