@@ -141,9 +141,17 @@
 
         .screenshot-interactive-row {
             display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 40px;
             margin-bottom: 28px;
+            align-items: start;
+        }
+
+        @media (max-width: 900px) {
+            .screenshot-interactive-row {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
         }
 
         /* Image Display & Thumbnails */
