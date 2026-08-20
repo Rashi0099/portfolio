@@ -85,7 +85,9 @@
             </div>
             <div class="about-wrapper">
                 <div class="about-text" id="dyn-about-container">
-                    <div id="about-image-target" style="width: 140px; height: 140px; margin-bottom: 24px;"></div>
+                    <div class="blob-shape-small" style="margin-bottom: 24px;">
+                        <img src="img/profile-pic.png" alt="Abdul Rasheed" class="profile-img" id="dyn-profile-img-2">
+                    </div>
                     <h3 style="margin-top: 24px;">Python Full-Stack Developer</h3>
                     <div id="dyn-about" style="white-space: pre-line;">
                         I'm a commerce graduate transitioning into software development,
@@ -282,12 +284,7 @@
             </div>
             <h3>Message Sent!</h3>
             <p>Thank you for reaching out. I'll get back to you soon.</p>
-        </div>
-    </div>
-    <!-- GSAP for Scroll Animations -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/Flip.min.js"></script>
+    <!-- Custom Scripts -->
     <script src="script.js?v=18"></script>
     <!-- Firebase Dynamic Integration Module -->
     <script type="module">
@@ -356,7 +353,9 @@
                     if(d.location) { const el = document.getElementById('dyn-location'); if(el) el.textContent = d.location; }
                     if(d.profileImg) { 
                         const el = document.getElementById('dyn-profile-img'); 
+                        const el2 = document.getElementById('dyn-profile-img-2'); 
                         if(el) el.src = d.profileImg; 
+                        if(el2) el2.src = d.profileImg; 
                     }
                     if(d.resumeUrl) { const el = document.getElementById('dyn-resume-btn'); if(el) el.href = d.resumeUrl; }
                     
