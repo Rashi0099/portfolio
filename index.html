@@ -446,8 +446,11 @@
                 onSnapshot(collection(db, 'skills'), (snapshot) => {
                     if (!snapshot.empty) {
                         skillsGrid.innerHTML = '';
-                        snapshot.forEach((docSnap) => {
-                            const s = docSnap.data();
+                        const skillsList = [];
+                        snapshot.forEach((docSnap) => skillsList.push(docSnap.data()));
+                        skillsList.sort((a, b) => (Number(a.order) || 99) - (Number(b.order) || 99));
+
+                        skillsList.forEach((s) => {
                             const tile = document.createElement('div');
                             tile.className = 'skill-tile';
                             const icon = document.createElement('i');
