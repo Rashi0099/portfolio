@@ -1458,7 +1458,20 @@
                 </div>
                 <div class="form-group">
                     <label>Brand Color *</label>
-                    <input type="color" id="edit-sk-color" required style="height: 45px; padding: 5px; width:100%;">
+                    <div style="display:flex; gap:10px; align-items:center;">
+                        <input type="color" id="edit-sk-color" required value="#3776AB" style="height: 42px; width:50px; padding: 2px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); cursor:pointer; background:none;" oninput="document.getElementById('edit-sk-color-hex').value = this.value;">
+                        <input type="text" id="edit-sk-color-hex" value="#3776AB" placeholder="#3776AB" style="flex:1; padding:8px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.3); color:#fff; font-family:monospace;" oninput="if(this.value.startsWith('#') || this.value.length>=3) { document.getElementById('edit-sk-color').value = this.value; }">
+                    </div>
+                    <div style="display:flex; gap:8px; margin-top:10px; align-items:center; flex-wrap:wrap;">
+                        <span style="font-size:0.75rem; color:var(--text-muted);">Quick Presets:</span>
+                        <button type="button" onclick="setEditPresetColor('#ef4444')" style="width:22px; height:22px; border-radius:50%; background:#ef4444; border:none; cursor:pointer;" title="Red"></button>
+                        <button type="button" onclick="setEditPresetColor('#3b82f6')" style="width:22px; height:22px; border-radius:50%; background:#3b82f6; border:none; cursor:pointer;" title="Blue"></button>
+                        <button type="button" onclick="setEditPresetColor('#00d9ff')" style="width:22px; height:22px; border-radius:50%; background:#00d9ff; border:none; cursor:pointer;" title="Cyan"></button>
+                        <button type="button" onclick="setEditPresetColor('#10b981')" style="width:22px; height:22px; border-radius:50%; background:#10b981; border:none; cursor:pointer;" title="Green"></button>
+                        <button type="button" onclick="setEditPresetColor('#f59e0b')" style="width:22px; height:22px; border-radius:50%; background:#f59e0b; border:none; cursor:pointer;" title="Yellow"></button>
+                        <button type="button" onclick="setEditPresetColor('#8b5cf6')" style="width:22px; height:22px; border-radius:50%; background:#8b5cf6; border:none; cursor:pointer;" title="Purple"></button>
+                        <button type="button" onclick="setEditPresetColor('#ffffff')" style="width:22px; height:22px; border-radius:50%; background:#ffffff; border:none; cursor:pointer;" title="White"></button>
+                    </div>
                 </div>
                 <div style="display:flex; gap:10px; margin-top:20px;">
                     <button type="submit" class="btn btn-primary" style="flex:1;"><i class="fas fa-save"></i> Update Skill</button>
@@ -1857,7 +1870,7 @@
                         await updateDoc(doc(db, 'skills', id), {
                             name: document.getElementById('edit-sk-name').value,
                             icon: sanitizeIcon(document.getElementById('edit-sk-icon').value),
-                            color: document.getElementById('edit-sk-color').value,
+                            color: document.getElementById('edit-sk-color-hex')?.value || document.getElementById('edit-sk-color').value,
                             order: parseInt(document.getElementById('edit-sk-order').value) || 1,
                             updatedAt: serverTimestamp()
                         });
@@ -2651,6 +2664,9 @@
             document.getElementById('edit-sk-name').value = data.name || '';
             document.getElementById('edit-sk-icon').value = data.icon || '';
             document.getElementById('edit-sk-color').value = data.color || '#00d9ff';
+            if (document.getElementById('edit-sk-color-hex')) {
+                document.getElementById('edit-sk-color-hex').value = data.color || '#00d9ff';
+            }
             document.getElementById('edit-sk-order').value = data.order || 1;
 
                         document.getElementById('edit-project-form').style.display = 'none';
@@ -2783,6 +2799,13 @@
             if (colorEl) colorEl.value = hex;
             if (hexEl) hexEl.value = hex;
             updateSkillPreview();
+        }
+
+        function setEditPresetColor(hex) {
+            const colorEl = document.getElementById('edit-sk-color');
+            const hexEl = document.getElementById('edit-sk-color-hex');
+            if (colorEl) colorEl.value = hex;
+            if (hexEl) hexEl.value = hex;
         }
 
         function updateSkillPreview() {
