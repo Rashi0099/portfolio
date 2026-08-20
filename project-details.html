@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Core Styles -->
-    <link rel="stylesheet" href="styles.css?v=26">
+    <link rel="stylesheet" href="styles.css?v=27">
 
     <style>
         :root {
@@ -23,10 +23,18 @@
             --font-heading: 'Plus Jakarta Sans', sans-serif;
         }
 
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+        }
+
         body {
             background: #060913;
             color: #cbd5e1;
             font-family: var(--font-main);
+            overflow-x: hidden;
+            width: 100%;
         }
 
         .details-wrapper {
@@ -44,16 +52,16 @@
             font-size: 0.9rem;
             margin-bottom: 28px;
             padding: 8px 18px;
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(15, 23, 42, 0.8);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 30px;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: color 0.25s ease, background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+            will-change: transform;
         }
 
         .back-nav:hover {
             color: var(--primary);
-            background: rgba(0, 217, 255, 0.08);
+            background: rgba(0, 217, 255, 0.1);
             border-color: rgba(0, 217, 255, 0.3);
             transform: translateX(-4px);
         }
@@ -105,14 +113,14 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(15, 23, 42, 0.7);
             border: 1px solid rgba(255, 255, 255, 0.08);
             color: #e2e8f0;
             padding: 5px 14px;
             border-radius: 20px;
             font-size: 0.8rem;
             font-weight: 500;
-            transition: all 0.25s ease;
+            transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
         }
 
         .tech-pill-minimal:hover {
@@ -127,20 +135,20 @@
             gap: 12px;
         }
 
-        /* Generic Glass Card */
+        /* Hardware Accelerated Smooth Cards (GPU Optimized) */
         .detail-card {
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(16px);
+            background: rgba(13, 19, 36, 0.92);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 20px;
             padding: 28px;
             margin-bottom: 32px;
-            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.4);
-            transition: border-color 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+            transition: border-color 0.25s ease;
+            transform: translateZ(0);
         }
 
         .detail-card:hover {
-            border-color: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.18);
         }
 
         .detail-card h3 {
@@ -172,15 +180,15 @@
 
         /* Left Half: Image Display & Thumbnails */
         .gallery-half-box {
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(16px);
+            background: rgba(13, 19, 36, 0.92);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 24px;
             padding: 20px;
-            box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            transform: translateZ(0);
         }
 
         .main-hero-display {
@@ -200,7 +208,8 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: opacity 0.3s ease, transform 0.4s ease;
+            transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity;
         }
 
         /* Arrow Buttons */
@@ -211,7 +220,7 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background: rgba(6, 9, 19, 0.75);
+            background: rgba(6, 9, 19, 0.85);
             border: 1px solid rgba(255, 255, 255, 0.15);
             color: #fff;
             display: flex;
@@ -219,8 +228,7 @@
             justify-content: center;
             font-size: 1rem;
             cursor: pointer;
-            backdrop-filter: blur(10px);
-            transition: all 0.25s ease;
+            transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
             z-index: 5;
         }
 
@@ -250,7 +258,7 @@
             cursor: pointer;
             border: 2px solid transparent;
             opacity: 0.5;
-            transition: all 0.25s ease;
+            transition: opacity 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
             flex-shrink: 0;
             background: #000;
         }
@@ -270,16 +278,16 @@
 
         /* Right Half: Active Screenshot Explanation Card */
         .explanation-half-box {
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(16px);
+            background: rgba(13, 19, 36, 0.92);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 24px;
             padding: 32px;
-            box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
             display: flex;
             flex-direction: column;
             justify-content: center;
-            transition: border-color 0.3s ease;
+            transition: border-color 0.25s ease;
+            transform: translateZ(0);
         }
 
         .explanation-half-box:hover {
@@ -349,11 +357,11 @@
         }
 
         .fade-in-up {
-            animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(16px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -374,6 +382,9 @@
 
         @keyframes spin { to { transform: rotate(360deg); } }
     </style>
+
+    <!-- Lenis Smooth Scroll Library -->
+    <script src="https://unpkg.com/lenis@1.1.9/dist/lenis.min.js"></script>
 </head>
 <body>
 
@@ -440,7 +451,7 @@
                         Short description overview of the project.
                     </p>
 
-                    <!-- Minimal Tech Stack Strip (No heavy box!) -->
+                    <!-- Minimal Tech Stack Strip -->
                     <div class="minimal-tech-bar">
                         <span style="font-size:0.78rem; color:#64748b; font-weight:700; text-transform:uppercase; letter-spacing:1.2px;">Tech Stack:</span>
                         <div id="det-tech-stack" style="display:inline-flex; flex-wrap:wrap; gap:8px; align-items:center;">
@@ -511,6 +522,26 @@
         </div>
     </footer>
 
+    <!-- Initialize Lenis Smooth Scroll -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.Lenis) {
+                const lenis = new Lenis({
+                    duration: 1.2,
+                    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                    smoothWheel: true,
+                    touchMultiplier: 1.5,
+                });
+
+                function raf(time) {
+                    lenis.raf(time);
+                    requestAnimationFrame(raf);
+                }
+                requestAnimationFrame(raf);
+            }
+        });
+    </script>
+
     <!-- Firebase SDK Modules -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -566,7 +597,7 @@
                     btn.style.display = 'inline-flex';
                 }
 
-                // 2. Minimal Tech Stack Strip (Placed cleanly under title)
+                // 2. Minimal Tech Stack Strip
                 const techContainer = document.getElementById('det-tech-stack');
                 techContainer.innerHTML = '';
                 const techList = Array.isArray(data.techStack) ? data.techStack : (data.techStack ? data.techStack.split(',') : []);
@@ -690,19 +721,19 @@
 
             thumbsRow.innerHTML = '';
 
-            // Update Active Display
+            // Update Active Display with smooth opacity switch
             const updateActiveDisplay = (idx) => {
                 currentIndex = idx;
                 const item = galleryItems[currentIndex];
                 
-                mainImg.style.opacity = '0.2';
+                mainImg.style.opacity = '0.3';
                 setTimeout(() => {
                     mainImg.src = item.url;
                     mainImg.onerror = () => {
                         mainImg.src = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1000&auto=format&fit=crop&q=80';
                     };
                     mainImg.style.opacity = '1';
-                }, 150);
+                }, 100);
 
                 counterText.textContent = `SCREENSHOT ${currentIndex + 1} OF ${galleryItems.length}`;
                 titleText.textContent = item.title;
