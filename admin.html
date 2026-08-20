@@ -730,67 +730,139 @@
 
             <!-- TAB 1: PROJECTS -->
             <div id="projects-tab" class="tab-content">
+
+                <!-- STEP INDICATOR -->
+                <div id="project-step-indicator" style="display:flex; align-items:center; gap:0; margin-bottom:24px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); border-radius:14px; padding:4px; width:fit-content;">
+                    <button onclick="goToStep(1)" id="step-btn-1" style="display:flex; align-items:center; gap:8px; padding:8px 18px; border-radius:10px; border:none; background:var(--primary); color:#000; font-weight:700; font-size:0.82rem; cursor:pointer; transition:all 0.2s;">
+                        <span style="width:20px;height:20px;background:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:900;">1</span>
+                        Basic Info & Cover Image
+                    </button>
+                    <button onclick="goToStep(2)" id="step-btn-2" style="display:flex; align-items:center; gap:8px; padding:8px 18px; border-radius:10px; border:none; background:transparent; color:#64748b; font-weight:600; font-size:0.82rem; cursor:pointer; transition:all 0.2s;">
+                        <span style="width:20px;height:20px;background:rgba(255,255,255,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:900;">2</span>
+                        Case Study Screenshots
+                    </button>
+                </div>
+
                 <div class="admin-grid">
-                    <!-- Add Project Form -->
-                    <div class="glass-card">
-                        <h3 style="margin-bottom: 18px;"><i class="fas fa-plus-circle" style="color: var(--primary);"></i> Add New Project</h3>
+
+                    <!-- STEP 1: Basic Info + Cover Image -->
+                    <div class="glass-card" id="project-step-1">
+                        <h3 style="margin-bottom:6px;"><i class="fas fa-layer-group" style="color:var(--primary);"></i> Step 1 — Core Project Details</h3>
+                        <p style="color:#64748b; font-size:0.84rem; margin-bottom:20px;">Fill in your project info and add the main cover image. This is what appears on your portfolio homepage.</p>
+
                         <form id="add-project-form">
-                            <div class="form-group">
-                                <label>Project Title *</label>
-                                <input type="text" id="p-title" required placeholder="e.g. E-Commerce Platform">
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+                                <div class="form-group" style="margin:0;">
+                                    <label>Project Title *</label>
+                                    <input type="text" id="p-title" required placeholder="e.g. E-Commerce Platform">
+                                </div>
+                                <div class="form-group" style="margin:0;">
+                                    <label>Category Tag *</label>
+                                    <select id="p-category">
+                                        <option value="fullstack">Full-Stack</option>
+                                        <option value="python">Python / Django</option>
+                                        <option value="frontend">Frontend</option>
+                                        <option value="web">Web Apps</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label>Category Tag *</label>
-                                <select id="p-category">
-                                    <option value="fullstack">Full-Stack</option>
-                                    <option value="python">Python / Django</option>
-                                    <option value="frontend">Frontend</option>
-                                </select>
+
+                            <div class="form-group" style="margin-top:14px;">
+                                <label>Short Description * <span style="color:#64748b; font-size:0.78rem;">(shown on homepage card)</span></label>
+                                <textarea id="p-desc" rows="2" required placeholder="Brief summary of what this project does..."></textarea>
                             </div>
+
                             <div class="form-group">
-                                <label>Short Description *</label>
-                                <textarea id="p-desc" rows="3" required placeholder="Brief summary of tech stack and features"></textarea>
+                                <label>Detailed Overview <span style="color:#64748b; font-size:0.78rem;">(shown on project details page)</span></label>
+                                <textarea id="p-long-desc" rows="3" placeholder="Detailed story: architecture, problem solved, approach used..."></textarea>
                             </div>
+
                             <div class="form-group">
-                                <label>Image URL or Path *</label>
-                                <input type="text" id="p-image" required placeholder="img/project1.png">
-                                <label style="margin-top: 8px; font-size: 0.85rem; color: var(--primary); display: block; cursor: pointer;">
-                                    📁 Or Upload Project Image File
-                                </label>
-                                <input type="file" accept="image/*" onchange="handleFileUpload(this, 'p-image')" style="background: var(--bg); border: 1px dashed var(--border); padding: 8px; border-radius: 8px; width: 100%;">
+                                <label>Key Features <span style="color:#64748b; font-size:0.78rem;">(one per line)</span></label>
+                                <textarea id="p-features" rows="3" placeholder="User Authentication & Profile Roles&#10;Realtime Firestore Synchronization&#10;Dark Mode Interface"></textarea>
                             </div>
+
                             <div class="form-group">
-                                <label>Detailed Overview (Full Paragraph)</label>
-                                <textarea id="p-long-desc" rows="4" placeholder="Detailed story of the project, architecture, problem solved, etc."></textarea>
+                                <label>Tech Stack <span style="color:#64748b; font-size:0.78rem;">(comma separated)</span></label>
+                                <input type="text" id="p-tech-stack" placeholder="Python, Django, React, Firebase, CSS3">
                             </div>
-                            <div class="form-group">
-                                <label>Key Features & Highlights (1 feature per line)</label>
-                                <textarea id="p-features" rows="3" placeholder="User Authentication & Profile Roles&#10;Realtime Firestore Synchronization&#10;Dark Mode Glassmorphism Interface"></textarea>
+
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+                                <div class="form-group" style="margin:0;">
+                                    <label>Live Demo URL</label>
+                                    <input type="url" id="p-live" placeholder="https://myproject.com">
+                                </div>
+                                <div class="form-group" style="margin:0;">
+                                    <label>GitHub Repo URL</label>
+                                    <input type="url" id="p-github" placeholder="https://github.com/...">
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label>Tech Stack Tags (comma-separated)</label>
-                                <input type="text" id="p-tech-stack" placeholder="Python, Django, React, Firebase, HTML5, CSS3">
+
+                            <!-- COVER IMAGE SECTION -->
+                            <div style="margin-top:20px; background:rgba(0,217,255,0.04); border:1px solid rgba(0,217,255,0.2); border-radius:14px; padding:16px;">
+                                <div style="font-weight:700; font-size:0.9rem; color:var(--primary); margin-bottom:12px; display:flex; align-items:center; gap:8px;">
+                                    <i class="fas fa-image"></i> Cover Image <span style="color:#64748b; font-size:0.78rem; font-weight:400;">(shown on homepage)</span>
+                                </div>
+
+                                <!-- Upload Area -->
+                                <div id="p-cover-drop-zone" onclick="document.getElementById('p-cover-file').click()" style="border:2px dashed rgba(0,217,255,0.35); border-radius:10px; padding:20px; text-align:center; cursor:pointer; transition:all 0.2s; margin-bottom:12px;" onmouseover="this.style.borderColor='var(--primary)'; this.style.background='rgba(0,217,255,0.06)'" onmouseout="this.style.borderColor='rgba(0,217,255,0.35)'; this.style.background='transparent'">
+                                    <i class="fas fa-cloud-upload-alt" style="font-size:1.8rem; color:var(--primary); opacity:0.7;"></i>
+                                    <p style="color:#64748b; margin:6px 0 0; font-size:0.84rem;">Click or drag image here to upload</p>
+                                </div>
+                                <input type="file" id="p-cover-file" accept="image/*" style="display:none;" onchange="previewCoverImage(this)">
+
+                                <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+                                    <div style="flex:1; height:1px; background:rgba(255,255,255,0.08);"></div>
+                                    <span style="color:#475569; font-size:0.78rem;">or paste URL</span>
+                                    <div style="flex:1; height:1px; background:rgba(255,255,255,0.08);"></div>
+                                </div>
+
+                                <input type="text" id="p-image" required placeholder="img/project.png or https://..." oninput="previewCoverFromUrl(this.value)" style="width:100%; padding:8px 12px; border-radius:8px; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.1); color:#fff; font-size:0.85rem; box-sizing:border-box;">
+
+                                <!-- Live Preview -->
+                                <div id="p-cover-preview-box" style="display:none; margin-top:12px; border-radius:10px; overflow:hidden; border:1px solid rgba(255,255,255,0.1);">
+                                    <img id="p-cover-preview-img" src="" alt="Preview" style="width:100%; max-height:200px; object-fit:cover;">
+                                    <div style="background:rgba(0,0,0,0.4); padding:6px 10px; font-size:0.78rem; color:#94a3b8; display:flex; align-items:center; gap:6px;">
+                                        <i class="fas fa-check-circle" style="color:#22c55e;"></i> Cover image preview — this is how it'll look on your portfolio
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label><i class="fas fa-images" style="color:var(--primary);"></i> Case Study Interactive Screenshots</label>
-                                <div id="p-screenshots-builder" style="display:flex; flex-direction:column; gap:12px; margin-bottom:12px;"></div>
-                                <button type="button" class="btn btn-secondary" onclick="addScreenshotRow('p-screenshots-builder')" style="font-size:0.82rem; padding:8px 16px; border-radius:18px;">
-                                    <i class="fas fa-plus-circle" style="color:var(--primary);"></i> Add Screenshot Card
+
+                            <div style="display:flex; gap:12px; margin-top:20px;">
+                                <button type="submit" class="btn btn-primary" style="flex:1;">
+                                    <i class="fas fa-save"></i> Save & Continue to Screenshots →
                                 </button>
-                                <textarea id="p-images-extra" style="display:none;"></textarea>
                             </div>
-                            <div class="form-group">
-                                <label>Live Demo URL</label>
-                                <input type="url" id="p-live" placeholder="https://myproject.com">
-                            </div>
-                            <div class="form-group">
-                                <label>GitHub Repo URL</label>
-                                <input type="url" id="p-github" placeholder="https://github.com/Rashi0099/repo">
-                            </div>
-                            <button type="submit" class="btn btn-primary" style="width: 100%;">
-                                <i class="fas fa-save"></i> Save Project
-                            </button>
                         </form>
+                    </div>
+
+                    <!-- STEP 2: Screenshot Builder -->
+                    <div class="glass-card" id="project-step-2" style="display:none;">
+                        <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+                            <h3 style="margin:0;"><i class="fas fa-images" style="color:var(--primary);"></i> Step 2 — Case Study Screenshots</h3>
+                            <span id="step2-project-badge" style="background:rgba(0,217,255,0.12); color:var(--primary); border:1px solid rgba(0,217,255,0.3); padding:2px 10px; border-radius:12px; font-size:0.75rem; font-weight:700;"></span>
+                        </div>
+                        <p style="color:#64748b; font-size:0.84rem; margin-bottom:20px;">Add screenshots for the interactive case study viewer. Each card = one clickable thumbnail with its own explanation.</p>
+
+                        <div id="p-screenshots-builder" style="display:flex; flex-direction:column; gap:14px; max-height:520px; overflow-y:auto; padding-right:4px; scrollbar-width:thin; scrollbar-color:rgba(0,217,255,0.3) transparent;"></div>
+
+                        <button type="button" onclick="addScreenshotRow('p-screenshots-builder')" style="display:flex; align-items:center; gap:8px; margin-top:14px; padding:10px 18px; border-radius:10px; border:2px dashed rgba(0,217,255,0.3); background:rgba(0,217,255,0.04); color:var(--primary); font-weight:600; font-size:0.84rem; cursor:pointer; width:100%; justify-content:center; transition:all 0.2s;" onmouseover="this.style.borderColor='var(--primary)'; this.style.background='rgba(0,217,255,0.1)'" onmouseout="this.style.borderColor='rgba(0,217,255,0.3)'; this.style.background='rgba(0,217,255,0.04)'">
+                            <i class="fas fa-plus-circle"></i> Add Another Screenshot
+                        </button>
+                        <textarea id="p-images-extra" style="display:none;"></textarea>
+
+                        <div style="display:flex; gap:12px; margin-top:20px;">
+                            <button type="button" onclick="goToStep(1)" class="btn btn-secondary" style="padding:10px 18px;">
+                                <i class="fas fa-arrow-left"></i> Back
+                            </button>
+                            <button type="button" onclick="saveProjectScreenshots()" class="btn btn-primary" style="flex:1;">
+                                <i class="fas fa-check-circle"></i> Save Screenshots & Finish
+                            </button>
+                        </div>
+
+                        <div id="step2-success-banner" style="display:none; margin-top:14px; background:rgba(34,197,94,0.1); border:1px solid rgba(34,197,94,0.3); border-radius:10px; padding:12px 16px; color:#22c55e; font-size:0.85rem; font-weight:600; display:flex; align-items:center; gap:8px;">
+                            <i class="fas fa-check-circle"></i> Screenshots saved! Project is now live on your portfolio.
+                        </div>
                     </div>
 
                     <!-- Existing Projects List -->
@@ -802,7 +874,6 @@
                     </div>
                 </div>
             </div>
-
             <!-- TAB 6: CONTACTS -->
             <div id="messages-tab" class="tab-content">
                 <div class="admin-grid" style="margin-bottom:28px;">
@@ -1289,9 +1360,13 @@
             });
         }
 
-        // Add Project
+        // Add Project (Step 1 — Basic Info Save)
         addProjectForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            const submitBtn = addProjectForm.querySelector('button[type=submit]');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+
             const title = document.getElementById('p-title').value.trim();
             const category = document.getElementById('p-category').value;
             const description = document.getElementById('p-desc').value.trim();
@@ -1299,16 +1374,14 @@
             const longDescription = document.getElementById('p-long-desc').value.trim();
             const featuresStr = document.getElementById('p-features').value.trim();
             const techStackStr = document.getElementById('p-tech-stack').value.trim();
-            const extraImagesStr = document.getElementById('p-images-extra').value.trim();
             const liveUrl = document.getElementById('p-live').value.trim();
             const githubUrl = document.getElementById('p-github').value.trim();
 
             const features = featuresStr ? featuresStr.split('\n').map(s => s.trim()).filter(Boolean) : [];
             const techStack = techStackStr ? techStackStr.split(',').map(s => s.trim()).filter(Boolean) : [];
-            const images = window.getScreenshotsFromBuilder('p-screenshots-builder');
 
             try {
-                await addDoc(collection(db, 'projects'), {
+                const docRef = await addDoc(collection(db, 'projects'), {
                     title,
                     category,
                     description,
@@ -1316,18 +1389,34 @@
                     longDescription,
                     features,
                     techStack,
-                    images,
+                    images: [],
                     liveUrl,
                     githubUrl,
                     createdAt: serverTimestamp()
                 });
-                addProjectForm.reset();
-                window.populateScreenshotsBuilder('p-screenshots-builder', []);
-                alert('Project added successfully!');
+
+                // Store the new project ID for Step 2
+                window._currentAddProjectId = docRef.id;
+
+                // Update Step 2 badge
+                const badge = document.getElementById('step2-project-badge');
+                if (badge) badge.textContent = title;
+
+                // Auto-advance to Step 2
+                submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> Saved! Moving to Screenshots...';
+                setTimeout(() => {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-save"></i> Save & Continue to Screenshots →';
+                    window.goToStep(2);
+                }, 800);
+
             } catch (err) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-save"></i> Save & Continue to Screenshots →';
                 alert('Error adding project: ' + err.message);
             }
         });
+
 
         // Realtime Data Loader
         function loadDashboardData() {
@@ -1806,6 +1895,103 @@
 
         
 
+
+        // Cover Image Preview Helpers
+        window._currentAddProjectId = null;
+
+        window.previewCoverImage = (inputEl) => {
+            if (inputEl.files && inputEl.files[0]) {
+                const file = inputEl.files[0];
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const urlInput = document.getElementById('p-image');
+                    if (urlInput) urlInput.value = e.target.result;
+                    const previewBox = document.getElementById('p-cover-preview-box');
+                    const previewImg = document.getElementById('p-cover-preview-img');
+                    if (previewBox && previewImg) {
+                        previewImg.src = e.target.result;
+                        previewBox.style.display = 'block';
+                    }
+                    // Update drop zone text
+                    const dz = document.getElementById('p-cover-drop-zone');
+                    if (dz) dz.innerHTML = `<i class="fas fa-check-circle" style="font-size:1.4rem; color:#22c55e;"></i><p style="color:#22c55e; margin:6px 0 0; font-size:0.84rem;">${file.name} selected</p>`;
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+
+        window.previewCoverFromUrl = (url) => {
+            const previewBox = document.getElementById('p-cover-preview-box');
+            const previewImg = document.getElementById('p-cover-preview-img');
+            if (previewBox && previewImg && url && url.length > 5) {
+                previewImg.src = url;
+                previewImg.onerror = () => { previewBox.style.display = 'none'; };
+                previewImg.onload = () => { previewBox.style.display = 'block'; };
+            } else if (previewBox) {
+                previewBox.style.display = 'none';
+            }
+        };
+
+        // Step Navigation
+        window.goToStep = (step) => {
+            const step1 = document.getElementById('project-step-1');
+            const step2 = document.getElementById('project-step-2');
+            const btn1 = document.getElementById('step-btn-1');
+            const btn2 = document.getElementById('step-btn-2');
+
+            if (step === 1) {
+                step1.style.display = 'block';
+                step2.style.display = 'none';
+                btn1.style.background = 'var(--primary)';
+                btn1.style.color = '#000';
+                btn2.style.background = 'transparent';
+                btn2.style.color = '#64748b';
+            } else if (step === 2) {
+                if (!window._currentAddProjectId) {
+                    alert('Please fill and save Step 1 first!');
+                    return;
+                }
+                step1.style.display = 'none';
+                step2.style.display = 'block';
+                btn1.style.background = 'rgba(0,217,255,0.12)';
+                btn1.style.color = 'var(--primary)';
+                btn2.style.background = 'var(--primary)';
+                btn2.style.color = '#000';
+                // Add initial screenshot row if empty
+                const builder = document.getElementById('p-screenshots-builder');
+                if (builder && builder.children.length === 0) {
+                    window.addScreenshotRow('p-screenshots-builder');
+                }
+                // Scroll to step 2
+                step2.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        };
+
+        // Save Screenshots to existing project in Firestore
+        window.saveProjectScreenshots = async () => {
+            const id = window._currentAddProjectId;
+            if (!id) { alert('No project found. Please complete Step 1 first.'); return; }
+            const images = window.getScreenshotsFromBuilder('p-screenshots-builder');
+            try {
+                const { updateDoc, doc } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
+                await updateDoc(doc(db, 'projects', id), { images });
+                const banner = document.getElementById('step2-success-banner');
+                if (banner) { banner.style.display = 'flex'; setTimeout(() => banner.style.display = 'none', 4000); }
+                // Reset for next project
+                window._currentAddProjectId = null;
+                setTimeout(() => {
+                    window.goToStep(1);
+                    document.getElementById('add-project-form').reset();
+                    document.getElementById('p-cover-preview-box').style.display = 'none';
+                    document.getElementById('p-screenshots-builder').innerHTML = '';
+                    const dz = document.getElementById('p-cover-drop-zone');
+                    if (dz) dz.innerHTML = '<i class="fas fa-cloud-upload-alt" style="font-size:1.8rem; color:var(--primary); opacity:0.7;"></i><p style="color:#64748b; margin:6px 0 0; font-size:0.84rem;">Click or drag image here to upload</p>';
+                    btn1.style.background = 'var(--primary)'; btn1.style.color = '#000';
+                }, 3500);
+            } catch(err) {
+                alert('Error saving screenshots: ' + err.message);
+            }
+        };
 
         // Visual Interactive Screenshot Builder Helpers
         window.addScreenshotRow = (containerId, url = '', title = '', desc = '') => {
