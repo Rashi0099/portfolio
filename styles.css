@@ -302,6 +302,7 @@ p  { font-size: 0.97rem; color: var(--text); }
     align-items: center;
     padding-top: 90px;
     position: relative;
+    background-image: url('img/working_with_lap.jpg'); /* Default image for instant load */
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
