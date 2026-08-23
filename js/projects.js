@@ -9,7 +9,6 @@ export function initProjects() {
 
 function initProjectFilter() {
     const filterButtons = document.querySelectorAll('.filter-btn');
-    const projectCards  = document.querySelectorAll('.project-card');
 
     filterButtons.forEach(btn => {
         btn.addEventListener('click', () => {
@@ -17,6 +16,9 @@ function initProjectFilter() {
             btn.classList.add('active');
 
             const filter = btn.getAttribute('data-filter');
+            // Query cards inside the click event because Firebase loads them dynamically!
+            const projectCards = document.querySelectorAll('.project-card');
+            
             projectCards.forEach(card => {
                 const match = filter === 'all' || card.getAttribute('data-category') === filter;
                 card.style.display = match ? 'block' : 'none';
