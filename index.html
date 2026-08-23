@@ -315,7 +315,7 @@
             <h3>Message Sent!</h3>
             <p>Thank you for reaching out. I'll get back to you soon.</p>
     <!-- Custom Scripts -->
-    <script src="script.js?v=18"></script>
+    <script type="module" src="js/main.js"></script>
     <!-- Firebase Dynamic Integration Module -->
     <script type="module">
         
@@ -553,34 +553,7 @@
             console.log("Firebase module initialization skipped:", e);
         }
     </script>
-    <!-- Lenis Smooth Scroll -->
+    <!-- Lenis Smooth Scroll (CDN — init handled by js/smoothScroll.js) -->
     <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
-    <script>
-        const lenis = new Lenis({
-            duration: 1.2,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            touchMultiplier: 2,
-            infinite: false
-        });
-
-        function raf(time) {
-            lenis.raf(time);
-            requestAnimationFrame(raf);
-        }
-        requestAnimationFrame(raf);
-
-        // Make anchor links work with Lenis
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                const target = document.querySelector(targetId);
-                if (target) {
-                    e.preventDefault();
-                    lenis.scrollTo(target, { offset: -80 });
-                }
-            });
-        });
-    </script>
 </body>
 </html>
