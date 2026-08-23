@@ -1984,7 +1984,7 @@
             if (dz) dz.innerHTML = '<i class="fas fa-spinner fa-spin" style="font-size:1.2rem; color:var(--primary);"></i><p style="color:var(--primary); margin:4px 0 0; font-size:0.75rem;">Uploading...</p>';
 
             try {
-                const compressedUrl = await window.compressImageFile(file, 1920, 0.90);
+                const compressedUrl = await window.compressImageFile(file, 1080, 0.65);
                 const fieldName = `bg${section.charAt(0).toUpperCase() + section.slice(1)}`;
                 await updateDoc(doc(db, 'settings', 'general'), {
                     [fieldName]: compressedUrl
@@ -2308,7 +2308,7 @@
             if (dz) dz.innerHTML = '<i class="fas fa-spinner fa-spin" style="font-size:1.6rem; color:var(--primary);"></i><p style="color:var(--primary); margin:6px 0 0; font-size:0.84rem;">Optimizing image...</p>';
 
             try {
-                const compressedUrl = await window.compressImageFile(file, 1920, 0.90);
+                const compressedUrl = await window.compressImageFile(file, 1080, 0.65);
                 if (urlInput) urlInput.value = compressedUrl;
                 if (previewImg) previewImg.src = compressedUrl;
                 if (previewBox) previewBox.style.display = 'block';
@@ -2436,6 +2436,10 @@
                 <input type="text" class="sc-title-input" placeholder="Screenshot Title (e.g. User Dashboard)" value="${esc(title)}" style="padding: 7px 10px; font-size: 0.85rem; border-radius: 6px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: #fff;">
 
                 <textarea class="sc-desc-input" rows="2" placeholder="Full Explanation / Feature details..." style="padding: 7px 10px; font-size: 0.85rem; border-radius: 6px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: #fff; resize: vertical;">${desc}</textarea>
+                
+                <button type="button" onclick="this.closest('.screenshot-row-card').style.display='none'; window.addScreenshotRow('${containerId}');" style="margin-top: 8px; padding: 8px; background: rgba(0,217,255,0.15); color: var(--primary); border: 1px solid var(--primary); border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: 600;">
+                    <i class="fas fa-check"></i> Save & Add Next Screenshot
+                </button>
             `;
             container.appendChild(card);
         };
@@ -2451,7 +2455,7 @@
             if (uploadLabel) uploadLabel.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ...';
 
             try {
-                const compressedUrl = await window.compressImageFile(file, 1920, 0.90);
+                const compressedUrl = await window.compressImageFile(file, 1080, 0.65);
                 if (urlInput) urlInput.value = compressedUrl;
                 if (uploadLabel) uploadLabel.innerHTML = '<i class="fas fa-check-circle" style="color:#22c55e;"></i> Done';
                 
@@ -2536,7 +2540,7 @@
             if (dz) dz.innerHTML = '<i class="fas fa-spinner fa-spin" style="font-size:1.2rem; color:var(--primary);"></i><p style="color:var(--primary); margin:4px 0 0; font-size:0.8rem;">Optimizing image...</p>';
 
             try {
-                const compressedUrl = await window.compressImageFile(file, 1920, 0.90);
+                const compressedUrl = await window.compressImageFile(file, 1080, 0.65);
                 if (urlInput) { urlInput.value = compressedUrl; }
                 if (previewImg) previewImg.src = compressedUrl;
                 if (previewBox) previewBox.style.display = 'block';
