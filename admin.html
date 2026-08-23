@@ -554,7 +554,7 @@
             right: 0;
             bottom: 0;
             background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(8px);
+            /* backdrop-filter removed to fix heavy scroll lag */
             z-index: 2000;
             display: none;
             align-items: center;
@@ -578,6 +578,8 @@
             box-shadow: 0 25px 60px rgba(0,0,0,0.6);
             position: relative;
             animation: modalSlide 0.3s ease-out;
+            overscroll-behavior: contain;
+            transform: translateZ(0); /* Hardware acceleration for smooth scroll */
         }
 
         @keyframes modalSlide {
@@ -2429,9 +2431,14 @@
                         <div style="font-size: 0.75rem; color: #94a3b8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px;">${esc(desc) || 'No description'}</div>
                     </div>
                     
-                    <button type="button" onclick="this.closest('.screenshot-row-card').remove()" style="color: #ef4444; background: rgba(239, 68, 68, 0.1); border: none; border-radius: 6px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(239, 68, 68, 0.2)'" onmouseout="this.style.background='rgba(239, 68, 68, 0.1)'" title="Remove Screenshot">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
+                    <div style="display: flex; gap: 6px;">
+                        <button type="button" onclick="window.expandScreenshotRow(this, '${containerId}')" style="color: #3b82f6; background: rgba(59, 130, 246, 0.1); border: none; border-radius: 6px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(59, 130, 246, 0.2)'" onmouseout="this.style.background='rgba(59, 130, 246, 0.1)'" title="Edit Screenshot">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button type="button" onclick="this.closest('.screenshot-row-card').remove()" style="color: #ef4444; background: rgba(239, 68, 68, 0.1); border: none; border-radius: 6px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(239, 68, 68, 0.2)'" onmouseout="this.style.background='rgba(239, 68, 68, 0.1)'" title="Remove Screenshot">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
                 `;
             } else {
                 // Full Form View for New Screenshots
@@ -2465,7 +2472,7 @@
             container.appendChild(card);
         };
 
-        window.collapseAndAddNext = (btnEl, containerId) => {
+        window.collapseAndAddNext = (btnEl, containerId, isEdit = false) => {
             const card = btnEl.closest('.screenshot-row-card');
             const url = card.querySelector('.sc-url-input').value.trim();
             const title = card.querySelector('.sc-title-input').value.trim();
@@ -2491,13 +2498,57 @@
                     <div style="font-size: 0.75rem; color: #94a3b8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px;">${esc(desc) || 'No description'}</div>
                 </div>
                 
-                <button type="button" onclick="this.closest('.screenshot-row-card').remove()" style="color: #ef4444; background: rgba(239, 68, 68, 0.1); border: none; border-radius: 6px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(239, 68, 68, 0.2)'" onmouseout="this.style.background='rgba(239, 68, 68, 0.1)'" title="Remove Screenshot">
-                    <i class="fas fa-trash-alt"></i>
-                </button>
+                <div style="display: flex; gap: 6px;">
+                    <button type="button" onclick="window.expandScreenshotRow(this, '${containerId}')" style="color: #3b82f6; background: rgba(59, 130, 246, 0.1); border: none; border-radius: 6px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(59, 130, 246, 0.2)'" onmouseout="this.style.background='rgba(59, 130, 246, 0.1)'" title="Edit Screenshot">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button type="button" onclick="this.closest('.screenshot-row-card').remove()" style="color: #ef4444; background: rgba(239, 68, 68, 0.1); border: none; border-radius: 6px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(239, 68, 68, 0.2)'" onmouseout="this.style.background='rgba(239, 68, 68, 0.1)'" title="Remove Screenshot">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
             `;
             
-            // Add a new empty row
-            window.addScreenshotRow(containerId);
+            // Add a new empty row only if we are NOT just editing an existing one
+            if (!isEdit) {
+                window.addScreenshotRow(containerId);
+            }
+        };
+
+        window.expandScreenshotRow = (btnEl, containerId) => {
+            const card = btnEl.closest('.screenshot-row-card');
+            const url = card.querySelector('.sc-url-input').value.trim();
+            const title = card.querySelector('.sc-title-input').value.trim();
+            const desc = card.querySelector('.sc-desc-input').value.trim();
+            
+            const esc = (s) => (s || '').replace(/"/g, '&quot;');
+            
+            card.style.cssText = 'background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(0, 217, 255, 0.3); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 10px; position: relative; box-shadow: 0 4px 12px rgba(0,0,0,0.2);';
+            
+            card.innerHTML = `
+                <button type="button" onclick="this.closest('.screenshot-row-card').remove()" style="position: absolute; top: 10px; right: 10px; color: #ef4444; background: none; border: none; font-size: 0.95rem; cursor: pointer; padding: 4px;" title="Remove Form">
+                    <i class="fas fa-times"></i>
+                </button>
+
+                <div style="font-weight:600; font-size:0.85rem; color:var(--primary); margin-bottom:2px; display:flex; align-items:center; gap:6px;">
+                    <i class="fas fa-image"></i> Edit Screenshot
+                </div>
+
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <input type="text" class="sc-url-input" placeholder="Image URL (upload first 👉)" value="${esc(url)}" style="flex: 1; padding: 8px 10px; font-size: 0.85rem; border-radius: 6px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: #fff;">
+                    <label class="btn btn-secondary" style="padding: 7px 14px; font-size: 0.8rem; margin: 0; cursor: pointer; white-space: nowrap;">
+                        <i class="fas fa-upload"></i> Upload
+                        <input type="file" accept="image/*" onchange="window.uploadRowImage(this)" style="display:none;">
+                    </label>
+                </div>
+
+                <input type="text" class="sc-title-input" placeholder="Screenshot Title (e.g. User Dashboard)" value="${esc(title)}" style="padding: 8px 10px; font-size: 0.85rem; border-radius: 6px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: #fff;">
+
+                <textarea class="sc-desc-input" rows="2" placeholder="Full Explanation / Feature details..." style="padding: 8px 10px; font-size: 0.85rem; border-radius: 6px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: #fff; resize: vertical;">${desc}</textarea>
+                
+                <button type="button" onclick="window.collapseAndAddNext(this, '${containerId}', true)" style="margin-top: 4px; padding: 10px; background: rgba(0,217,255,0.15); color: var(--primary); border: 1px solid var(--primary); border-radius: 6px; cursor: pointer; font-size: 0.85rem; font-weight: 600; transition: all 0.2s;" onmouseover="this.style.background='rgba(0,217,255,0.25)'" onmouseout="this.style.background='rgba(0,217,255,0.15)'">
+                    <i class="fas fa-check"></i> Save Changes
+                </button>
+            `;
         };
 
         window.uploadRowImage = async (inputEl) => {
