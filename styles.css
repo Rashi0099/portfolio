@@ -765,18 +765,7 @@ p  { font-size: 0.97rem; color: var(--text); }
     position: relative;
 }
 
-.projects-carousel-wrapper::after {
-    content: '';
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 80px;
-    height: calc(100% - 22px);
-    background: linear-gradient(to right, transparent, var(--bg));
-    pointer-events: none;
-    z-index: 2;
-    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
-}
+
 
 /* Horizontal track */
 .projects-grid {
