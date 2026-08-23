@@ -192,7 +192,7 @@
     </section>
 
     <!-- Life & Work Gallery Section -->
-    <section id="life-gallery" style="padding: 60px 0 100px;">
+    <section id="life-gallery" style="padding: 60px 0 100px; display: none;">
         <div class="container">
             <div class="aesthetic-gallery">
                 <div class="gal-item gal-large-8" id="gal1-wrapper">
@@ -431,6 +431,12 @@
                     applyImg('#gal5-wrapper img', d.bgGal5);
                     applyImg('#gal6-wrapper img', d.bgGal6);
                     applyImg('#gal7-wrapper img', d.bgGal7);
+
+                    const hasAnyGallery = d.bgGal1 || d.bgGal2 || d.bgGal3 || d.bgGal4 || d.bgGal5 || d.bgGal6 || d.bgGal7;
+                    const gallerySection = document.getElementById('life-gallery');
+                    if (gallerySection && hasAnyGallery) {
+                        gallerySection.style.display = 'block';
+                    }
                 }
             });
 
