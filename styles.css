@@ -776,6 +776,7 @@ p  { font-size: 0.97rem; color: var(--text); }
     -webkit-overflow-scrolling: touch;
     scrollbar-width: thin;
     scrollbar-color: var(--primary) rgba(255,255,255,0.05);
+    min-height: 420px; /* Prevents layout collapse on load */
 }
 
 .projects-grid::-webkit-scrollbar        { height: 4px; }
